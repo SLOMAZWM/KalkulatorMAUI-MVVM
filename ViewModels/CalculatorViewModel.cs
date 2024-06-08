@@ -505,5 +505,29 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
             Display = arcTan.ToString();
         }
+
+        [RelayCommand]
+        private void GetArcSinh()
+        {
+            double value = Convert.ToDouble(Display);
+            double result = Math.Log(value + Math.Sqrt(value * value + 1));
+            Display = result.ToString();
+        }
+
+        [RelayCommand]
+        private void GetArcCosh()
+        {
+            double value = Convert.ToDouble(Display);
+            double result = Math.Log(value + Math.Sqrt(value * value - 1));
+            Display = result.ToString();
+        }
+
+        [RelayCommand]
+        private void GetArcTanh()
+        {
+            double value = Convert.ToDouble(Display);
+            double result = 0.5 * Math.Log((1 + value) / (1 - value));
+            Display = result.ToString();
+        }
     }
 }

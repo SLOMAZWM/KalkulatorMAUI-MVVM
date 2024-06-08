@@ -85,11 +85,11 @@
         <HorizontalStackLayout Grid.Row="5" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
             <Button Style="{StaticResource AdvancedButton}" Text="{Binding NameOfRadDegButton}" Command="{Binding ChangeRadSelectedCommand}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="sinh" FontSize="18" Command="{Binding GetSinhCommand}" IsVisible="{Binding IsFnUnSelected}"/>
-            <Button Style="{StaticResource AdvancedButton}" Text="sinh⁻¹" FontSize="13" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="sinh⁻¹" FontSize="13" Command="{Binding GetArcSinhCommand}" IsVisible="{Binding IsFnSelected}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="cosh" FontSize="17" Command="{Binding GetCoshCommand}" IsVisible="{Binding IsFnUnSelected}"/>
-            <Button Style="{StaticResource AdvancedButton}" Text="cosh⁻¹" FontSize="13" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="cosh⁻¹" FontSize="13" Command="{Binding GetArcCoshCommand}" IsVisible="{Binding IsFnSelected}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="tanh" FontSize="17" Command="{Binding GetTanhCommand}" IsVisible="{Binding IsFnUnSelected}"/>
-            <Button Style="{StaticResource AdvancedButton}" Text="tanh⁻¹" FontSize="13" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="tanh⁻¹" FontSize="13" Command="{Binding GetArcTanhCommand}" IsVisible="{Binding IsFnSelected}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="π" Command="{Binding GetPiNumberCommand}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="Rand" FontSize="15" Command="{Binding GetRandCommand}"/>
             <Button Style="{StaticResource NumberSmallButton}" Text="0" WidthRequest="135" Command="{Binding AddNumberCommand}" CommandParameter="0"/>
