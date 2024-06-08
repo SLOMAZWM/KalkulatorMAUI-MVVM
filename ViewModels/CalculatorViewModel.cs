@@ -42,6 +42,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         private bool _isAfterCalculation = false;
 
+        [ObservableProperty]
+        private bool _isMenuVisible = false;
+
+        [ObservableProperty]
+        private bool _isButtonsVisible = true;
 
         [RelayCommand]
         private void SetOperation(string operation)
@@ -528,6 +533,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             double value = Convert.ToDouble(Display);
             double result = 0.5 * Math.Log((1 + value) / (1 - value));
             Display = result.ToString();
+        }
+
+        //Menu options
+
+        [RelayCommand]
+        private void MenuClicked()
+        {
+            IsMenuVisible = !IsMenuVisible;
+            IsButtonsVisible = !IsButtonsVisible;
         }
     }
 }

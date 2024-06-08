@@ -22,7 +22,6 @@
         <Label Text="Rad" Grid.Row="0" HorizontalOptions="Start" VerticalOptions="End" TextColor="White"
                Margin="95,0,0,0" FontAttributes="Bold" IsVisible="{Binding IsRadSelected}" />
 
-
         <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
             <Button Style="{StaticResource AdvancedButton}" Text="("/>
             <Button Style="{StaticResource AdvancedButton}" Text=")"/>
