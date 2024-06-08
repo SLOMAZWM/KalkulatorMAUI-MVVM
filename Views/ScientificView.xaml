@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KalkulatorMAUI_MVVM.Views.ScientificView"             
+             BackgroundColor="Black">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        
+            <Label Text="{Binding Display}" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center" 
+                   FontSize="36" FontAttributes="Bold" TextColor="White" Margin="0,0,85,0"/>
+
+        <Label Text="Rad" Grid.Row="0" HorizontalOptions="Start" VerticalOptions="End" TextColor="White"
+               Margin="95,0,0,0" FontAttributes="Bold" IsVisible="{Binding IsRadSelected}" />
+
+
+        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+            <Button Style="{StaticResource AdvancedButton}" Text="("/>
+            <Button Style="{StaticResource AdvancedButton}" Text=")"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="mc"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="m+"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="m-"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="mr"/>
+            <Button Style="{StaticResource LightFunctionSmallButton}" Text="AC" Command="{Binding ClearCommand}"/>
+            <Button Style="{StaticResource LightFunctionSmallButton}" Text="+/-" Command="{Binding ChangeSignCommand}"/>
+            <Button Style="{StaticResource LightFunctionSmallButton}" Text="%" Command="{Binding SetPercentCommand}"/>
+            <Button Style="{StaticResource FunctionSmallButton}" Text="÷" Command="{Binding SetOperationCommand}" CommandParameter="/"/>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+            <Button Style="{StaticResource AdvancedButton}" Text="Fn" Command="{Binding ChangeFnSelectedCommand}" BackgroundColor="{Binding FnBackgroundColor}" TextColor="{Binding FnTextColor}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="x²" Command="{Binding PowNumberCommand}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="x³" Command="{Binding Pow3OfNumberCommand}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="xʸ" Command="{Binding SetOperationCommand}" CommandParameter="pow"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="eˣ" Command="{Binding ExpOfXCommand}" IsVisible="{Binding IsFnUnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="yˣ" Command="{Binding SetOperationCommand}" CommandParameter="powx" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="10ˣ" Command="{Binding Pow10OfXCommand}" IsVisible="{Binding IsFnUnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="2ˣ" Command="{Binding Pow2OfXCommand}" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="7" Command="{Binding AddNumberCommand}" CommandParameter="7"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="8" Command="{Binding AddNumberCommand}" CommandParameter="8"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="9" Command="{Binding AddNumberCommand}" CommandParameter="9"/>
+            <Button Style="{StaticResource FunctionSmallButton}" Text="×" Command="{Binding SetOperationCommand}" CommandParameter="*"/>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="3" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+            <Button Style="{StaticResource AdvancedButton}" Text="1/x" Command="{Binding InvertNumberCommand}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="√x" Command="{Binding GetSqrtCommand}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="∛x" Command="{Binding GetRoot3Command}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="√y(x)" FontSize="17" Command="{Binding SetOperationCommand}" CommandParameter="root"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="ln" Command="{Binding GetNLogCommand}" IsVisible="{Binding IsFnUnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="logₓy" Command="{Binding SetOperationCommand}" CommandParameter="LogBaseY" FontSize="15" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="log₁₀" FontSize="17" Command="{Binding GetN10LogCommand}" IsVisible="{Binding IsFnUnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="log₂x" FontSize="16" Command="{Binding Log2OfXCommand}" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="4" Command="{Binding AddNumberCommand}" CommandParameter="4"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="5" Command="{Binding AddNumberCommand}" CommandParameter="5"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="6" Command="{Binding AddNumberCommand}" CommandParameter="6"/>
+            <Button Style="{StaticResource FunctionSmallButton}" Text="-" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="4" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+            <Button Style="{StaticResource AdvancedButton}" Text="x!" Command="{Binding GetFactorialCommand}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="sin" Command="{Binding GetSinCommand}" IsVisible="{Binding IsFnUnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="sin⁻¹" Command="{Binding GetArcSinCommand}" FontSize="16" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="cos" Command="{Binding GetCosCommand}" IsVisible="{Binding IsFnUnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="cos⁻¹" Command="{Binding GetArcCosCommand}" FontSize="16" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="tan" Command="{Binding GetTanCommand}" IsVisible="{Binding IsFnUnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="tan⁻¹" Command="{Binding GetArcTanCommand}" FontSize="16" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="e" Command="{Binding GetENumberCommand}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="EE" Command="{Binding SetOperationCommand}" CommandParameter="EE"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="1" Command="{Binding AddNumberCommand}" CommandParameter="1"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="2" Command="{Binding AddNumberCommand}" CommandParameter="2"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="3" Command="{Binding AddNumberCommand}" CommandParameter="3"/>
+            <Button Style="{StaticResource FunctionSmallButton}" Text="+" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="5" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+            <Button Style="{StaticResource AdvancedButton}" Text="{Binding NameOfRadDegButton}" Command="{Binding ChangeRadSelectedCommand}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="sinh" FontSize="18" Command="{Binding GetSinhCommand}" IsVisible="{Binding IsFnUnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="sinh⁻¹" FontSize="13" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="cosh" FontSize="17" Command="{Binding GetCoshCommand}" IsVisible="{Binding IsFnUnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="cosh⁻¹" FontSize="13" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="tanh" FontSize="17" Command="{Binding GetTanhCommand}" IsVisible="{Binding IsFnUnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="tanh⁻¹" FontSize="13" IsVisible="{Binding IsFnSelected}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="π" Command="{Binding GetPiNumberCommand}"/>
+            <Button Style="{StaticResource AdvancedButton}" Text="Rand" FontSize="15" Command="{Binding GetRandCommand}"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="0" WidthRequest="135" Command="{Binding AddNumberCommand}" CommandParameter="0"/>
+            <Button Style="{StaticResource NumberSmallButton}" Text="," Command="{Binding AddDotCommand}"/>
+            <Button Style="{StaticResource FunctionSmallButton}" Text="=" Command="{Binding EqualsCommand}"/>
+        </HorizontalStackLayout>
+
+    </Grid>
+
+</ContentView>

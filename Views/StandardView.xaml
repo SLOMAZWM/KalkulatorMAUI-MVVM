@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KalkulatorMAUI_MVVM.Views.StandardView"
+             BackgroundColor="Black">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="1" Text="{Binding Display}" HorizontalOptions="End" VerticalOptions="End" FontSize="52" 
+                FontAttributes="Bold" TextColor="White"/>
+        
+
+        <HorizontalStackLayout Grid.Row="2" Spacing="10" HorizontalOptions="Center">
+
+            <Button Text="AC" Style="{StaticResource LightFunctionButton}" FontSize="28" Command="{Binding ClearCommand}"/>
+            <Button Text="+/-" Style="{StaticResource LightFunctionButton}" Command="{Binding ChangeSignCommand}"/>
+            <Button Text="%" Style="{StaticResource LightFunctionButton}" Command="{Binding SetPercentCommand}"/>
+            <Button Text="÷" Style="{StaticResource FunctionButton}" Command="{Binding SetOperationCommand}" CommandParameter="/"/>
+
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="3" Spacing="10" HorizontalOptions="Center">
+
+            <Button Text="7" Style="{StaticResource NumberButton}" Command="{Binding AddNumberCommand}" CommandParameter="7"/>
+            <Button Text="8" Style="{StaticResource NumberButton}" Command="{Binding AddNumberCommand}" CommandParameter="8"/>
+            <Button Text="9" Style="{StaticResource NumberButton}" Command="{Binding AddNumberCommand}" CommandParameter="9"/>
+            <Button Text="×" Style="{StaticResource FunctionButton}" Command="{Binding SetOperationCommand}" CommandParameter="*"/>
+            
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="4" Spacing="10" HorizontalOptions="Center">
+
+            <Button Text="4" Style="{StaticResource NumberButton}" Command="{Binding AddNumberCommand}" CommandParameter="4"/>
+            <Button Text="5" Style="{StaticResource NumberButton}" Command="{Binding AddNumberCommand}" CommandParameter="5"/>
+            <Button Text="6" Style="{StaticResource NumberButton}" Command="{Binding AddNumberCommand}" CommandParameter="6"/>
+            <Button Text="-" Style="{StaticResource FunctionButton}" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
+
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="5" Spacing="10" HorizontalOptions="Center">
+
+            <Button Text="1" Style="{StaticResource NumberButton}" Command="{Binding AddNumberCommand}" CommandParameter="1"/>
+            <Button Text="2" Style="{StaticResource NumberButton}" Command="{Binding AddNumberCommand}" CommandParameter="2"/>
+            <Button Text="3" Style="{StaticResource NumberButton}" Command="{Binding AddNumberCommand}" CommandParameter="3"/>
+            <Button Text="+" Style="{StaticResource FunctionButton}" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
+
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="6" Spacing="10" HorizontalOptions="Center">
+
+            <Button Text="0" Style="{StaticResource NumberButton}" WidthRequest="160" Command="{Binding AddNumberCommand}" CommandParameter="0"/>
+            <Button Text="." Style="{StaticResource NumberButton}" Command="{Binding AddDotCommand}"/>
+            <Button Text="=" Style="{StaticResource FunctionButton}" Command="{Binding EqualsCommand}"/>
+
+        </HorizontalStackLayout>
+
+    </Grid>
+    
+</ContentView>
