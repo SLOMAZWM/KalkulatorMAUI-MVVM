@@ -1,5 +1,7 @@
-﻿using System;
+﻿using KalkulatorMAUI_MVVM.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +10,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 {
     public partial class CalculatorViewModel : ObservableObject
     {
+        [ObservableProperty]
+        private ObservableCollection<HistoryOperation> _historyOperations = new ObservableCollection<HistoryOperation> ();
+
         [ObservableProperty]
         private string _display = "0";
 
@@ -214,6 +219,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
             Display = answer.ToString();
             _isAfterCalculation = true;
+
+            HistoryOperations.Add(new HistoryOperation
+            {
+                Operation = $"{FirstNumber} {Operation} {SecondNumber}",
+                Result = answer.ToString()
+            });
+
             FirstNumber = answer.ToString();
         }
 

@@ -10,24 +10,38 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Text="{Binding Display}" HorizontalOptions="End" VerticalOptions="Start" FontSize="52" 
+        <Label Text="{Binding Display}" HorizontalOptions="End" VerticalOptions="Start" FontSize="52" 
                 FontAttributes="Bold" TextColor="White" Margin="0,0,5,0"/>
 
-        <ImageButton Command="{Binding MenuClickedCommand}" Margin="5,5,0,0" HorizontalOptions="Start" VerticalOptions="Start" Grid.Row="0" Source="Resources/Images/menu.png" WidthRequest="25" HeightRequest="25"/>
+        <Label Text="nadana operacja" Margin="0,75,5,0" TextColor="Gray" HorizontalOptions="End" FontAttributes="Bold"/>
 
-        <ContentView Grid.Row="1" Margin="5,100,5,5" IsVisible="{Binding IsMenuVisible}" Opacity="1" Padding="10">
+        <ImageButton Command="{Binding MenuClickedCommand}" Margin="5,5,0,0" HorizontalOptions="Start" VerticalOptions="Start" Source="Resources/Images/menu.png" WidthRequest="25" HeightRequest="25"/>
+
+        <ContentView Margin="5,100,5,5" IsVisible="{Binding IsMenuVisible}" Opacity="1" Padding="10">
 
             <Grid>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Label Text="Historia" TextColor="White" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Start" FontSize="32" FontAttributes="Bold"/>
 
-                
-                
+                <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="White"/>
+
+                <CollectionView Grid.Row="2" ItemsSource="{Binding HistoryOperations}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Operation}" TextColor="White" FontSize="20"/>
+                                <Label Text="{Binding Result}" TextColor="Gray" FontSize="20" FontAttributes="Bold"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
             </Grid>
 
         </ContentView>
