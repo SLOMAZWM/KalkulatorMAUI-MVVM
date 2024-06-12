@@ -28,7 +28,7 @@
 
     <Style TargetType="Button" x:Key="FunctionSmallButton" BasedOn="{StaticResource FunctionButton}">
         <Setter Property="WidthRequest" Value="65"/>
-        <Setter Property="HeightRequest" Value="55"/>
+        <Setter Property="HeightRequest" Value="50"/>
         <Setter Property="FontSize" Value="20"/>
     </Style>
 

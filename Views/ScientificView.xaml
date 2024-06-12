@@ -8,6 +8,8 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -15,14 +17,20 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        
-            <Label Text="{Binding Display}" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center" 
-                   FontSize="36" FontAttributes="Bold" TextColor="White" Margin="0,0,85,0"/>
+
+        <Label Text="{Binding Display}" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center" 
+                   FontSize="34" FontAttributes="Bold" TextColor="White" Margin="0,0,65,0"/>
+
+        <ImageButton Command="{Binding MenuScientificClickedCommand}" Margin="5,5,0,0" HorizontalOptions="Start" VerticalOptions="Start" Source="Resources/Images/menu.png" WidthRequest="25" HeightRequest="25"/>
+
+        <Label Text="{Binding LastOperation}" Grid.Row="1" HorizontalOptions="Center" TextColor="Gray" FontAttributes="Bold" FontSize="16"/>
 
         <Label Text="Rad" Grid.Row="0" HorizontalOptions="Start" VerticalOptions="End" TextColor="White"
                Margin="95,0,0,0" FontAttributes="Bold" IsVisible="{Binding IsRadSelected}" />
 
-        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+        <BoxView BackgroundColor="White" HeightRequest="1" Grid.Row="2"/>
+
+        <HorizontalStackLayout Grid.Row="3" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
             <Button Style="{StaticResource AdvancedButton}" Text="("/>
             <Button Style="{StaticResource AdvancedButton}" Text=")"/>
             <Button Style="{StaticResource AdvancedButton}" Text="mc"/>
@@ -35,7 +43,7 @@
             <Button Style="{StaticResource FunctionSmallButton}" Text="÷" Command="{Binding SetOperationCommand}" CommandParameter="/"/>
         </HorizontalStackLayout>
 
-        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+        <HorizontalStackLayout Grid.Row="4" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
             <Button Style="{StaticResource AdvancedButton}" Text="Fn" Command="{Binding ChangeFnSelectedCommand}" BackgroundColor="{Binding FnBackgroundColor}" TextColor="{Binding FnTextColor}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="x²" Command="{Binding PowNumberCommand}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="x³" Command="{Binding Pow3OfNumberCommand}"/>
@@ -50,7 +58,7 @@
             <Button Style="{StaticResource FunctionSmallButton}" Text="×" Command="{Binding SetOperationCommand}" CommandParameter="*"/>
         </HorizontalStackLayout>
 
-        <HorizontalStackLayout Grid.Row="3" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+        <HorizontalStackLayout Grid.Row="5" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
             <Button Style="{StaticResource AdvancedButton}" Text="1/x" Command="{Binding InvertNumberCommand}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="√x" Command="{Binding GetSqrtCommand}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="∛x" Command="{Binding GetRoot3Command}"/>
@@ -65,7 +73,7 @@
             <Button Style="{StaticResource FunctionSmallButton}" Text="-" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
         </HorizontalStackLayout>
 
-        <HorizontalStackLayout Grid.Row="4" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+        <HorizontalStackLayout Grid.Row="6" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
             <Button Style="{StaticResource AdvancedButton}" Text="x!" Command="{Binding GetFactorialCommand}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="sin" Command="{Binding GetSinCommand}" IsVisible="{Binding IsFnUnSelected}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="sin⁻¹" Command="{Binding GetArcSinCommand}" FontSize="16" IsVisible="{Binding IsFnSelected}"/>
@@ -81,7 +89,7 @@
             <Button Style="{StaticResource FunctionSmallButton}" Text="+" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
         </HorizontalStackLayout>
 
-        <HorizontalStackLayout Grid.Row="5" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+        <HorizontalStackLayout Grid.Row="7" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
             <Button Style="{StaticResource AdvancedButton}" Text="{Binding NameOfRadDegButton}" Command="{Binding ChangeRadSelectedCommand}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="sinh" FontSize="18" Command="{Binding GetSinhCommand}" IsVisible="{Binding IsFnUnSelected}"/>
             <Button Style="{StaticResource AdvancedButton}" Text="sinh⁻¹" FontSize="13" Command="{Binding GetArcSinhCommand}" IsVisible="{Binding IsFnSelected}"/>

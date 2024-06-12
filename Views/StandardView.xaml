@@ -17,7 +17,7 @@
 
         <BoxView BackgroundColor="White" HeightRequest="1" Margin="0,-575,0,0"/>
 
-        <ImageButton Command="{Binding MenuClickedCommand}" Margin="5,5,0,0" HorizontalOptions="Start" VerticalOptions="Start" Source="Resources/Images/menu.png" WidthRequest="25" HeightRequest="25"/>
+        <ImageButton Command="{Binding MenuStandardClickedCommand}" Margin="5,5,0,0" HorizontalOptions="Start" VerticalOptions="Start" Source="Resources/Images/menu.png" WidthRequest="25" HeightRequest="25"/>
 
         <ContentView Margin="5,100,5,5" IsVisible="{Binding IsMenuVisible}" Opacity="1" Padding="10">
 

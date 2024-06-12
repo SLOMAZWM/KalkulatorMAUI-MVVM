@@ -225,7 +225,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             Display = answer.ToString();
             _isAfterCalculation = true;
 
-            HistoryOperations.Add(new HistoryOperation
+            HistoryOperations.Insert(0, new HistoryOperation
             {
                 Operation = $"{FirstNumber} {Operation} {SecondNumber}",
                 Result = answer.ToString()
@@ -556,7 +556,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         //Menu options
 
         [RelayCommand]
-        private void MenuClicked()
+        private void MenuStandardClicked()
         {
             IsMenuVisible = !IsMenuVisible;
             IsButtonsVisible = !IsButtonsVisible;
