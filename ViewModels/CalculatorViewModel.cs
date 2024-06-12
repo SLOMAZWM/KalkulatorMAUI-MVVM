@@ -556,7 +556,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         //Menu options
 
         [RelayCommand]
-        private void MenuStandardClicked()
+        private void MenuClicked()
         {
             IsMenuVisible = !IsMenuVisible;
             IsButtonsVisible = !IsButtonsVisible;
