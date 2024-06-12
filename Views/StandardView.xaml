@@ -13,7 +13,9 @@
         <Label Text="{Binding Display}" HorizontalOptions="End" VerticalOptions="Start" FontSize="52" 
                 FontAttributes="Bold" TextColor="White" Margin="0,0,5,0"/>
 
-        <Label Text="nadana operacja" Margin="0,75,5,0" TextColor="Gray" HorizontalOptions="End" FontAttributes="Bold"/>
+        <Label Text="{Binding LastOperation}" Margin="0,75,5,0" TextColor="Gray" HorizontalOptions="Center" FontAttributes="Bold" FontSize="16"/>
+
+        <BoxView BackgroundColor="White" HeightRequest="1" Margin="0,-575,0,0"/>
 
         <ImageButton Command="{Binding MenuClickedCommand}" Margin="5,5,0,0" HorizontalOptions="Start" VerticalOptions="Start" Source="Resources/Images/menu.png" WidthRequest="25" HeightRequest="25"/>
 

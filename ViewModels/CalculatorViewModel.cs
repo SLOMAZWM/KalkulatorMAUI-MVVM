@@ -14,6 +14,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private ObservableCollection<HistoryOperation> _historyOperations = new ObservableCollection<HistoryOperation> ();
 
         [ObservableProperty]
+        private string _lastOperation = string.Empty;
+
+        [ObservableProperty]
         private string _display = "0";
 
         [ObservableProperty]
@@ -62,10 +65,12 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Operation = operation;
                 Display = "0";
                 _isOperationSet = true;
+                LastOperation = FirstNumber + Operation;
             }
             else
             {
                 SecondNumber = Display;
+                LastOperation = FirstNumber + Operation + SecondNumber;
                 Calculation();
                 Operation = operation;
             }
@@ -226,6 +231,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Result = answer.ToString()
             });
 
+            LastOperation = FirstNumber + Operation + SecondNumber + "=" + answer.ToString();
             FirstNumber = answer.ToString();
         }
 
