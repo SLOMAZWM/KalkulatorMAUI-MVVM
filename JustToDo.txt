@@ -1,0 +1,6 @@
+﻿Tryby w naukowym widoku:
+
+1. Naukowy
+2. Programisty
+3. Walutowy (api)
+4. Wykresowy

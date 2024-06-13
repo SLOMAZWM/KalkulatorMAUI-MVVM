@@ -9,7 +9,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="0"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -26,6 +26,45 @@
 
         <BoxView BackgroundColor="White" HeightRequest="1" Grid.Row="2"/>
 
+        <ContentView Grid.Row="3" IsVisible="{Binding IsMenuVisible}">
+
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Text="Tryby kalkulatora" TextColor="White" HorizontalOptions="Center" Grid.Row="0" FontSize="22"
+                       FontAttributes="Bold"/>
+
+                <HorizontalStackLayout Spacing="10" Grid.Row="1" HorizontalOptions="Center">
+                    <Button Text="Naukowy"/>
+                    <Button Text="Programisty"/>
+                    <Button Text="Walutowy"/>
+                    <Button Text="Wykresowy"/>
+                </HorizontalStackLayout>
+
+                <Label Text="Historia" TextColor="White" Grid.Row="2" HorizontalOptions="Center" 
+                       VerticalOptions="Start" FontSize="22" FontAttributes="Bold"/>
+
+                <CollectionView Grid.Row="3" ItemsSource="{Binding HistoryOperations}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Operation}" TextColor="White" FontSize="20"/>
+                                <Label Text="{Binding Result}" TextColor="Gray" FontSize="20"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+            
+
+        </ContentView>
+         
         <ContentView Grid.Row="3" IsVisible="{Binding IsButtonsVisible}">
 
             <Grid>
