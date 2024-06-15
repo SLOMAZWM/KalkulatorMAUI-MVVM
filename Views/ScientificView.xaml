@@ -13,6 +13,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <Label Text="{Binding Display}" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center" 
+   FontSize="34" FontAttributes="Bold" TextColor="White" Margin="0,-35,65,0" IsVisible="{Binding IsDisplayVisible}"/>
 
         <Label Text="{Binding LastOperation}" Grid.Row="0" HorizontalOptions="Center" TextColor="Gray" FontAttributes="Bold" FontSize="16"/>
 

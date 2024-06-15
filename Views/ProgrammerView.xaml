@@ -4,5 +4,20 @@
              x:Class="KalkulatorMAUI_MVVM.Views.ProgrammerView"
              xmlns:vm="clr-namespace:KalkulatorMAUI_MVVM.ViewModels">
 
-    <Label Text="Test" TextColor="White"/>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Text="0" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center" 
+            FontSize="34" FontAttributes="Bold" TextColor="White" Margin="0,-30,5,0" />
+
+        
+        
+    </Grid>
 </ContentView>

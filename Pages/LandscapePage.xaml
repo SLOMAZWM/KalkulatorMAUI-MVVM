@@ -14,10 +14,7 @@
 
         <ImageButton Command="{Binding MenuClickedCommand}" Grid.Row="0" Margin="5,5,0,0" HorizontalOptions="Start" VerticalOptions="Start" Source="Resources/Images/menu.png" WidthRequest="25" HeightRequest="25"/>
 
-        <Label Text="{Binding CalculatorViewModel.Display}" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center" 
-           FontSize="34" FontAttributes="Bold" TextColor="White" Margin="0,0,65,0"/>
-
-        <ContentView Grid.Row="1" IsVisible="{Binding IsMenuVisible}">
+        <ContentView Grid.Row="1" IsVisible="{Binding IsMenuVisible}" Margin="0,-30,0,0">
 
             <Grid Margin="10">
                 <Grid.RowDefinitions>

@@ -21,6 +21,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private ContentView _currentView;
 
         [ObservableProperty]
+        private bool _isDisplayVisible = true;
+
+        [ObservableProperty]
         private bool _isPortrait = true;
 
         [ObservableProperty]
@@ -39,9 +42,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 case "Scientific":
                     CurrentMode = CalculatorMode.Scientific;
+                    IsDisplayVisible = true;
                     break;
                 case "Programmer":
                     CurrentMode = CalculatorMode.Programmer;
+                    IsDisplayVisible = false;
                     break;
             }
 
@@ -62,15 +67,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             NavigateToAppropriatePage();
         }
 
-        private async void NavigateToAppropriatePage()
+        private void NavigateToAppropriatePage()
         {
             if (IsPortrait)
             {
-                await Shell.Current.GoToAsync("//MainPage");
+                Shell.Current.GoToAsync("//MainPage");
             }
             else
             {
-                await Shell.Current.GoToAsync("//LandscapePage");
+                Shell.Current.GoToAsync("//LandscapePage");
             }
         }
 
