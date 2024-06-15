@@ -78,7 +78,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 CurrentView = new StandardView
                 {
                     BindingContext = CalculatorViewModel
-                };U
+                };
             }
             else
             {
