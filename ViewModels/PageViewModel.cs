@@ -15,6 +15,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
     public partial class PageViewModel : ObservableObject
     {
+        public CalculatorViewModel CalculatorViewModel { get; set; }
+
         [ObservableProperty]
         private ContentView _currentView;
 
@@ -26,8 +28,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         [ObservableProperty]
         private bool _isModeCalcVisible = true;
-
-        public CalculatorViewModel CalculatorViewModel { get; set; }
 
         [ObservableProperty]
         private CalculatorMode _currentMode = CalculatorMode.Scientific;
@@ -44,11 +44,14 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     CurrentMode = CalculatorMode.Programmer;
                     break;
             }
+
+            UpdateMode();
         }
 
         public PageViewModel()
         {
             CalculatorViewModel = new CalculatorViewModel();
+            CurrentView = new ScientificView();
             UpdateView();
         }
 
@@ -82,9 +85,24 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
             else
             {
+                UpdateMode();
+            }
+        }
+
+        private void UpdateMode()
+        {
+            if (CalculatorMode.Scientific.Equals(CurrentMode))
+            {
                 CurrentView = new ScientificView
                 {
                     BindingContext = CalculatorViewModel
+                };
+            }
+            else if (CalculatorMode.Programmer.Equals(CurrentMode))
+            {
+                CurrentView = new ProgrammerView
+                {
+                    BindingContext = new ProgrammerViewModel()
                 };
             }
         }
