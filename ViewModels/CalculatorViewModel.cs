@@ -8,14 +8,6 @@ using System.Threading.Tasks;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
-    public enum CalculatorMode
-    {
-        Scientific,
-        Programmer,
-        Currency,
-        Graph
-    }
-
 
     public partial class CalculatorViewModel : ObservableObject
     {
@@ -64,29 +56,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         [ObservableProperty]
         private bool _isButtonsVisible = true;
-
-        [ObservableProperty]
-        private CalculatorMode _currentMode = CalculatorMode.Scientific;
-
-        public CalculatorViewModel()
-        {
-            ChangeModeCommand = new RelayCommand<string>(ChangeMode);
-        }
-
-        public IRelayCommand<string> ChangeModeCommand { get; }
-
-        private void ChangeMode(string mode)
-        {
-            switch (mode)
-            {
-                case "Scientific":
-                    CurrentMode = CalculatorMode.Scientific;
-                    break;
-                case "Programmer":
-                    CurrentMode = CalculatorMode.Programmer;
-                    break;
-            }
-        }
 
         [RelayCommand]
         private void SetOperation(string operation)

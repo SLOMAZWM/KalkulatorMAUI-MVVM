@@ -5,6 +5,14 @@ using KalkulatorMAUI_MVVM.Views;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
+    public enum CalculatorMode
+    {
+        Scientific,
+        Programmer,
+        Currency,
+        Graph
+    }
+
     public partial class PageViewModel : ObservableObject
     {
         [ObservableProperty]
@@ -21,16 +29,26 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         public CalculatorViewModel CalculatorViewModel { get; set; }
 
+        [ObservableProperty]
+        private CalculatorMode _currentMode = CalculatorMode.Scientific;
+
+        [RelayCommand]
+        private void ChangeMode(string mode)
+        {
+            switch (mode)
+            {
+                case "Scientific":
+                    CurrentMode = CalculatorMode.Scientific;
+                    break;
+                case "Programmer":
+                    CurrentMode = CalculatorMode.Programmer;
+                    break;
+            }
+        }
+
         public PageViewModel()
         {
             CalculatorViewModel = new CalculatorViewModel();
-            UpdateView();
-        }
-
-        [RelayCommand]
-        public void ChangeMode(string mode)
-        {
-            CalculatorViewModel.ChangeModeCommand.Execute(mode);
             UpdateView();
         }
 
@@ -60,7 +78,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 CurrentView = new StandardView
                 {
                     BindingContext = CalculatorViewModel
-                };
+                };U
             }
             else
             {

@@ -30,8 +30,8 @@
                FontAttributes="Bold"/>
 
                 <HorizontalStackLayout Spacing="10" Grid.Row="1" HorizontalOptions="Center">
-                    <Button Text="Naukowy"/>
-                    <Button Text="Programisty"/>
+                    <Button Text="Naukowy" Command="{Binding ChangeModeCommand}" CommandParameter="Scientific"/>
+                    <Button Text="Programisty" Command="{Binding ChangeModeCommand}" CommandParameter="Programmer"/>
                     <Button Text="Walutowy"/>
                     <Button Text="Wykresowy"/>
                 </HorizontalStackLayout>
