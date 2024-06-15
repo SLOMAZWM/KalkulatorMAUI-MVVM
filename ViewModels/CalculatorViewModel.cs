@@ -85,7 +85,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 case "Programmer":
                     CurrentMode = CalculatorMode.Programmer;
                     break;
-                    // Dodaj inne tryby tutaj
             }
         }
 

@@ -4,3 +4,5 @@
 2. Programisty
 3. Walutowy (api)
 4. Wykresowy
+
+Zrobić optymalizacje kodu - usunąć powtarzające się metody MenuClicked w standardowym page i LandscapePage

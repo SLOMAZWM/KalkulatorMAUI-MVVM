@@ -13,6 +13,12 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private bool _isPortrait = true;
 
+        [ObservableProperty]
+        private bool _isMenuVisible = false;
+
+        [ObservableProperty]
+        private bool _isModeCalcVisible = true;
+
         public CalculatorViewModel CalculatorViewModel { get; set; }
 
         public PageViewModel()
@@ -63,6 +69,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     BindingContext = CalculatorViewModel
                 };
             }
+        }
+
+        [RelayCommand]
+        private void MenuClicked()
+        {
+            IsMenuVisible = !IsMenuVisible;
+            IsModeCalcVisible = !IsModeCalcVisible;
         }
     }
 }
