@@ -10,9 +10,10 @@
     Shell.TitleColor="White">
 
     <ShellContent
-    ContentTemplate="{DataTemplate pages:MainCalculatorPage}"
-    Route="MainPage" />
+        ContentTemplate="{DataTemplate pages:MainCalculatorPage}"
+        Route="MainPage" />
 
+    <ShellContent
+        ContentTemplate="{DataTemplate pages:LandscapePage}"
+        Route="LandscapePage" />
 </Shell>
-
-

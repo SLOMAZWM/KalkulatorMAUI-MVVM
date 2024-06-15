@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KalkulatorMAUI_MVVM.Pages;
 using KalkulatorMAUI_MVVM.Views;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
@@ -30,7 +31,19 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         public void UpdateOrientation(bool isPortrait)
         {
             IsPortrait = isPortrait;
-            UpdateView();
+            NavigateToAppropriatePage();
+        }
+
+        private async void NavigateToAppropriatePage()
+        {
+            if (IsPortrait)
+            {
+                await Shell.Current.GoToAsync("//MainPage");
+            }
+            else
+            {
+                await Shell.Current.GoToAsync("//LandscapePage");
+            }
         }
 
         private void UpdateView()
@@ -44,21 +57,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
             else
             {
-                switch (CalculatorViewModel.CurrentMode)
-                {
-                    case CalculatorMode.Scientific:
-                        CurrentView = new ScientificView
-                        {
-                            BindingContext = CalculatorViewModel
-                        };
-                        break;
-                    case CalculatorMode.Programmer:
-                        CurrentView = new ProgrammerView
-                        {
-                            BindingContext = CalculatorViewModel
-                        };
-                        break;
-                }
+                Console.WriteLine("Error 404");
             }
         }
     }
