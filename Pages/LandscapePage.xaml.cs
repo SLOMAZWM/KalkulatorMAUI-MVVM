@@ -4,13 +4,13 @@ namespace KalkulatorMAUI_MVVM.Pages;
 
 public partial class LandscapePage : ContentPage
 {
-    private LandscapeViewModel viewModel;
+    private PageViewModel viewModel;
 
     public LandscapePage()
     {
         InitializeComponent();
-        BindingContext = new LandscapeViewModel();
-        viewModel = BindingContext as LandscapeViewModel;
+        BindingContext = new PageViewModel();
+        viewModel = BindingContext as PageViewModel;
         SizeChanged += OnSizeChanged;
     }
 
@@ -18,9 +18,6 @@ public partial class LandscapePage : ContentPage
     {
         var orientation = DeviceDisplay.Current.MainDisplayInfo.Orientation;
         bool isPortrait = orientation == DisplayOrientation.Portrait;
-        if (isPortrait)
-        {
-            viewModel.BackToPortraitCommand.Execute(null);
-        }
+        viewModel.UpdateOrientation(isPortrait);
     }
 }

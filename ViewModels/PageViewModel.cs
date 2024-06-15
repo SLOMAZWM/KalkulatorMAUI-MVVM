@@ -31,6 +31,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         public void UpdateOrientation(bool isPortrait)
         {
             IsPortrait = isPortrait;
+            UpdateView();
             NavigateToAppropriatePage();
         }
 
@@ -57,7 +58,10 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
             else
             {
-                Console.WriteLine("Error 404");
+                CurrentView = new ScientificView
+                {
+                    BindingContext = CalculatorViewModel
+                };
             }
         }
     }
