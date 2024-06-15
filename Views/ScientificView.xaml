@@ -14,23 +14,17 @@
         </Grid.RowDefinitions>
 
 
-        <Label Text="{Binding Display}" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center" 
-                   FontSize="34" FontAttributes="Bold" TextColor="White" Margin="0,0,65,0"/>
-
-        <ImageButton Command="{Binding MenuClickedCommand}" Margin="5,5,0,0" HorizontalOptions="Start" VerticalOptions="Start" Source="Resources/Images/menu.png" WidthRequest="25" HeightRequest="25"/>
-
-        <Label Text="{Binding LastOperation}" Grid.Row="1" HorizontalOptions="Center" TextColor="Gray" FontAttributes="Bold" FontSize="16"/>
+        <Label Text="{Binding LastOperation}" Grid.Row="0" HorizontalOptions="Center" TextColor="Gray" FontAttributes="Bold" FontSize="16"/>
 
         <Label Text="Rad" Grid.Row="0" HorizontalOptions="Start" VerticalOptions="End" TextColor="White"
                Margin="95,0,0,0" FontAttributes="Bold" IsVisible="{Binding IsRadSelected}" />
 
-        <BoxView BackgroundColor="White" HeightRequest="1" Grid.Row="2"/>
+        <BoxView BackgroundColor="White" HeightRequest="1" Grid.Row="1"/>
 
-        <ContentView Grid.Row="3" IsVisible="{Binding IsMenuVisible}">
+        <ContentView Grid.Row="2" IsVisible="{Binding IsMenuVisible}">
 
             <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
