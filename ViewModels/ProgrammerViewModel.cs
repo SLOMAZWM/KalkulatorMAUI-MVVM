@@ -6,8 +6,20 @@ using System.Threading.Tasks;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
+
+    public enum NumberSystem
+    {
+        HEX,
+        DEC,
+        OCT,
+        BIN
+    }
+
     public partial class ProgrammerViewModel : ObservableObject
     {
+        [ObservableProperty]
+        private NumberSystem _selectedNumberSystem;
+
         [ObservableProperty]
         private string _display = "0";
 
@@ -33,5 +45,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             Display = "0";
             _firstSign = true;
         }
+
+
     }
 }

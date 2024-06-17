@@ -17,18 +17,19 @@
         <Label Text="{Binding Display}" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center" 
             FontSize="34" FontAttributes="Bold" TextColor="White" Margin="0,-30,5,0" />
 
-        <!--<VerticalStackLayout Grid.Row="1" Spacing="-15">
-            <HorizontalStackLayout>
-                <RadioButton Content="HEX" Style="{StaticResource SelectNumberSystem}"/>
-                <Label Text="Value of Hex" Style="{StaticResource ValueOfSelectNumberSystem}"/>
-            </HorizontalStackLayout>
-            <RadioButton Content="DEC" Style="{StaticResource SelectNumberSystem}"/>
-            <RadioButton Content="OCT" Style="{StaticResource SelectNumberSystem}"/>
-            <RadioButton Content="BIN" Style="{StaticResource SelectNumberSystem}"/>
-        </VerticalStackLayout>-->
-        
-        <!--Zrobić to jako liste-->
-
+        <CollectionView Grid.Row="1" SelectionMode="Single" ItemsLayout="VerticalList" BackgroundColor="White">
+            <!--<Label Text="Wybierz system liczbowy:" FontAttributes="Bold" />-->
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout>
+                        <RadioButton Style="{StaticResource SelectNumberSystem}" Content="HEX" IsChecked="{Binding SelectedNumberSystem, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static vm:NumberSystem.HEX}}" GroupName="NumberSystemGroup" />
+                        <RadioButton Style="{StaticResource SelectNumberSystem}" Content="DEC" IsChecked="{Binding SelectedNumberSystem, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static vm:NumberSystem.DEC}}" GroupName="NumberSystemGroup" />
+                        <RadioButton Style="{StaticResource SelectNumberSystem}" Content="OCT" IsChecked="{Binding SelectedNumberSystem, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static vm:NumberSystem.OCT}}" GroupName="NumberSystemGroup" />
+                        <RadioButton Style="{StaticResource SelectNumberSystem}" Content="BIN" IsChecked="{Binding SelectedNumberSystem, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static vm:NumberSystem.BIN}}" GroupName="NumberSystemGroup" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
         <Grid Grid.Row="4" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,5">
 
