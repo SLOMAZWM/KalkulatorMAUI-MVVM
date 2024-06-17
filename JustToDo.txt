@@ -5,8 +5,4 @@
 3. Walutowy (api)
 4. Wykresowy
 
-Zrobić optymalizacje kodu - usunąć powtarzające się metody MenuClicked w standardowym page i LandscapePage
-
-STYLIZACJA dla programmerview
-
-*Naprawic historie
+STYLIZACJA dla programmerview - zrobic liste dla widoku z roznych typow liczbowych
