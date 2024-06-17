@@ -46,6 +46,18 @@
         <Setter Property="TextColor" Value="White"/>
     </Style>
 
+    <Style TargetType="RadioButton" x:Key="SelectNumberSystem">
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="ValueOfSelectNumberSystem">
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="Margin" Value="10,12,0,0"/>
+    </Style>
+
     <!--End My Styles-->
 
     <Style TargetType="ActivityIndicator">
