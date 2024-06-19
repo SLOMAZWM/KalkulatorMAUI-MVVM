@@ -1,6 +1,7 @@
 ﻿using KalkulatorMAUI_MVVM.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,24 +31,27 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private List<NumberSystem> _numberSystems;
 
+        private NumberSystem _previousNumberSystem;
+
         public ProgrammerViewModel()
         {
             NumberSystems = Enum.GetValues(typeof(NumberSystem)).Cast<NumberSystem>().ToList();
             ButtonState = new ButtonState();
             SelectedNumberSystem = NumberSystem.DEC;
+            _previousNumberSystem = SelectedNumberSystem;
         }
 
         [RelayCommand]
-        private void EnterToDisplay(string Sign)
+        private void EnterToDisplay(string sign)
         {
             if (_firstSign)
             {
-                Display = Sign;
+                Display = sign;
                 _firstSign = false;
             }
             else
             {
-                Display += Sign;
+                Display += sign;
             }
         }
 
@@ -60,6 +64,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         partial void OnSelectedNumberSystemChanged(NumberSystem value)
         {
+            ConvertAndDisplayValue();
+            _previousNumberSystem = SelectedNumberSystem;
             switch (SelectedNumberSystem)
             {
                 case NumberSystem.HEX:
@@ -75,6 +81,43 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     EnableBinButtons();
                     break;
             }
+        }
+
+        private void ConvertAndDisplayValue()
+        {
+            try
+            {
+                int decimalValue = ConvertToDecimal(Display, _previousNumberSystem);
+                Display = ConvertFromDecimal(decimalValue, SelectedNumberSystem);
+            }
+            catch
+            {
+                Display = "Błąd";
+            }
+        }
+
+        private int ConvertToDecimal(string value, NumberSystem system)
+        {
+            return system switch
+            {
+                NumberSystem.HEX => Convert.ToInt32(value, 16),
+                NumberSystem.DEC => int.Parse(value),
+                NumberSystem.OCT => Convert.ToInt32(value, 8),
+                NumberSystem.BIN => Convert.ToInt32(value, 2),
+                _ => throw new InvalidOperationException("Unknown number system"),
+            };
+        }
+
+        private string ConvertFromDecimal(int value, NumberSystem system)
+        {
+            return system switch
+            {
+                NumberSystem.HEX => value.ToString("X"),
+                NumberSystem.DEC => value.ToString(),
+                NumberSystem.OCT => Convert.ToString(value, 8),
+                NumberSystem.BIN => Convert.ToString(value, 2),
+                _ => throw new InvalidOperationException("Unknown number system"),
+            };
         }
 
         private void EnableHexButtons()
@@ -133,7 +176,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             ButtonState.Is5Enabled = true;
             ButtonState.Is6Enabled = true;
             ButtonState.Is7Enabled = true;
-            ButtonState.Is8Enabled = true;
+            ButtonState.Is8Enabled = false;
             ButtonState.Is9Enabled = false;
         }
 

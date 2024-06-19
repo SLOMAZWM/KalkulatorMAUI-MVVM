@@ -51,7 +51,7 @@
                 <Button Style="{StaticResource NumberSmallButton}" Text="D" Command="{Binding EnterToDisplayCommand}" CommandParameter="D" IsEnabled="{Binding ButtonState.IsDEnabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="E" Command="{Binding EnterToDisplayCommand}" CommandParameter="E" IsEnabled="{Binding ButtonState.IsEEnabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="F" Command="{Binding EnterToDisplayCommand}" CommandParameter="F" IsEnabled="{Binding ButtonState.IsFEnabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text=","/>
+                <Button Style="{StaticResource NumberSmallButton}" Text="," IsEnabled="False"/>
                 <Button Style="{StaticResource LightFunctionSmallButton}" Text="C" Command="{Binding ClearDisplayCommand}"/>
                 <Button Style="{StaticResource LightFunctionSmallButton}" Text="DEL"/>
                 <Button Style="{StaticResource FunctionSmallButton}" Text="="/>
