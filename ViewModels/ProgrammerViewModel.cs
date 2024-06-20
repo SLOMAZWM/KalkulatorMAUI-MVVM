@@ -120,7 +120,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                         }
                         else
                         {
-                            Display = "Error";
+                            Display = "NIE DZIEL PRZEZ ZERO!";
                             return;
                         }
                         break;
@@ -136,7 +136,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     }
             }
 
-            Display = answer.ToString();
+            Display = ConvertFromDecimal(answer, SelectedNumberSystem);
             _isAfterCalculation = true;
             FirstNumber = answer.ToString();
             _isOperationSet = false;
@@ -179,7 +179,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             try
             {
-                int decimalValue = ConvertToDecimal(Display, _previousNumberSystem);
+                decimal decimalValue = ConvertToDecimal(Display, _previousNumberSystem);
                 Display = ConvertFromDecimal(decimalValue, SelectedNumberSystem);
             }
             catch
@@ -200,14 +200,14 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             };
         }
 
-        private string ConvertFromDecimal(int value, NumberSystem system)
+        private string ConvertFromDecimal(decimal value, NumberSystem system)
         {
             return system switch
             {
-                NumberSystem.HEX => value.ToString("X"),
+                NumberSystem.HEX => Convert.ToInt32(value).ToString("X"),
                 NumberSystem.DEC => value.ToString(),
-                NumberSystem.OCT => Convert.ToString(value, 8),
-                NumberSystem.BIN => Convert.ToString(value, 2),
+                NumberSystem.OCT => Convert.ToString(Convert.ToInt32(value), 8),
+                NumberSystem.BIN => Convert.ToString(Convert.ToInt32(value), 2),
                 _ => throw new InvalidOperationException("Nieznany system numeryczny!"),
             };
         }
