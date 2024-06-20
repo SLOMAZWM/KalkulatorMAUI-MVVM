@@ -1,10 +1,4 @@
 ﻿using KalkulatorMAUI_MVVM.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
@@ -138,7 +132,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     }
                 default:
                     {
-                        throw new InvalidOperationException("Unknown operation");
+                        throw new InvalidOperationException("Nieznana operacja");
                     }
             }
 
@@ -202,7 +196,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 NumberSystem.DEC => int.Parse(value),
                 NumberSystem.OCT => Convert.ToInt32(value, 8),
                 NumberSystem.BIN => Convert.ToInt32(value, 2),
-                _ => throw new InvalidOperationException("Unknown number system"),
+                _ => throw new InvalidOperationException("Nieznany system numeryczny!"),
             };
         }
 
@@ -214,7 +208,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 NumberSystem.DEC => value.ToString(),
                 NumberSystem.OCT => Convert.ToString(value, 8),
                 NumberSystem.BIN => Convert.ToString(value, 2),
-                _ => throw new InvalidOperationException("Unknown number system"),
+                _ => throw new InvalidOperationException("Nieznany system numeryczny!"),
             };
         }
 
