@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
@@ -23,7 +24,18 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private string _display = "0";
 
-        private bool _firstSign = true;
+        [ObservableProperty]
+        private string _firstNumber = "0";
+
+        [ObservableProperty]
+        private string _secondNumber = "0";
+
+        [ObservableProperty]
+        private string _operation = "";
+
+        private bool _isOperationSet = false;
+
+        private bool _isAfterCalculation = false;
 
         [ObservableProperty]
         private ButtonState _buttonState;
@@ -42,24 +54,110 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         }
 
         [RelayCommand]
-        private void EnterToDisplay(string sign)
+        private void SetOperation(string operation)
         {
-            if (_firstSign)
+            if (_isOperationSet == false)
             {
-                Display = sign;
-                _firstSign = false;
+                FirstNumber = Display;
+                Operation = operation;
+                Display = "0";
+                _isOperationSet = true;
             }
             else
             {
-                Display += sign;
+                SecondNumber = Display;
+                Calculation();
+                Operation = operation;
             }
         }
+
+        [RelayCommand]
+        private void EnterToDisplay(string sign)
+        {
+            if (!_isAfterCalculation)
+            {
+                if (Display == "0")
+                {
+                    Display = sign;
+                }
+                else
+                {
+                    Display += sign;
+                }
+            }
+            else
+            {
+                Display = sign;
+                _isAfterCalculation = false;
+            }
+        }
+
+        [RelayCommand]
+        private void Calculation()
+        {
+            if (_isOperationSet)
+            {
+                SecondNumber = Display;
+            }
+
+            decimal answer = 0;
+            switch (Operation)
+            {
+                case "+":
+                    {
+                        answer = Convert.ToDecimal(FirstNumber) + Convert.ToDecimal(SecondNumber);
+                        break;
+                    }
+                case "-":
+                    {
+                        answer = Convert.ToDecimal(FirstNumber) - Convert.ToDecimal(SecondNumber);
+                        break;
+                    }
+                case "*":
+                    {
+                        answer = Convert.ToDecimal(FirstNumber) * Convert.ToDecimal(SecondNumber);
+                        break;
+                    }
+                case "/":
+                    {
+                        if (SecondNumber != "0")
+                        {
+                            answer = Convert.ToDecimal(FirstNumber) / Convert.ToDecimal(SecondNumber);
+                        }
+                        else
+                        {
+                            Display = "Error";
+                            return;
+                        }
+                        break;
+                    }
+                case "%":
+                    {
+                        answer = Convert.ToDecimal(FirstNumber) % Convert.ToDecimal(SecondNumber);
+                        break;
+                    }
+                default:
+                    {
+                        throw new InvalidOperationException("Unknown operation");
+                    }
+            }
+
+            Display = answer.ToString();
+            _isAfterCalculation = true;
+            FirstNumber = answer.ToString();
+            _isOperationSet = false;
+        }
+
 
         [RelayCommand]
         private void ClearDisplay()
         {
             Display = "0";
-            _firstSign = true;
+            Operation = string.Empty;
+            _isOperationSet = false;
+            _isAfterCalculation = false;
+            FirstNumber = "0";
+            SecondNumber = "0";
         }
 
         partial void OnSelectedNumberSystemChanged(NumberSystem value)
@@ -200,4 +298,5 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             ButtonState.IsFEnabled = false;
         }
     }
+
 }

@@ -32,11 +32,11 @@
             </Grid.RowDefinitions>
 
             <HorizontalStackLayout Grid.Row="0" Spacing="5">
-                <Button Style="{StaticResource AdvancedButton}" Text="%"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="÷"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="×"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="-"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="+"/>
+                <Button Style="{StaticResource AdvancedButton}" Text="%" Command="{Binding SetOperationCommand}" CommandParameter="%"/>
+                <Button Style="{StaticResource AdvancedButton}" Text="÷" Command="{Binding SetOperationCommand}" CommandParameter="/"/>
+                <Button Style="{StaticResource AdvancedButton}" Text="×" Command="{Binding SetOperationCommand}" CommandParameter="*"/>
+                <Button Style="{StaticResource AdvancedButton}" Text="-" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
+                <Button Style="{StaticResource AdvancedButton}" Text="+" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="+/-"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="&#x00AB;"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="&#x00BB;"/>
@@ -54,7 +54,7 @@
                 <Button Style="{StaticResource NumberSmallButton}" Text="," IsEnabled="False"/>
                 <Button Style="{StaticResource LightFunctionSmallButton}" Text="C" Command="{Binding ClearDisplayCommand}"/>
                 <Button Style="{StaticResource LightFunctionSmallButton}" Text="DEL"/>
-                <Button Style="{StaticResource FunctionSmallButton}" Text="="/>
+                <Button Style="{StaticResource FunctionSmallButton}" Text="=" Command="{Binding CalculationCommand}"/>
             </HorizontalStackLayout>
 
             <HorizontalStackLayout Grid.Row="2" Spacing="5" Margin="0,10,0,0">
