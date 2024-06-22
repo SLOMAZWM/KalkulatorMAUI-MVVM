@@ -94,54 +94,45 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 SecondNumber = Display;
             }
 
+            decimal firstNumberInDecimal = ConvertToDecimal(FirstNumber, SelectedNumberSystem);
+            decimal secondNumberInDecimal = ConvertToDecimal(SecondNumber, SelectedNumberSystem);
+
             decimal answer = 0;
             switch (Operation)
             {
                 case "+":
-                    {
-                        answer = Convert.ToDecimal(FirstNumber) + Convert.ToDecimal(SecondNumber);
-                        break;
-                    }
+                    answer = firstNumberInDecimal + secondNumberInDecimal;
+                    break;
                 case "-":
-                    {
-                        answer = Convert.ToDecimal(FirstNumber) - Convert.ToDecimal(SecondNumber);
-                        break;
-                    }
+                    answer = firstNumberInDecimal - secondNumberInDecimal;
+                    break;
                 case "*":
-                    {
-                        answer = Convert.ToDecimal(FirstNumber) * Convert.ToDecimal(SecondNumber);
-                        break;
-                    }
+                    answer = firstNumberInDecimal * secondNumberInDecimal;
+                    break;
                 case "/":
+                    if (secondNumberInDecimal != 0)
                     {
-                        if (SecondNumber != "0")
-                        {
-                            answer = Convert.ToDecimal(FirstNumber) / Convert.ToDecimal(SecondNumber);
-                        }
-                        else
-                        {
-                            Display = "NIE DZIEL PRZEZ ZERO!";
-                            return;
-                        }
-                        break;
+                        answer = firstNumberInDecimal / secondNumberInDecimal;
                     }
+                    else
+                    {
+                        Display = "NIE DZIEL PRZEZ ZERO!";
+                        return;
+                    }
+                    break;
                 case "%":
-                    {
-                        answer = Convert.ToDecimal(FirstNumber) % Convert.ToDecimal(SecondNumber);
-                        break;
-                    }
+                    answer = firstNumberInDecimal % secondNumberInDecimal;
+                    break;
                 default:
-                    {
-                        throw new InvalidOperationException("Nieznana operacja");
-                    }
+                    throw new InvalidOperationException("Nieznana operacja");
             }
 
             Display = ConvertFromDecimal(answer, SelectedNumberSystem);
             _isAfterCalculation = true;
-            FirstNumber = answer.ToString();
+
+            FirstNumber = ConvertFromDecimal(answer, SelectedNumberSystem);
             _isOperationSet = false;
         }
-
 
         [RelayCommand]
         private void ClearDisplay()
