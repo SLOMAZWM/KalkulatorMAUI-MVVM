@@ -5,4 +5,4 @@
 3. Walutowy (api)
 4. Wykresowy
 
-STYLIZACJA dla programmerview - zrobic liste dla widoku z roznych typow liczbowych
+Problem z ponawianiem operacji po zmianie systemu liczbowego - naprawic

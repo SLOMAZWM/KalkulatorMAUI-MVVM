@@ -12,6 +12,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
     public partial class ProgrammerViewModel : ObservableObject
     {
+        private const ulong MaxValue = 0xFFFFFFFFFFFFFFFF; 
+
         [ObservableProperty]
         private NumberSystem _selectedNumberSystem;
 
@@ -48,6 +50,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         }
 
         [RelayCommand]
+        private void ToogleSign()
+        {
+            decimal currentValue = ConvertToDecimal(Display, SelectedNumberSystem);
+            currentValue = -currentValue;
+
+            Display = NumberFormatter.FormatDisplay(ConvertFromDecimal(currentValue, SelectedNumberSystem), SelectedNumberSystem);
+        }
+
+        [RelayCommand]
         private void SetOperation(string operation)
         {
             if (_isOperationSet == false)
@@ -76,7 +87,20 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 }
                 else
                 {
-                    Display += sign;
+                    string displayWithoutSpaces = Display.Replace(" ", "") + sign;
+                    try
+                    {
+                        ulong currentValue = Convert.ToUInt64(displayWithoutSpaces, GetBaseFromNumberSystem(SelectedNumberSystem));
+                        if (currentValue > MaxValue)
+                        {
+                            return;
+                        }
+                        Display += sign;
+                    }
+                    catch
+                    {
+                        return;
+                    }
                 }
             }
             else
@@ -84,6 +108,20 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Display = sign;
                 _isAfterCalculation = false;
             }
+
+            Display = NumberFormatter.FormatDisplay(Display, SelectedNumberSystem);
+        }
+
+        private int GetBaseFromNumberSystem(NumberSystem system)
+        {
+            return system switch
+            {
+                NumberSystem.HEX => 16,
+                NumberSystem.DEC => 10,
+                NumberSystem.OCT => 8,
+                NumberSystem.BIN => 2,
+                _ => throw new InvalidOperationException("Nieznany system liczbowy!"),
+            };
         }
 
         [RelayCommand]
@@ -94,50 +132,63 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 SecondNumber = Display;
             }
 
-            decimal firstNumberInDecimal = ConvertToDecimal(FirstNumber, SelectedNumberSystem);
-            decimal secondNumberInDecimal = ConvertToDecimal(SecondNumber, SelectedNumberSystem);
-
-            decimal answer = 0;
-            switch (Operation)
+            try
             {
-                case "+":
-                    answer = firstNumberInDecimal + secondNumberInDecimal;
-                    break;
-                case "-":
-                    answer = firstNumberInDecimal - secondNumberInDecimal;
-                    break;
-                case "*":
-                    answer = firstNumberInDecimal * secondNumberInDecimal;
-                    break;
-                case "/":
-                    if (secondNumberInDecimal != 0)
-                    {
-                        answer = firstNumberInDecimal / secondNumberInDecimal;
-                    }
-                    else
-                    {
-                        Display = "NIE DZIEL PRZEZ ZERO!";
-                        return;
-                    }
-                    break;
-                case "%":
-                    answer = firstNumberInDecimal % secondNumberInDecimal;
-                    break;
-                default:
-                    throw new InvalidOperationException("Nieznana operacja");
+                decimal firstNumberInDecimal = ConvertToDecimal(FirstNumber.Replace(" ", ""), SelectedNumberSystem);
+                decimal secondNumberInDecimal = ConvertToDecimal(SecondNumber.Replace(" ", ""), SelectedNumberSystem);
+
+                decimal answer = 0;
+                switch (Operation)
+                {
+                    case "+":
+                        answer = firstNumberInDecimal + secondNumberInDecimal;
+                        break;
+                    case "-":
+                        answer = firstNumberInDecimal - secondNumberInDecimal;
+                        break;
+                    case "*":
+                        answer = firstNumberInDecimal * secondNumberInDecimal;
+                        break;
+                    case "/":
+                        if (secondNumberInDecimal != 0)
+                        {
+                            answer = firstNumberInDecimal / secondNumberInDecimal;
+                        }
+                        else
+                        {
+                            Display = "NIE DZIEL PRZEZ ZERO!";
+                            return;
+                        }
+                        break;
+                    case "%":
+                        answer = firstNumberInDecimal % secondNumberInDecimal;
+                        break;
+                    default:
+                        throw new InvalidOperationException("Nieznana operacja");
+                }
+
+                if (answer > MaxValue)
+                {
+                    Display = "Przekroczono maksymalną wartość";
+                    return;
+                }
+
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimal(answer, SelectedNumberSystem), SelectedNumberSystem);
+                _isAfterCalculation = true;
+
+                FirstNumber = ConvertFromDecimal(answer, SelectedNumberSystem);
+                _isOperationSet = false;
             }
-
-            Display = ConvertFromDecimal(answer, SelectedNumberSystem);
-            _isAfterCalculation = true;
-
-            FirstNumber = ConvertFromDecimal(answer, SelectedNumberSystem);
-            _isOperationSet = false;
+            catch (OverflowException)
+            {
+                Display = "Przekroczono maksymalną wartość";
+            }
         }
 
         [RelayCommand]
         private void ClearDisplay()
         {
-            Display = "0";
+            Display = NumberFormatter.FormatDisplay("0", SelectedNumberSystem);
             Operation = string.Empty;
             _isOperationSet = false;
             _isAfterCalculation = false;
@@ -170,8 +221,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             try
             {
-                decimal decimalValue = ConvertToDecimal(Display, _previousNumberSystem);
-                Display = ConvertFromDecimal(decimalValue, SelectedNumberSystem);
+                ulong decimalValue = ConvertToDecimal(Display.Replace(" ", ""), _previousNumberSystem);
+                if (decimalValue > MaxValue)
+                {
+                    Display = "Przekroczono maksymalną wartość";
+                    return;
+                }
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimal(decimalValue, SelectedNumberSystem), SelectedNumberSystem);
             }
             catch
             {
@@ -179,14 +235,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
         }
 
-        private int ConvertToDecimal(string value, NumberSystem system)
+        private ulong ConvertToDecimal(string value, NumberSystem system)
         {
+            value = value.Replace(" ", ""); 
             return system switch
             {
-                NumberSystem.HEX => Convert.ToInt32(value, 16),
-                NumberSystem.DEC => int.Parse(value),
-                NumberSystem.OCT => Convert.ToInt32(value, 8),
-                NumberSystem.BIN => Convert.ToInt32(value, 2),
+                NumberSystem.HEX => Convert.ToUInt64(value, 16),
+                NumberSystem.DEC => ulong.Parse(value),
+                NumberSystem.OCT => Convert.ToUInt64(value, 8),
+                NumberSystem.BIN => Convert.ToUInt64(value, 2),
                 _ => throw new InvalidOperationException("Nieznany system numeryczny!"),
             };
         }
@@ -195,10 +252,10 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             return system switch
             {
-                NumberSystem.HEX => Convert.ToInt32(value).ToString("X"),
-                NumberSystem.DEC => value.ToString(),
-                NumberSystem.OCT => Convert.ToString(Convert.ToInt32(value), 8),
-                NumberSystem.BIN => Convert.ToString(Convert.ToInt32(value), 2),
+                NumberSystem.HEX => ((ulong)value).ToString("X"),
+                NumberSystem.DEC => ((ulong)value).ToString(),
+                NumberSystem.OCT => Convert.ToString((long)value, 8),
+                NumberSystem.BIN => Convert.ToString((long)value, 2),
                 _ => throw new InvalidOperationException("Nieznany system numeryczny!"),
             };
         }
@@ -283,5 +340,4 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             ButtonState.IsFEnabled = false;
         }
     }
-
 }

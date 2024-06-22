@@ -37,7 +37,7 @@
                 <Button Style="{StaticResource AdvancedButton}" Text="×" Command="{Binding SetOperationCommand}" CommandParameter="*"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="-" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="+" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="+/-"/>
+                <Button Style="{StaticResource AdvancedButton}" Text="+/-" Command="{Binding ToogleSignCommand}"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="&#x00AB;"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="&#x00BB;"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="("/>
