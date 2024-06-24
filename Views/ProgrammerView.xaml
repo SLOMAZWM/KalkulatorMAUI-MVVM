@@ -16,21 +16,36 @@
 
         <Label Text="{Binding Display}" FontSize="34" FontAttributes="Bold" TextColor="White" HorizontalOptions="End" VerticalOptions="Center"/>
 
+        <Label Text="{Binding LastOperation}" FontSize="16" FontAttributes="Bold" TextColor="Gray" Grid.Row="1"
+               HorizontalOptions="Center" VerticalOptions="Center"/>
+
+        <BoxView Grid.Row="2" HeightRequest="1" BackgroundColor="White"/>
+
         <Picker ItemsSource="{Binding NumberSystems}" 
                 SelectedItem="{Binding SelectedNumberSystem}" 
                 Title="Wybierz system liczbowy"
                 Style="{StaticResource SelectPicker}" 
-                Grid.Row="3"/>
+                Grid.Row="3"
+                Margin="0"/>
 
         <Grid Grid.Row="4" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,5">
 
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <HorizontalStackLayout Grid.Row="0" Spacing="5">
+            <Picker ItemsSource="{Binding BitShiftModes}" 
+                    SelectedItem="{Binding SelectedBitShiftMode}" 
+                    Style="{StaticResource SelectPicker}"
+                    Grid.Row="0"
+                    Title="Przesunięcia bitowe"
+                    WidthRequest="150"
+                    HorizontalOptions="Center"/>
+
+            <HorizontalStackLayout Grid.Row="1" Spacing="5">
                 <Button Style="{StaticResource AdvancedButton}" Text="%" Command="{Binding SetOperationCommand}" CommandParameter="%"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="÷" Command="{Binding SetOperationCommand}" CommandParameter="/"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="×" Command="{Binding SetOperationCommand}" CommandParameter="*"/>
@@ -43,7 +58,7 @@
                 <Button Style="{StaticResource AdvancedButton}" Text=")"/>
             </HorizontalStackLayout>
 
-            <HorizontalStackLayout Grid.Row="1" Spacing="5" Margin="0,10,0,0">
+            <HorizontalStackLayout Grid.Row="2" Spacing="5" Margin="0,10,0,0">
                 <Button Style="{StaticResource NumberSmallButton}" Text="A" Command="{Binding EnterToDisplayCommand}" CommandParameter="A" IsEnabled="{Binding ButtonState.IsAEnabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="B" Command="{Binding EnterToDisplayCommand}" CommandParameter="B" IsEnabled="{Binding ButtonState.IsBEnabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="C" Command="{Binding EnterToDisplayCommand}" CommandParameter="C" IsEnabled="{Binding ButtonState.IsCEnabled}"/>
@@ -56,7 +71,7 @@
                 <Button Style="{StaticResource FunctionSmallButton}" Text="=" Command="{Binding CalculationCommand}"/>
             </HorizontalStackLayout>
 
-            <HorizontalStackLayout Grid.Row="2" Spacing="5" Margin="0,10,0,0">
+            <HorizontalStackLayout Grid.Row="3" Spacing="5" Margin="0,10,0,0">
                 <Button Style="{StaticResource NumberSmallButton}" Text="9" Command="{Binding EnterToDisplayCommand}" CommandParameter="9" IsEnabled="{Binding ButtonState.Is9Enabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="8" Command="{Binding EnterToDisplayCommand}" CommandParameter="8" IsEnabled="{Binding ButtonState.Is8Enabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="7" Command="{Binding EnterToDisplayCommand}" CommandParameter="7" IsEnabled="{Binding ButtonState.Is7Enabled}"/>

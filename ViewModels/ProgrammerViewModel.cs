@@ -10,13 +10,30 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         BIN,
     }
 
+    public enum BitShiftOperation
+    {
+        ArithmeticShift,
+        LogicalShift,
+        CircularShift,
+        CircularShiftThroughCarry,
+    }
+
     public partial class ProgrammerViewModel : ObservableObject
     {
         private const long MaxValue = long.MaxValue;
         private const long MinValue = long.MinValue;
 
         [ObservableProperty]
+        private BitShiftOperation _selectedBitShiftMode;
+
+        [ObservableProperty]
+        private List<BitShiftOperation> _bitShiftModes;
+
+        [ObservableProperty]
         private NumberSystem _selectedNumberSystem;
+
+        [ObservableProperty]
+        private string _lastOperation = string.Empty;
 
         [ObservableProperty]
         private string _display = "0";
@@ -45,6 +62,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         public ProgrammerViewModel()
         {
             NumberSystems = Enum.GetValues(typeof(NumberSystem)).Cast<NumberSystem>().ToList();
+            BitShiftModes = Enum.GetValues(typeof(BitShiftOperation)).Cast<BitShiftOperation>().ToList();
             ButtonState = new ButtonState();
             SelectedNumberSystem = NumberSystem.DEC;
             _previousNumberSystem = SelectedNumberSystem;
@@ -75,10 +93,12 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Operation = operation;
                 Display = "0";
                 _isOperationSet = true;
+                LastOperation = FirstNumber + Operation;
             }
             else
             {
                 SecondNumber = Display;
+                LastOperation = FirstNumber + Operation + SecondNumber;
                 Calculation();
                 Operation = operation;
             }
@@ -186,6 +206,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
                 FirstNumber = ConvertFromDecimal(answer, SelectedNumberSystem);
                 _isOperationSet = false;
+                LastOperation = FirstNumber + Operation + SecondNumber + "=" + answer.ToString();
             }
             catch (OverflowException)
             {
