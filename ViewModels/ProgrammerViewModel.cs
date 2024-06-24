@@ -12,7 +12,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
     public partial class ProgrammerViewModel : ObservableObject
     {
-        private const ulong MaxValue = 0xFFFFFFFFFFFFFFFF; 
+        private const long MaxValue = long.MaxValue;
+        private const long MinValue = long.MinValue;
 
         [ObservableProperty]
         private NumberSystem _selectedNumberSystem;
@@ -52,10 +53,17 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void ToogleSign()
         {
-            decimal currentValue = ConvertToDecimal(Display, SelectedNumberSystem);
-            currentValue = -currentValue;
+            try
+            {
+                long currentValue = ConvertToDecimal(Display, SelectedNumberSystem);
+                currentValue = -currentValue;
 
-            Display = NumberFormatter.FormatDisplay(ConvertFromDecimal(currentValue, SelectedNumberSystem), SelectedNumberSystem);
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimal(currentValue, SelectedNumberSystem), SelectedNumberSystem);
+            }
+            catch
+            {
+                Display = "Błąd";
+            }
         }
 
         [RelayCommand]
@@ -90,7 +98,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     string displayWithoutSpaces = Display.Replace(" ", "") + sign;
                     try
                     {
-                        ulong currentValue = Convert.ToUInt64(displayWithoutSpaces, GetBaseFromNumberSystem(SelectedNumberSystem));
+                        long currentValue = Convert.ToInt64(displayWithoutSpaces, GetBaseFromNumberSystem(SelectedNumberSystem));
                         if (currentValue > MaxValue)
                         {
                             return;
@@ -134,10 +142,10 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
             try
             {
-                decimal firstNumberInDecimal = ConvertToDecimal(FirstNumber.Replace(" ", ""), SelectedNumberSystem);
-                decimal secondNumberInDecimal = ConvertToDecimal(SecondNumber.Replace(" ", ""), SelectedNumberSystem);
+                long firstNumberInDecimal = ConvertToDecimal(FirstNumber.Replace(" ", ""), SelectedNumberSystem);
+                long secondNumberInDecimal = ConvertToDecimal(SecondNumber.Replace(" ", ""), SelectedNumberSystem);
 
-                decimal answer = 0;
+                long answer = 0;
                 switch (Operation)
                 {
                     case "+":
@@ -167,7 +175,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                         throw new InvalidOperationException("Nieznana operacja");
                 }
 
-                if (answer > MaxValue)
+                if (answer > MaxValue || answer < MinValue)
                 {
                     Display = "Przekroczono maksymalną wartość";
                     return;
@@ -221,8 +229,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             try
             {
-                ulong decimalValue = ConvertToDecimal(Display.Replace(" ", ""), _previousNumberSystem);
-                if (decimalValue > MaxValue)
+                long decimalValue = ConvertToDecimal(Display.Replace(" ", ""), _previousNumberSystem);
+                if (Math.Abs(decimalValue) > MaxValue)
                 {
                     Display = "Przekroczono maksymalną wartość";
                     return;
@@ -235,27 +243,27 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
         }
 
-        private ulong ConvertToDecimal(string value, NumberSystem system)
+        private long ConvertToDecimal(string value, NumberSystem system)
         {
-            value = value.Replace(" ", ""); 
+            value = value.Replace(" ", "");
             return system switch
             {
-                NumberSystem.HEX => Convert.ToUInt64(value, 16),
-                NumberSystem.DEC => ulong.Parse(value),
-                NumberSystem.OCT => Convert.ToUInt64(value, 8),
-                NumberSystem.BIN => Convert.ToUInt64(value, 2),
+                NumberSystem.HEX => Convert.ToInt64(value, 16),
+                NumberSystem.DEC => long.Parse(value),
+                NumberSystem.OCT => Convert.ToInt64(value, 8),
+                NumberSystem.BIN => Convert.ToInt64(value, 2),
                 _ => throw new InvalidOperationException("Nieznany system numeryczny!"),
             };
         }
 
-        private string ConvertFromDecimal(decimal value, NumberSystem system)
+        private string ConvertFromDecimal(long value, NumberSystem system)
         {
             return system switch
             {
-                NumberSystem.HEX => ((ulong)value).ToString("X"),
-                NumberSystem.DEC => ((ulong)value).ToString(),
-                NumberSystem.OCT => Convert.ToString((long)value, 8),
-                NumberSystem.BIN => Convert.ToString((long)value, 2),
+                NumberSystem.HEX => value.ToString("X"),
+                NumberSystem.DEC => value.ToString(),
+                NumberSystem.OCT => Convert.ToString(value, 8),
+                NumberSystem.BIN => Convert.ToString(value, 2),
                 _ => throw new InvalidOperationException("Nieznany system numeryczny!"),
             };
         }
