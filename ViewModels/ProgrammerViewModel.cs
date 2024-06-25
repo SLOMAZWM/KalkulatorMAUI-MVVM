@@ -275,21 +275,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 switch (SelectedBitShiftOperation)
                 {
                     case BitShiftOperation.Arytmetyczne:
-                        {
                             currentValue >>= shiftAmount;
                             break;
-                        }
                     case BitShiftOperation.Logiczne:
-                        {
                             currentValue = (long)((ulong)currentValue >> shiftAmount);
                             break;
-                        }
                     case BitShiftOperation.Cykliczne:
-                        {
                             int size = sizeof(long) * 8;
                             currentValue = (currentValue >> shiftAmount) | ((currentValue & ((1L << shiftAmount) - 1)) << (size - shiftAmount));
                             break;
-                        }
                 }
 
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
@@ -311,21 +305,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 switch (SelectedBitShiftOperation)
                 {
                     case BitShiftOperation.Arytmetyczne:
-                        {
                             currentValue <<= shiftAmount;
                             break;
-                        }
                     case BitShiftOperation.Logiczne:
-                        {
                             currentValue = (long)((ulong)currentValue << shiftAmount);
                             break;
-                        }
                     case BitShiftOperation.Cykliczne:
-                        {
                             int size = sizeof(long) * 8;
                             currentValue = (currentValue << shiftAmount) | ((long)((ulong)currentValue >> (size - shiftAmount)));
                             break;
-                        }
                 }
 
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
