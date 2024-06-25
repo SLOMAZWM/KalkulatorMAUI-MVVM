@@ -126,7 +126,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 }
                 else if (Operation == "rightArrow" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
                 {
-                    PerformLeftShiftOperation();
+                    PerformRightShiftOperation();
                     _isOperationSet = false;
                 }
             }
