@@ -119,12 +119,12 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 _isOperationSet = true;
                 LastOperation = FirstNumber + Operation;
 
-                if (Operation == "leftArrow" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
+                if (Operation == "&#x00AB;" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
                 {
                     PerformLeftShiftOperation();
                     _isOperationSet = false;
                 }
-                else if (Operation == "rightArrow" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
+                else if (Operation == "&#x00BB;" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
                 {
                     PerformLeftShiftOperation();
                     _isOperationSet = false;
@@ -229,7 +229,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                             answer = firstNumberInDecimal % secondNumberInDecimal;
                             break;
                         }
-                    case "leftArrow":
+                    case "&#x00AB":
                         {
                             PerformLeftShiftOperation();
                             return;
@@ -289,8 +289,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Display = "BŁĄD";
             }
         }
-
-
 
         [RelayCommand]
         private void ClearDisplay()
