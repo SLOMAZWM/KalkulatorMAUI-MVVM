@@ -1,4 +1,8 @@
 ﻿using KalkulatorMAUI_MVVM.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
@@ -22,8 +26,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
     {
         private const long MaxValue = long.MaxValue;
         private const long MinValue = long.MinValue;
-
-        partial void OnNumberSystemChanged(NumberSystem value);
 
         [ObservableProperty]
         private BitShiftOperation _selectedBitShiftOperation;
@@ -68,6 +70,27 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             CurrentButtonState = new ButtonState();
             CurrentNumberSystem = NumberSystem.DEC;
             _previousNumberSystem = CurrentNumberSystem;
+        }
+
+        partial void OnCurrentNumberSystemChanged(NumberSystem value)
+        {
+            ConvertAndDisplay();
+            _previousNumberSystem = CurrentNumberSystem;
+            switch (CurrentNumberSystem)
+            {
+                case NumberSystem.HEX:
+                    EnableHexadecimalButtons();
+                    break;
+                case NumberSystem.DEC:
+                    EnableDecimalButtons();
+                    break;
+                case NumberSystem.OCT:
+                    EnableOctalButtons();
+                    break;
+                case NumberSystem.BIN:
+                    EnableBinaryButtons();
+                    break;
+            }
         }
 
         [RelayCommand]
@@ -267,7 +290,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         }
 
         [RelayCommand]
-        private void ClearDisplayCommand()
+        private void ClearDisplay()
         {
             Display = NumberFormatter.FormatDisplay("0", CurrentNumberSystem);
             Operation = string.Empty;
@@ -275,27 +298,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             _isAfterCalculation = false;
             FirstNumber = "0";
             SecondNumber = "0";
-        }
-
-        partial void OnNumberSystemChanged(NumberSystem value)
-        {
-            ConvertAndDisplay();
-            _previousNumberSystem = CurrentNumberSystem;
-            switch (CurrentNumberSystem)
-            {
-                case NumberSystem.HEX:
-                    EnableHexadecimalButtons();
-                    break;
-                case NumberSystem.DEC:
-                    EnableDecimalButtons();
-                    break;
-                case NumberSystem.OCT:
-                    EnableOctalButtons();
-                    break;
-                case NumberSystem.BIN:
-                    EnableBinaryButtons();
-                    break;
-            }
         }
 
         private void ConvertAndDisplay()
