@@ -199,11 +199,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 long firstNumberInDecimal = ConvertToDecimalFromSelectedBase(FirstNumber.Replace(" ", ""), CurrentNumberSystem);
 
-                if (string.IsNullOrEmpty(SecondNumber))
-                {
-                    throw new InvalidOperationException("SecondNumber is empty or null");
-                }
-
                 long secondNumberInDecimal = ConvertToDecimalFromSelectedBase(SecondNumber.Replace(" ", ""), CurrentNumberSystem);
 
                 long answer = 0;
