@@ -23,14 +23,16 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private const long MaxValue = long.MaxValue;
         private const long MinValue = long.MinValue;
 
-        [ObservableProperty]
-        private BitShiftOperation _selectedBitShiftMode;
+        partial void OnNumberSystemChanged(NumberSystem value);
 
         [ObservableProperty]
-        private List<BitShiftOperation> _bitShiftModes;
+        private BitShiftOperation _selectedBitShiftOperation;
 
         [ObservableProperty]
-        private NumberSystem _selectedNumberSystem;
+        private List<BitShiftOperation> _bitShiftOperations;
+
+        [ObservableProperty]
+        private NumberSystem _currentNumberSystem;
 
         [ObservableProperty]
         private string _lastOperation = string.Empty;
@@ -52,31 +54,31 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private bool _isAfterCalculation = false;
 
         [ObservableProperty]
-        private ButtonState _buttonState;
+        private ButtonState _currentButtonState;
 
         [ObservableProperty]
-        private List<NumberSystem> _numberSystems;
+        private List<NumberSystem> _availableNumberSystems;
 
         private NumberSystem _previousNumberSystem;
 
         public ProgrammerViewModel()
         {
-            NumberSystems = Enum.GetValues(typeof(NumberSystem)).Cast<NumberSystem>().ToList();
-            BitShiftModes = Enum.GetValues(typeof(BitShiftOperation)).Cast<BitShiftOperation>().ToList();
-            ButtonState = new ButtonState();
-            SelectedNumberSystem = NumberSystem.DEC;
-            _previousNumberSystem = SelectedNumberSystem;
+            AvailableNumberSystems = Enum.GetValues(typeof(NumberSystem)).Cast<NumberSystem>().ToList();
+            BitShiftOperations = Enum.GetValues(typeof(BitShiftOperation)).Cast<BitShiftOperation>().ToList();
+            CurrentButtonState = new ButtonState();
+            CurrentNumberSystem = NumberSystem.DEC;
+            _previousNumberSystem = CurrentNumberSystem;
         }
 
         [RelayCommand]
-        private void ToogleSign()
+        private void ToggleSign()
         {
             try
             {
-                long currentValue = ConvertToDecimal(Display, SelectedNumberSystem);
+                long currentValue = ConvertToDecimalFromSelectedBase(Display, CurrentNumberSystem);
                 currentValue = -currentValue;
 
-                Display = NumberFormatter.FormatDisplay(ConvertFromDecimal(currentValue, SelectedNumberSystem), SelectedNumberSystem);
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
             }
             catch
             {
@@ -99,13 +101,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 SecondNumber = Display;
                 LastOperation = FirstNumber + Operation + SecondNumber;
-                Calculation();
+                PerformCalculation();
                 Operation = operation;
             }
         }
 
         [RelayCommand]
-        private void EnterToDisplay(string sign)
+        private void EnterDigitOrCharacter(string sign)
         {
             if (!_isAfterCalculation)
             {
@@ -118,7 +120,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     string displayWithoutSpaces = Display.Replace(" ", "") + sign;
                     try
                     {
-                        long currentValue = Convert.ToInt64(displayWithoutSpaces, GetBaseFromNumberSystem(SelectedNumberSystem));
+                        long currentValue = Convert.ToInt64(displayWithoutSpaces, GetBaseFromNumberSystem(CurrentNumberSystem));
                         if (currentValue > MaxValue)
                         {
                             return;
@@ -137,7 +139,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 _isAfterCalculation = false;
             }
 
-            Display = NumberFormatter.FormatDisplay(Display, SelectedNumberSystem);
+            Display = NumberFormatter.FormatDisplay(Display, CurrentNumberSystem);
         }
 
         private int GetBaseFromNumberSystem(NumberSystem system)
@@ -153,7 +155,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         }
 
         [RelayCommand]
-        private void Calculation()
+        private void PerformCalculation()
         {
             if (_isOperationSet)
             {
@@ -162,8 +164,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
             try
             {
-                long firstNumberInDecimal = ConvertToDecimal(FirstNumber.Replace(" ", ""), SelectedNumberSystem);
-                long secondNumberInDecimal = ConvertToDecimal(SecondNumber.Replace(" ", ""), SelectedNumberSystem);
+                long firstNumberInDecimal = ConvertToDecimalFromSelectedBase(FirstNumber.Replace(" ", ""), CurrentNumberSystem);
+                long secondNumberInDecimal = ConvertToDecimalFromSelectedBase(SecondNumber.Replace(" ", ""), CurrentNumberSystem);
 
                 long answer = 0;
                 switch (Operation)
@@ -189,8 +191,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                         }
                         break;
                     case "%":
-                        answer = firstNumberInDecimal % secondNumberInDecimal;
-                        break;
+                        {
+                            answer = firstNumberInDecimal % secondNumberInDecimal;
+                            break;
+                        }
+                    case "leftArrow":
+                        {
+                            PerformLeftShiftOperation();
+                            return;
+                        }
                     default:
                         throw new InvalidOperationException("Nieznana operacja");
                 }
@@ -201,10 +210,10 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     return;
                 }
 
-                Display = NumberFormatter.FormatDisplay(ConvertFromDecimal(answer, SelectedNumberSystem), SelectedNumberSystem);
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
                 _isAfterCalculation = true;
 
-                FirstNumber = ConvertFromDecimal(answer, SelectedNumberSystem);
+                FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
                 _isOperationSet = false;
                 LastOperation = FirstNumber + Operation + SecondNumber + "=" + answer.ToString();
             }
@@ -212,12 +221,55 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 Display = "Przekroczono maksymalną wartość";
             }
+            catch
+            {
+                Display = "BŁĄD";
+            }
+        }
+
+        private void PerformLeftShiftOperation()
+        {
+            try
+            {
+                long currentValue = ConvertToDecimalFromSelectedBase(Display, CurrentNumberSystem);
+
+                switch (SelectedBitShiftOperation)
+                {
+                    case BitShiftOperation.ArithmeticShift:
+                        {
+                            currentValue <<= 1;
+                            break;
+                        }
+                    case BitShiftOperation.LogicalShift:
+                        {
+                            currentValue = (long)((ulong)currentValue << 1);
+                            break;
+                        }
+                    case BitShiftOperation.CircularShift:
+                        {
+                            currentValue = (currentValue << 1) | (currentValue >> (sizeof(long) * 8 - 1));
+                            break;
+                        }
+                    case BitShiftOperation.CircularShiftThroughCarry:
+                        {
+                            bool carry = (currentValue & (1L << (sizeof(long) * 8 - 1))) != 0;
+                            currentValue = (currentValue << 1) | (carry ? 1L : 0);
+                            break;
+                        }
+                }
+
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
+            }
+            catch
+            {
+                Display = "BŁĄD";
+            }
         }
 
         [RelayCommand]
-        private void ClearDisplay()
+        private void ClearDisplayCommand()
         {
-            Display = NumberFormatter.FormatDisplay("0", SelectedNumberSystem);
+            Display = NumberFormatter.FormatDisplay("0", CurrentNumberSystem);
             Operation = string.Empty;
             _isOperationSet = false;
             _isAfterCalculation = false;
@@ -225,38 +277,38 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             SecondNumber = "0";
         }
 
-        partial void OnSelectedNumberSystemChanged(NumberSystem value)
+        partial void OnNumberSystemChanged(NumberSystem value)
         {
-            ConvertAndDisplayValue();
-            _previousNumberSystem = SelectedNumberSystem;
-            switch (SelectedNumberSystem)
+            ConvertAndDisplay();
+            _previousNumberSystem = CurrentNumberSystem;
+            switch (CurrentNumberSystem)
             {
                 case NumberSystem.HEX:
-                    EnableHexButtons();
+                    EnableHexadecimalButtons();
                     break;
                 case NumberSystem.DEC:
-                    EnableDecButtons();
+                    EnableDecimalButtons();
                     break;
                 case NumberSystem.OCT:
-                    EnableOctButtons();
+                    EnableOctalButtons();
                     break;
                 case NumberSystem.BIN:
-                    EnableBinButtons();
+                    EnableBinaryButtons();
                     break;
             }
         }
 
-        private void ConvertAndDisplayValue()
+        private void ConvertAndDisplay()
         {
             try
             {
-                long decimalValue = ConvertToDecimal(Display.Replace(" ", ""), _previousNumberSystem);
+                long decimalValue = ConvertToDecimalFromSelectedBase(Display.Replace(" ", ""), _previousNumberSystem);
                 if (Math.Abs(decimalValue) > MaxValue)
                 {
                     Display = "Przekroczono maksymalną wartość";
                     return;
                 }
-                Display = NumberFormatter.FormatDisplay(ConvertFromDecimal(decimalValue, SelectedNumberSystem), SelectedNumberSystem);
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(decimalValue, CurrentNumberSystem), CurrentNumberSystem);
             }
             catch
             {
@@ -264,7 +316,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
         }
 
-        private long ConvertToDecimal(string value, NumberSystem system)
+        private long ConvertToDecimalFromSelectedBase(string value, NumberSystem system)
         {
             value = value.Replace(" ", "");
             return system switch
@@ -277,7 +329,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             };
         }
 
-        private string ConvertFromDecimal(long value, NumberSystem system)
+        private string ConvertFromDecimalToSelectedBase(long value, NumberSystem system)
         {
             return system switch
             {
@@ -289,84 +341,84 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             };
         }
 
-        private void EnableHexButtons()
+        private void EnableHexadecimalButtons()
         {
-            ButtonState.IsAEnabled = true;
-            ButtonState.IsBEnabled = true;
-            ButtonState.IsCEnabled = true;
-            ButtonState.IsDEnabled = true;
-            ButtonState.IsEEnabled = true;
-            ButtonState.IsFEnabled = true;
-            ButtonState.Is0Enabled = true;
-            ButtonState.Is1Enabled = true;
-            ButtonState.Is2Enabled = true;
-            ButtonState.Is3Enabled = true;
-            ButtonState.Is4Enabled = true;
-            ButtonState.Is5Enabled = true;
-            ButtonState.Is6Enabled = true;
-            ButtonState.Is7Enabled = true;
-            ButtonState.Is8Enabled = true;
-            ButtonState.Is9Enabled = true;
+            CurrentButtonState.IsAEnabled = true;
+            CurrentButtonState.IsBEnabled = true;
+            CurrentButtonState.IsCEnabled = true;
+            CurrentButtonState.IsDEnabled = true;
+            CurrentButtonState.IsEEnabled = true;
+            CurrentButtonState.IsFEnabled = true;
+            CurrentButtonState.Is0Enabled = true;
+            CurrentButtonState.Is1Enabled = true;
+            CurrentButtonState.Is2Enabled = true;
+            CurrentButtonState.Is3Enabled = true;
+            CurrentButtonState.Is4Enabled = true;
+            CurrentButtonState.Is5Enabled = true;
+            CurrentButtonState.Is6Enabled = true;
+            CurrentButtonState.Is7Enabled = true;
+            CurrentButtonState.Is8Enabled = true;
+            CurrentButtonState.Is9Enabled = true;
         }
 
-        private void EnableDecButtons()
+        private void EnableDecimalButtons()
         {
-            ButtonState.IsAEnabled = false;
-            ButtonState.IsBEnabled = false;
-            ButtonState.IsCEnabled = false;
-            ButtonState.IsDEnabled = false;
-            ButtonState.IsEEnabled = false;
-            ButtonState.IsFEnabled = false;
-            ButtonState.Is0Enabled = true;
-            ButtonState.Is1Enabled = true;
-            ButtonState.Is2Enabled = true;
-            ButtonState.Is3Enabled = true;
-            ButtonState.Is4Enabled = true;
-            ButtonState.Is5Enabled = true;
-            ButtonState.Is6Enabled = true;
-            ButtonState.Is7Enabled = true;
-            ButtonState.Is8Enabled = true;
-            ButtonState.Is9Enabled = true;
+            CurrentButtonState.IsAEnabled = false;
+            CurrentButtonState.IsBEnabled = false;
+            CurrentButtonState.IsCEnabled = false;
+            CurrentButtonState.IsDEnabled = false;
+            CurrentButtonState.IsEEnabled = false;
+            CurrentButtonState.IsFEnabled = false;
+            CurrentButtonState.Is0Enabled = true;
+            CurrentButtonState.Is1Enabled = true;
+            CurrentButtonState.Is2Enabled = true;
+            CurrentButtonState.Is3Enabled = true;
+            CurrentButtonState.Is4Enabled = true;
+            CurrentButtonState.Is5Enabled = true;
+            CurrentButtonState.Is6Enabled = true;
+            CurrentButtonState.Is7Enabled = true;
+            CurrentButtonState.Is8Enabled = true;
+            CurrentButtonState.Is9Enabled = true;
         }
 
-        private void EnableOctButtons()
+        private void EnableOctalButtons()
         {
-            ButtonState.IsAEnabled = false;
-            ButtonState.IsBEnabled = false;
-            ButtonState.IsCEnabled = false;
-            ButtonState.IsDEnabled = false;
-            ButtonState.IsEEnabled = false;
-            ButtonState.IsFEnabled = false;
-            ButtonState.Is0Enabled = true;
-            ButtonState.Is1Enabled = true;
-            ButtonState.Is2Enabled = true;
-            ButtonState.Is3Enabled = true;
-            ButtonState.Is4Enabled = true;
-            ButtonState.Is5Enabled = true;
-            ButtonState.Is6Enabled = true;
-            ButtonState.Is7Enabled = true;
-            ButtonState.Is8Enabled = false;
-            ButtonState.Is9Enabled = false;
+            CurrentButtonState.IsAEnabled = false;
+            CurrentButtonState.IsBEnabled = false;
+            CurrentButtonState.IsCEnabled = false;
+            CurrentButtonState.IsDEnabled = false;
+            CurrentButtonState.IsEEnabled = false;
+            CurrentButtonState.IsFEnabled = false;
+            CurrentButtonState.Is0Enabled = true;
+            CurrentButtonState.Is1Enabled = true;
+            CurrentButtonState.Is2Enabled = true;
+            CurrentButtonState.Is3Enabled = true;
+            CurrentButtonState.Is4Enabled = true;
+            CurrentButtonState.Is5Enabled = true;
+            CurrentButtonState.Is6Enabled = true;
+            CurrentButtonState.Is7Enabled = true;
+            CurrentButtonState.Is8Enabled = false;
+            CurrentButtonState.Is9Enabled = false;
         }
 
-        private void EnableBinButtons()
+        private void EnableBinaryButtons()
         {
-            ButtonState.Is0Enabled = true;
-            ButtonState.Is1Enabled = true;
-            ButtonState.Is2Enabled = false;
-            ButtonState.Is3Enabled = false;
-            ButtonState.Is4Enabled = false;
-            ButtonState.Is5Enabled = false;
-            ButtonState.Is6Enabled = false;
-            ButtonState.Is7Enabled = false;
-            ButtonState.Is8Enabled = false;
-            ButtonState.Is9Enabled = false;
-            ButtonState.IsAEnabled = false;
-            ButtonState.IsBEnabled = false;
-            ButtonState.IsCEnabled = false;
-            ButtonState.IsDEnabled = false;
-            ButtonState.IsEEnabled = false;
-            ButtonState.IsFEnabled = false;
+            CurrentButtonState.Is0Enabled = true;
+            CurrentButtonState.Is1Enabled = true;
+            CurrentButtonState.Is2Enabled = false;
+            CurrentButtonState.Is3Enabled = false;
+            CurrentButtonState.Is4Enabled = false;
+            CurrentButtonState.Is5Enabled = false;
+            CurrentButtonState.Is6Enabled = false;
+            CurrentButtonState.Is7Enabled = false;
+            CurrentButtonState.Is8Enabled = false;
+            CurrentButtonState.Is9Enabled = false;
+            CurrentButtonState.IsAEnabled = false;
+            CurrentButtonState.IsBEnabled = false;
+            CurrentButtonState.IsCEnabled = false;
+            CurrentButtonState.IsDEnabled = false;
+            CurrentButtonState.IsEEnabled = false;
+            CurrentButtonState.IsFEnabled = false;
         }
     }
 }

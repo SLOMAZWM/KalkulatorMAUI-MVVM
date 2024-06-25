@@ -10,7 +10,6 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -21,14 +20,7 @@
 
         <BoxView Grid.Row="2" HeightRequest="1" BackgroundColor="White"/>
 
-        <Picker ItemsSource="{Binding NumberSystems}" 
-                SelectedItem="{Binding SelectedNumberSystem}" 
-                Title="Wybierz system liczbowy"
-                Style="{StaticResource SelectPicker}" 
-                Grid.Row="3"
-                Margin="0"/>
-
-        <Grid Grid.Row="4" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,5">
+        <Grid Grid.Row="3" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,5">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -36,6 +28,13 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+
+            <Picker ItemsSource="{Binding NumberSystems}" 
+        SelectedItem="{Binding SelectedNumberSystem}" 
+        Title="Wybierz system liczbowy"
+        Style="{StaticResource SelectPicker}" 
+        Grid.Row="0"
+        Margin="0"/>
 
             <Picker ItemsSource="{Binding BitShiftModes}" 
                     SelectedItem="{Binding SelectedBitShiftMode}" 
@@ -52,8 +51,8 @@
                 <Button Style="{StaticResource AdvancedButton}" Text="-" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="+" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="+/-" Command="{Binding ToogleSignCommand}"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="&#x00AB;"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="&#x00BB;"/>
+                <Button Style="{StaticResource AdvancedButton}" Text="&#x00AB;" Command="{Binding SetOperationCommand}" CommandParameter="leftArrow"/>
+                <Button Style="{StaticResource AdvancedButton}" Text="&#x00BB;" Command="{Binding SetOperationCommand}" CommandParameter="rightArrow"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="("/>
                 <Button Style="{StaticResource AdvancedButton}" Text=")"/>
             </HorizontalStackLayout>

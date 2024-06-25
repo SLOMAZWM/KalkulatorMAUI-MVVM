@@ -6,3 +6,5 @@
 4. Wykresowy
 
 Problem z ponawianiem operacji po zmianie systemu liczbowego - naprawic
+Problem z ostatnia operacja - naprawic
+Problem z dodawaniem wpisu do historii w przypadku trybu programistycznego - naprawic + dodac z jakiego trybu byl on wywolywany
