@@ -119,12 +119,12 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 _isOperationSet = true;
                 LastOperation = FirstNumber + Operation;
 
-                if (Operation == "&#x00AB;" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
+                if (Operation == "leftArrow" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
                 {
                     PerformLeftShiftOperation();
                     _isOperationSet = false;
                 }
-                else if (Operation == "&#x00BB;" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
+                else if (Operation == "rightArrow" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
                 {
                     PerformLeftShiftOperation();
                     _isOperationSet = false;
@@ -138,7 +138,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Operation = operation;
             }
         }
-
 
         [RelayCommand]
         private void EnterDigitOrCharacter(string sign)
@@ -199,6 +198,12 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             try
             {
                 long firstNumberInDecimal = ConvertToDecimalFromSelectedBase(FirstNumber.Replace(" ", ""), CurrentNumberSystem);
+
+                if (string.IsNullOrEmpty(SecondNumber))
+                {
+                    throw new InvalidOperationException("SecondNumber is empty or null");
+                }
+
                 long secondNumberInDecimal = ConvertToDecimalFromSelectedBase(SecondNumber.Replace(" ", ""), CurrentNumberSystem);
 
                 long answer = 0;
@@ -225,15 +230,14 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                         }
                         break;
                     case "%":
-                        {
-                            answer = firstNumberInDecimal % secondNumberInDecimal;
-                            break;
-                        }
-                    case "&#x00AB":
-                        {
-                            PerformLeftShiftOperation();
-                            return;
-                        }
+                        answer = firstNumberInDecimal % secondNumberInDecimal;
+                        break;
+                    case "leftArrow":
+                        PerformLeftShiftOperation();
+                        return;
+                    case "rightArrow":
+                        PerformRightShiftOperation();
+                        return;
                     default:
                         throw new InvalidOperationException("Nieznana operacja");
                 }
@@ -255,11 +259,47 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 Display = "Przekroczono maksymalną wartość";
             }
+            catch (Exception ex)
+            {
+                Display = $"BŁĄD: {ex.Message}";
+            }
+        }
+
+        private void PerformRightShiftOperation()
+        {
+            try
+            {
+                long currentValue = ConvertToDecimalFromSelectedBase(FirstNumber, CurrentNumberSystem);
+                int shiftAmount = SelectedBitShiftOperation == BitShiftOperation.Cykliczne ? 1 : Convert.ToInt32(ConvertToDecimalFromSelectedBase(SecondNumber, CurrentNumberSystem));
+
+                switch (SelectedBitShiftOperation)
+                {
+                    case BitShiftOperation.Arytmetyczne:
+                        {
+                            currentValue >>= shiftAmount;
+                            break;
+                        }
+                    case BitShiftOperation.Logiczne:
+                        {
+                            currentValue = (long)((ulong)currentValue >> shiftAmount);
+                            break;
+                        }
+                    case BitShiftOperation.Cykliczne:
+                        {
+                            int size = sizeof(long) * 8;
+                            currentValue = (currentValue >> shiftAmount) | ((currentValue & ((1L << shiftAmount) - 1)) << (size - shiftAmount));
+                            break;
+                        }
+                }
+
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
+            }
             catch
             {
                 Display = "BŁĄD";
             }
         }
+
 
         private void PerformLeftShiftOperation()
         {
@@ -271,15 +311,21 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 switch (SelectedBitShiftOperation)
                 {
                     case BitShiftOperation.Arytmetyczne:
-                        currentValue <<= shiftAmount;
-                        break;
+                        {
+                            currentValue <<= shiftAmount;
+                            break;
+                        }
                     case BitShiftOperation.Logiczne:
-                        currentValue = (long)((ulong)currentValue << shiftAmount);
-                        break;
+                        {
+                            currentValue = (long)((ulong)currentValue << shiftAmount);
+                            break;
+                        }
                     case BitShiftOperation.Cykliczne:
-                        int size = sizeof(long) * 8;
-                        currentValue = (currentValue << shiftAmount) | ((long)((ulong)currentValue >> (size - shiftAmount)));
-                        break;
+                        {
+                            int size = sizeof(long) * 8;
+                            currentValue = (currentValue << shiftAmount) | ((long)((ulong)currentValue >> (size - shiftAmount)));
+                            break;
+                        }
                 }
 
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);

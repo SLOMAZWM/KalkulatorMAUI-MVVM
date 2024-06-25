@@ -55,8 +55,8 @@
                 <Button Style="{StaticResource AdvancedButton}" Text="-" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="+" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="+/-" Command="{Binding ToggleSignCommand}"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="&#x00AB;" Command="{Binding SetOperationCommand}" CommandParameter="&#x00AB;"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="&#x00BB;" Command="{Binding SetOperationCommand}" CommandParameter="&#x00BB;"/>
+                <Button Style="{StaticResource AdvancedButton}" Text="&#x00AB;" Command="{Binding SetOperationCommand}" CommandParameter="leftArrow"/>
+                <Button Style="{StaticResource AdvancedButton}" Text="&#x00BB;" Command="{Binding SetOperationCommand}" CommandParameter="rightArrow"/>
                 <Button Style="{StaticResource AdvancedButton}" Text="("/>
                 <Button Style="{StaticResource AdvancedButton}" Text=")"/>
             </HorizontalStackLayout>
