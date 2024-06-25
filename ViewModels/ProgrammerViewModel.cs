@@ -16,10 +16,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
     public enum BitShiftOperation
     {
-        ArithmeticShift,
-        LogicalShift,
-        CircularShift,
-        CircularShiftThroughCarry,
+        Arytmetyczne,
+        Logiczne,
+        Cykliczne,
     }
 
     public partial class ProgrammerViewModel : ObservableObject
@@ -112,13 +111,24 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void SetOperation(string operation)
         {
-            if (_isOperationSet == false)
+            if (!_isOperationSet)
             {
                 FirstNumber = Display;
                 Operation = operation;
                 Display = "0";
                 _isOperationSet = true;
                 LastOperation = FirstNumber + Operation;
+
+                if (Operation == "leftArrow" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
+                {
+                    PerformLeftShiftOperation();
+                    _isOperationSet = false;
+                }
+                else if (Operation == "rightArrow" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
+                {
+                    PerformLeftShiftOperation();
+                    _isOperationSet = false;
+                }
             }
             else
             {
@@ -128,6 +138,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Operation = operation;
             }
         }
+
 
         [RelayCommand]
         private void EnterDigitOrCharacter(string sign)
@@ -254,31 +265,21 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             try
             {
-                long currentValue = ConvertToDecimalFromSelectedBase(Display, CurrentNumberSystem);
+                long currentValue = ConvertToDecimalFromSelectedBase(FirstNumber, CurrentNumberSystem);
+                int shiftAmount = SelectedBitShiftOperation == BitShiftOperation.Cykliczne ? 1 : Convert.ToInt32(ConvertToDecimalFromSelectedBase(SecondNumber, CurrentNumberSystem));
 
                 switch (SelectedBitShiftOperation)
                 {
-                    case BitShiftOperation.ArithmeticShift:
-                        {
-                            currentValue <<= 1;
-                            break;
-                        }
-                    case BitShiftOperation.LogicalShift:
-                        {
-                            currentValue = (long)((ulong)currentValue << 1);
-                            break;
-                        }
-                    case BitShiftOperation.CircularShift:
-                        {
-                            currentValue = (currentValue << 1) | (currentValue >> (sizeof(long) * 8 - 1));
-                            break;
-                        }
-                    case BitShiftOperation.CircularShiftThroughCarry:
-                        {
-                            bool carry = (currentValue & (1L << (sizeof(long) * 8 - 1))) != 0;
-                            currentValue = (currentValue << 1) | (carry ? 1L : 0);
-                            break;
-                        }
+                    case BitShiftOperation.Arytmetyczne:
+                        currentValue <<= shiftAmount;
+                        break;
+                    case BitShiftOperation.Logiczne:
+                        currentValue = (long)((ulong)currentValue << shiftAmount);
+                        break;
+                    case BitShiftOperation.Cykliczne:
+                        int size = sizeof(long) * 8;
+                        currentValue = (currentValue << shiftAmount) | ((long)((ulong)currentValue >> (size - shiftAmount)));
+                        break;
                 }
 
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
@@ -288,6 +289,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Display = "BŁĄD";
             }
         }
+
+
 
         [RelayCommand]
         private void ClearDisplay()
