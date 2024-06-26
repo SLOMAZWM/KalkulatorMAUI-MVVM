@@ -50,6 +50,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private string _operation = "";
 
+        [ObservableProperty]
+        private string ? _selectedBitOperation;
+
         private bool _isOperationSet = false;
 
         private bool _isAfterCalculation = false;
@@ -60,15 +63,67 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private List<NumberSystem> _availableNumberSystems;
 
+        [ObservableProperty]
+        private List<string> _bitOperations;
+
         private NumberSystem _previousNumberSystem;
 
         public ProgrammerViewModel()
         {
             AvailableNumberSystems = Enum.GetValues(typeof(NumberSystem)).Cast<NumberSystem>().ToList();
             BitShiftOperations = Enum.GetValues(typeof(BitShiftOperation)).Cast<BitShiftOperation>().ToList();
+            BitOperations = new List<string> { "NOT", "AND", "OR", "XOR", "NAND", "NOR" };
             CurrentButtonState = new ButtonState();
             CurrentNumberSystem = NumberSystem.DEC;
             _previousNumberSystem = CurrentNumberSystem;
+        }
+
+        partial void OnSelectedBitOperationChanged(string? value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                SetBitOperation(value);
+            }
+        }
+
+        [RelayCommand]
+        private void SetBitOperation(string operation)
+        {
+            switch (operation)
+            {
+                case "NOT":
+                    PerformNotOperation();
+                    break;
+                case "AND":
+                    SetOperation("AND");
+                    break;
+                case "OR":
+                    SetOperation("OR");
+                    break;
+                case "XOR":
+                    SetOperation("XOR");
+                    break;
+                case "NAND":
+                    SetOperation("NAND");
+                    break;
+                case "NOR":
+                    SetOperation("NOR");
+                    break;
+            }
+        }
+
+        private void PerformNotOperation()
+        {
+            try
+            {
+                long currentValue = ConvertToDecimalFromSelectedBase(Display, CurrentNumberSystem);
+                currentValue = ~currentValue;
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
+            }
+            catch
+            {
+                Display = "BŁĄD";
+            }
         }
 
         partial void OnCurrentNumberSystemChanged(NumberSystem value)
@@ -233,6 +288,21 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     case "rightArrow":
                         PerformRightShiftOperation();
                         return;
+                    case "AND":
+                        answer = firstNumberInDecimal & secondNumberInDecimal;
+                        break;
+                    case "OR":
+                        answer = firstNumberInDecimal | secondNumberInDecimal;
+                        break;
+                    case "XOR":
+                        answer = firstNumberInDecimal ^ secondNumberInDecimal;
+                        break;
+                    case "NAND":
+                        answer = ~(firstNumberInDecimal & secondNumberInDecimal);
+                        break;
+                    case "NOR":
+                        answer = ~(firstNumberInDecimal | secondNumberInDecimal);
+                        break;
                     default:
                         throw new InvalidOperationException("Nieznana operacja");
                 }
@@ -270,15 +340,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 switch (SelectedBitShiftOperation)
                 {
                     case BitShiftOperation.Arytmetyczne:
-                            currentValue >>= shiftAmount;
-                            break;
+                        currentValue >>= shiftAmount;
+                        break;
                     case BitShiftOperation.Logiczne:
-                            currentValue = (long)((ulong)currentValue >> shiftAmount);
-                            break;
+                        currentValue = (long)((ulong)currentValue >> shiftAmount);
+                        break;
                     case BitShiftOperation.Cykliczne:
-                            int size = sizeof(long) * 8;
-                            currentValue = (currentValue >> shiftAmount) | ((currentValue & ((1L << shiftAmount) - 1)) << (size - shiftAmount));
-                            break;
+                        int size = sizeof(long) * 8;
+                        currentValue = (currentValue >> shiftAmount) | ((currentValue & ((1L << shiftAmount) - 1)) << (size - shiftAmount));
+                        break;
                 }
 
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
@@ -300,15 +370,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 switch (SelectedBitShiftOperation)
                 {
                     case BitShiftOperation.Arytmetyczne:
-                            currentValue <<= shiftAmount;
-                            break;
+                        currentValue <<= shiftAmount;
+                        break;
                     case BitShiftOperation.Logiczne:
-                            currentValue = (long)((ulong)currentValue << shiftAmount);
-                            break;
+                        currentValue = (long)((ulong)currentValue << shiftAmount);
+                        break;
                     case BitShiftOperation.Cykliczne:
-                            int size = sizeof(long) * 8;
-                            currentValue = (currentValue << shiftAmount) | ((long)((ulong)currentValue >> (size - shiftAmount)));
-                            break;
+                        int size = sizeof(long) * 8;
+                        currentValue = (currentValue << shiftAmount) | ((long)((ulong)currentValue >> (size - shiftAmount)));
+                        break;
                 }
 
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);

@@ -72,6 +72,13 @@
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
 
+    <Style TargetType="Label" x:Key="LabelOfPicker">
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="Margin" Value="5,16,0,0"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
     <!--End My Styles-->
 
     <Style TargetType="ActivityIndicator">

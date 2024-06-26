@@ -33,20 +33,52 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Picker ItemsSource="{Binding AvailableNumberSystems}" 
-                    SelectedItem="{Binding CurrentNumberSystem}" 
-                    Title="Wybierz system liczbowy"
-                    Style="{StaticResource SelectPicker}" 
-                    Grid.Row="0"
-                    Margin="0"/>
 
-            <Picker ItemsSource="{Binding BitShiftOperations}" 
-                    SelectedItem="{Binding SelectedBitShiftOperation}" 
-                    Style="{StaticResource SelectPicker}"
-                    Grid.Row="0"
-                    Title="Przesunięcia bitowe"
-                    WidthRequest="150"
-                    HorizontalOptions="Center"/>
+            <Grid Grid.Row="0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="System liczbowy: " Style="{StaticResource LabelOfPicker}" 
+                       Grid.Column="0"/>
+
+                <Picker ItemsSource="{Binding AvailableNumberSystems}" 
+        SelectedItem="{Binding CurrentNumberSystem}" 
+        Title="Wybierz system liczbowy"
+        Style="{StaticResource SelectPicker}" 
+        Grid.Column="1"
+        Margin="0"/>
+
+                <Label Text="Operator bitowy:"
+                       Grid.Column="2"
+                       Style="{StaticResource LabelOfPicker}"/>
+
+                <Picker ItemsSource="{Binding BitOperations}" 
+        SelectedItem="{Binding SelectedBitOperation}" 
+        Style="{StaticResource SelectPicker}"
+        Grid.Column="3"
+        Title="Wybierz operację bitową"
+        WidthRequest="130"
+        HorizontalOptions="Center"/>
+
+                <Label Text="Przesunięcie bitowe: "
+                       Grid.Column="4" 
+                       Style="{StaticResource LabelOfPicker}"/>
+
+                <Picker ItemsSource="{Binding BitShiftOperations}" 
+        SelectedItem="{Binding SelectedBitShiftOperation}" 
+        Style="{StaticResource SelectPicker}"
+        Grid.Column="5"
+        Title="Przesunięcia bitowe"
+        WidthRequest="130"
+        HorizontalOptions="Center"/>
+            </Grid>
 
             <HorizontalStackLayout Grid.Row="1" Spacing="5">
                 <Button Style="{StaticResource AdvancedButton}" Text="%" Command="{Binding SetOperationCommand}" CommandParameter="%"/>
