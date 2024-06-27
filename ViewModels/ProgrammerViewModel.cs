@@ -192,6 +192,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 PerformCalculation();
                 Operation = operation;
             }
+
+            SelectedBitOperation = null;
         }
 
         [RelayCommand]
