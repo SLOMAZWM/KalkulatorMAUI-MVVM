@@ -164,6 +164,20 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         }
 
         [RelayCommand]
+        private void DeleteSign()
+        {
+            if (Display.Length > 0)
+            {
+                Display = Display.Remove(Display.Length - 1);
+            }
+
+            if(Display.Length == 0)
+            {
+                Display = "0";
+            }
+        }
+
+        [RelayCommand]
         private void SetOperation(string operation)
         {
             if (!_isOperationSet)

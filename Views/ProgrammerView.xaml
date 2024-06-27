@@ -31,7 +31,7 @@
 
         <BoxView Grid.Row="3" HeightRequest="1" BackgroundColor="White"/>
 
-        <Grid Grid.Row="4" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,5">
+        <Grid Grid.Row="4" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,5">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -41,7 +41,7 @@
             </Grid.RowDefinitions>
 
 
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" Margin="-16,0,0,0">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -109,7 +109,7 @@
                 <Button Style="{StaticResource NumberSmallButton}" Text="F" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="F" IsEnabled="{Binding CurrentButtonState.IsFEnabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="," IsEnabled="False"/>
                 <Button Style="{StaticResource LightFunctionSmallButton}" Text="C" Command="{Binding ClearDisplayCommand}"/>
-                <Button Style="{StaticResource LightFunctionSmallButton}" Text="DEL"/>
+                <Button Style="{StaticResource LightFunctionSmallButton}" Text="DEL" Command="{Binding DeleteSignCommand}"/>
                 <Button Style="{StaticResource FunctionSmallButton}" Text="=" Command="{Binding PerformCalculationCommand}"/>
             </HorizontalStackLayout>
 
