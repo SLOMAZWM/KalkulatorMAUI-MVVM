@@ -14,17 +14,24 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Text="{Binding Display}" FontSize="34" FontAttributes="Bold" TextColor="White" HorizontalOptions="End" VerticalOptions="Center"/>
+        <Label Text="{Binding Display}" Margin="0" FontSize="34" FontAttributes="Bold" TextColor="White" HorizontalOptions="End" VerticalOptions="Center" Grid.Row="0"/>
 
         <Label Text="{Binding LastOperation}" FontSize="16" FontAttributes="Bold" TextColor="Gray" Grid.Row="1"
                HorizontalOptions="Center" VerticalOptions="Center"/>
 
-        <BoxView Grid.Row="2" HeightRequest="1" BackgroundColor="White"/>
+        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Start" Spacing="10">
+            <ImageButton Source="Resources/Images/standard_keyboard.png" HeightRequest="35" WidthRequest="35"/>
 
-        <Grid Grid.Row="3" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,5">
+            <ImageButton Source="Resources/Images/qword_keyboard.png" HeightRequest="35" WidthRequest="35"/>
+        </HorizontalStackLayout>
+
+        <BoxView Grid.Row="3" HeightRequest="1" BackgroundColor="White"/>
+
+        <Grid Grid.Row="4" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,5">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -93,7 +100,7 @@
                 <Button Style="{StaticResource AdvancedButton}" Text=")"/>
             </HorizontalStackLayout>
 
-            <HorizontalStackLayout Grid.Row="2" Spacing="5" Margin="0,10,0,0">
+            <HorizontalStackLayout Grid.Row="2" Spacing="5" Margin="0,5,0,0">
                 <Button Style="{StaticResource NumberSmallButton}" Text="A" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="A" IsEnabled="{Binding CurrentButtonState.IsAEnabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="B" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="B" IsEnabled="{Binding CurrentButtonState.IsBEnabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="C" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="C" IsEnabled="{Binding CurrentButtonState.IsCEnabled}"/>
@@ -106,7 +113,7 @@
                 <Button Style="{StaticResource FunctionSmallButton}" Text="=" Command="{Binding PerformCalculationCommand}"/>
             </HorizontalStackLayout>
 
-            <HorizontalStackLayout Grid.Row="3" Spacing="5" Margin="0,10,0,0">
+            <HorizontalStackLayout Grid.Row="3" Spacing="5" Margin="0,5,0,0">
                 <Button Style="{StaticResource NumberSmallButton}" Text="9" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="9" IsEnabled="{Binding CurrentButtonState.Is9Enabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="8" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="8" IsEnabled="{Binding CurrentButtonState.Is8Enabled}"/>
                 <Button Style="{StaticResource NumberSmallButton}" Text="7" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="7" IsEnabled="{Binding CurrentButtonState.Is7Enabled}"/>
