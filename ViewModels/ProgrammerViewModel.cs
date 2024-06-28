@@ -27,6 +27,12 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private const long MinValue = long.MinValue;
 
         [ObservableProperty]
+        private bool _standardInputCalculatorIsVisible = true;
+
+        [ObservableProperty]
+        private bool _qwordInputCalculatorIsVisible = false;
+
+        [ObservableProperty]
         private BitShiftOperation _selectedBitShiftOperation;
 
         [ObservableProperty]
@@ -84,6 +90,20 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 SetBitOperation(value);
             }
+        }
+
+        [RelayCommand]
+        private void StandardInputCalculatorVisibilityTrue()
+        {
+            StandardInputCalculatorIsVisible = true;
+            QwordInputCalculatorIsVisible = false;
+        }
+
+        [RelayCommand]
+        private void QwordInputCalculatorVisibilityTrue()
+        {
+            StandardInputCalculatorIsVisible = false;
+            QwordInputCalculatorIsVisible = true;
         }
 
         [RelayCommand]

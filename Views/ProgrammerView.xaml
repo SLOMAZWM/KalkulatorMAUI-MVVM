@@ -18,115 +18,148 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Text="{Binding Display}" Margin="0" FontSize="34" FontAttributes="Bold" TextColor="White" HorizontalOptions="End" VerticalOptions="Center" Grid.Row="0"/>
+        <Label Text="{Binding Display}" Margin="0" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalOptions="End" VerticalOptions="Center" Grid.Row="0"/>
 
         <Label Text="{Binding LastOperation}" FontSize="16" FontAttributes="Bold" TextColor="Gray" Grid.Row="1"
                HorizontalOptions="Center" VerticalOptions="Center"/>
 
         <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Start" Spacing="10">
-            <ImageButton Source="Resources/Images/standard_keyboard.png" HeightRequest="35" WidthRequest="35"/>
+            <ImageButton Source="Resources/Images/standard_keyboard.png" HeightRequest="35" WidthRequest="35" Command="{Binding StandardInputCalculatorVisibilityTrueCommand}"/>
 
-            <ImageButton Source="Resources/Images/qword_keyboard.png" HeightRequest="35" WidthRequest="35"/>
+            <ImageButton Source="Resources/Images/qword_keyboard.png" HeightRequest="35" WidthRequest="35" Command="{Binding QwordInputCalculatorVisibilityTrueCommand}"/>
         </HorizontalStackLayout>
 
         <BoxView Grid.Row="3" HeightRequest="1" BackgroundColor="White"/>
 
-        <Grid Grid.Row="4" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,5">
+        <ContentView Grid.Row="4" HorizontalOptions="Start" VerticalOptions="Start" Margin="0,0,0,5" 
+             IsVisible="{Binding QwordInputCalculatorIsVisible}">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            <Grid Margin="0,2,0,0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <HorizontalStackLayout Grid.Row="0" Spacing="5" VerticalOptions="Start" HorizontalOptions="Start">
+
+                    <HorizontalStackLayout Spacing="2">
+                        <Button Text="0" Style="{StaticResource FunctionSmallButton}"/>
+                        <Button Text="0" Style="{StaticResource FunctionSmallButton}"/>
+                        <Button Text="0" Style="{StaticResource FunctionSmallButton}"/>
+                        <Button Text="0" Style="{StaticResource FunctionSmallButton}"/>
+                    </HorizontalStackLayout>
 
 
-            <Grid Grid.Row="0" Margin="-16,0,0,0">
+                </HorizontalStackLayout>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
+               
+            </Grid>
+            
+        </ContentView>
+        
+        <ContentView Grid.Row="4" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,5" 
+                     IsVisible="{Binding StandardInputCalculatorIsVisible}">
 
-                <Label Text="System liczbowy: " Style="{StaticResource LabelOfPicker}" 
-                       Grid.Column="0"/>
+            <Grid>
 
-                <Picker ItemsSource="{Binding AvailableNumberSystems}" 
-        SelectedItem="{Binding CurrentNumberSystem}" 
-        Title="Wybierz system liczbowy"
-        Style="{StaticResource SelectPicker}" 
-        Grid.Column="1"
-        Margin="0"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <Label Text="Operator bitowy:"
-                       Grid.Column="2"
-                       Style="{StaticResource LabelOfPicker}"/>
+                <Grid Grid.Row="0" Margin="-16,0,0,0">
 
-                <Picker ItemsSource="{Binding BitOperations}" 
-        SelectedItem="{Binding SelectedBitOperation}" 
-        Style="{StaticResource SelectPicker}"
-        Grid.Column="3"
-        Title="Wybierz operację bitową"
-        WidthRequest="130"
-        HorizontalOptions="Center"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <Label Text="Przesunięcie bitowe: "
-                       Grid.Column="4" 
-                       Style="{StaticResource LabelOfPicker}"/>
+                    <Label Text="System liczbowy: " Style="{StaticResource LabelOfPicker}" 
+               Grid.Column="0"/>
 
-                <Picker ItemsSource="{Binding BitShiftOperations}" 
-        SelectedItem="{Binding SelectedBitShiftOperation}" 
-        Style="{StaticResource SelectPicker}"
-        Grid.Column="5"
-        Title="Przesunięcia bitowe"
-        WidthRequest="130"
-        HorizontalOptions="Center"/>
+                    <Picker ItemsSource="{Binding AvailableNumberSystems}" 
+SelectedItem="{Binding CurrentNumberSystem}" 
+Title="Wybierz system liczbowy"
+Style="{StaticResource SelectPicker}" 
+Grid.Column="1"
+Margin="0"/>
+
+                    <Label Text="Operator bitowy:"
+               Grid.Column="2"
+               Style="{StaticResource LabelOfPicker}"/>
+
+                    <Picker ItemsSource="{Binding BitOperations}" 
+SelectedItem="{Binding SelectedBitOperation}" 
+Style="{StaticResource SelectPicker}"
+Grid.Column="3"
+Title="Wybierz operację bitową"
+WidthRequest="130"
+HorizontalOptions="Center"/>
+
+                    <Label Text="Przesunięcie bitowe: "
+               Grid.Column="4" 
+               Style="{StaticResource LabelOfPicker}"/>
+
+                    <Picker ItemsSource="{Binding BitShiftOperations}" 
+SelectedItem="{Binding SelectedBitShiftOperation}" 
+Style="{StaticResource SelectPicker}"
+Grid.Column="5"
+Title="Przesunięcia bitowe"
+WidthRequest="130"
+HorizontalOptions="Center"/>
+                </Grid>
+
+                <HorizontalStackLayout Grid.Row="1" Spacing="5">
+                    <Button Style="{StaticResource AdvancedButton}" Text="%" Command="{Binding SetOperationCommand}" CommandParameter="%"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="÷" Command="{Binding SetOperationCommand}" CommandParameter="/"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="×" Command="{Binding SetOperationCommand}" CommandParameter="*"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="-" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="+" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="+/-" Command="{Binding ToggleSignCommand}"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="&#x00AB;" Command="{Binding SetOperationCommand}" CommandParameter="leftArrow"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="&#x00BB;" Command="{Binding SetOperationCommand}" CommandParameter="rightArrow"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="("/>
+                    <Button Style="{StaticResource AdvancedButton}" Text=")"/>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Row="2" Spacing="5" Margin="0,5,0,0">
+                    <Button Style="{StaticResource NumberSmallButton}" Text="A" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="A" IsEnabled="{Binding CurrentButtonState.IsAEnabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="B" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="B" IsEnabled="{Binding CurrentButtonState.IsBEnabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="C" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="C" IsEnabled="{Binding CurrentButtonState.IsCEnabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="D" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="D" IsEnabled="{Binding CurrentButtonState.IsDEnabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="E" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="E" IsEnabled="{Binding CurrentButtonState.IsEEnabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="F" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="F" IsEnabled="{Binding CurrentButtonState.IsFEnabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="," IsEnabled="False"/>
+                    <Button Style="{StaticResource LightFunctionSmallButton}" Text="C" Command="{Binding ClearDisplayCommand}"/>
+                    <Button Style="{StaticResource LightFunctionSmallButton}" Text="DEL" Command="{Binding DeleteSignCommand}"/>
+                    <Button Style="{StaticResource FunctionSmallButton}" Text="=" Command="{Binding PerformCalculationCommand}"/>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Row="3" Spacing="5" Margin="0,5,0,0">
+                    <Button Style="{StaticResource NumberSmallButton}" Text="9" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="9" IsEnabled="{Binding CurrentButtonState.Is9Enabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="8" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="8" IsEnabled="{Binding CurrentButtonState.Is8Enabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="7" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="7" IsEnabled="{Binding CurrentButtonState.Is7Enabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="6" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="6" IsEnabled="{Binding CurrentButtonState.Is6Enabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="5" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="5" IsEnabled="{Binding CurrentButtonState.Is5Enabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="4" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="4" IsEnabled="{Binding CurrentButtonState.Is4Enabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="3" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="3" IsEnabled="{Binding CurrentButtonState.Is3Enabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="2" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="2" IsEnabled="{Binding CurrentButtonState.Is2Enabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="1" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="1" IsEnabled="{Binding CurrentButtonState.Is1Enabled}"/>
+                    <Button Style="{StaticResource NumberSmallButton}" Text="0" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="0" IsEnabled="{Binding CurrentButtonState.Is0Enabled}"/>
+                </HorizontalStackLayout>
+
             </Grid>
 
-            <HorizontalStackLayout Grid.Row="1" Spacing="5">
-                <Button Style="{StaticResource AdvancedButton}" Text="%" Command="{Binding SetOperationCommand}" CommandParameter="%"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="÷" Command="{Binding SetOperationCommand}" CommandParameter="/"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="×" Command="{Binding SetOperationCommand}" CommandParameter="*"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="-" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="+" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="+/-" Command="{Binding ToggleSignCommand}"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="&#x00AB;" Command="{Binding SetOperationCommand}" CommandParameter="leftArrow"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="&#x00BB;" Command="{Binding SetOperationCommand}" CommandParameter="rightArrow"/>
-                <Button Style="{StaticResource AdvancedButton}" Text="("/>
-                <Button Style="{StaticResource AdvancedButton}" Text=")"/>
-            </HorizontalStackLayout>
-
-            <HorizontalStackLayout Grid.Row="2" Spacing="5" Margin="0,5,0,0">
-                <Button Style="{StaticResource NumberSmallButton}" Text="A" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="A" IsEnabled="{Binding CurrentButtonState.IsAEnabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="B" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="B" IsEnabled="{Binding CurrentButtonState.IsBEnabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="C" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="C" IsEnabled="{Binding CurrentButtonState.IsCEnabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="D" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="D" IsEnabled="{Binding CurrentButtonState.IsDEnabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="E" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="E" IsEnabled="{Binding CurrentButtonState.IsEEnabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="F" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="F" IsEnabled="{Binding CurrentButtonState.IsFEnabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="," IsEnabled="False"/>
-                <Button Style="{StaticResource LightFunctionSmallButton}" Text="C" Command="{Binding ClearDisplayCommand}"/>
-                <Button Style="{StaticResource LightFunctionSmallButton}" Text="DEL" Command="{Binding DeleteSignCommand}"/>
-                <Button Style="{StaticResource FunctionSmallButton}" Text="=" Command="{Binding PerformCalculationCommand}"/>
-            </HorizontalStackLayout>
-
-            <HorizontalStackLayout Grid.Row="3" Spacing="5" Margin="0,5,0,0">
-                <Button Style="{StaticResource NumberSmallButton}" Text="9" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="9" IsEnabled="{Binding CurrentButtonState.Is9Enabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="8" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="8" IsEnabled="{Binding CurrentButtonState.Is8Enabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="7" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="7" IsEnabled="{Binding CurrentButtonState.Is7Enabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="6" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="6" IsEnabled="{Binding CurrentButtonState.Is6Enabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="5" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="5" IsEnabled="{Binding CurrentButtonState.Is5Enabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="4" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="4" IsEnabled="{Binding CurrentButtonState.Is4Enabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="3" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="3" IsEnabled="{Binding CurrentButtonState.Is3Enabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="2" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="2" IsEnabled="{Binding CurrentButtonState.Is2Enabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="1" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="1" IsEnabled="{Binding CurrentButtonState.Is1Enabled}"/>
-                <Button Style="{StaticResource NumberSmallButton}" Text="0" Command="{Binding EnterDigitOrCharacterCommand}" CommandParameter="0" IsEnabled="{Binding CurrentButtonState.Is0Enabled}"/>
-            </HorizontalStackLayout>
-
-        </Grid>
+        </ContentView>
 
     </Grid>
 </ContentView>
