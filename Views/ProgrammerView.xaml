@@ -31,7 +31,7 @@
 
         <BoxView Grid.Row="3" HeightRequest="1" BackgroundColor="White"/>
 
-        <ContentView Grid.Row="4" Margin="0,0,0,5" 
+        <ContentView Grid.Row="4" Margin="0,0,0,10" 
              IsVisible="{Binding QwordInputCalculatorIsVisible}">
 
             <Grid Margin="0,2,0,0">
@@ -45,6 +45,21 @@
 
                 <HorizontalStackLayout Grid.Row="0" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start">
 
+                    <VerticalStackLayout>
+                        
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="64"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="60" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+                                            
                     <HorizontalStackLayout Spacing="-20">
                         <Button Text="0" Style="{StaticResource QWordInputButton}"/>
                         <Button Text="0" Style="{StaticResource QWordInputButton}"/>
@@ -52,6 +67,12 @@
                         <Button Text="0" Style="{StaticResource QWordInputButton}"/>
                     </HorizontalStackLayout>
 
+                        <Label Style="{StaticResource BitInformation}" Text="56" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+                        
                     <HorizontalStackLayout Spacing="-20">
                         <Button Text="0" Style="{StaticResource QWordInputButton}"/>
                         <Button Text="0" Style="{StaticResource QWordInputButton}"/>
@@ -59,123 +80,198 @@
                         <Button Text="0" Style="{StaticResource QWordInputButton}"/>
                     </HorizontalStackLayout>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                        <Label Style="{StaticResource BitInformation}" Text="52" Margin="85,-10,0,0"/>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="48" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
 
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Grid.Row="1" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start">
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                    <VerticalStackLayout>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                        <Label Style="{StaticResource BitInformation}" Text="44" Margin="85,-10,0,0"/>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="40" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="36" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="32" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
 
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Grid.Row="2" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start">
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                    <VerticalStackLayout>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                        <Label Style="{StaticResource BitInformation}" Text="28" Margin="85,-10,0,0"/>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="24" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="20" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="16" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
 
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Grid.Row="3" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start">
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                    <VerticalStackLayout>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                        <Label Style="{StaticResource BitInformation}" Text="12" Margin="85,-10,0,0"/>
 
-                    <HorizontalStackLayout Spacing="-20">
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                        <Button Text="0" Style="{StaticResource QWordInputButton}"/>
-                    </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="8" Margin="90,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="4" Margin="90,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                            <Button Text="0" Style="{StaticResource QWordInputButton}"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="0" Margin="90,-10,0,0"/>
+
+                    </VerticalStackLayout>
 
                 </HorizontalStackLayout>
 
 
             </Grid>
-            
+
         </ContentView>
-        
+
         <ContentView Grid.Row="4" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,5" 
                      IsVisible="{Binding StandardInputCalculatorIsVisible}">
 

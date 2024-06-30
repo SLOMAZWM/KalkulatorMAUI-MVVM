@@ -93,10 +93,29 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         }
 
         [RelayCommand]
+        private void ToggleBit(string bitPositionButton)
+        {
+            int bitPosition = Convert.ToInt32(bitPositionButton);
+            try
+            {
+                long currentValue = ConvertToDecimalFromSelectedBase(Display, NumberSystem.BIN);
+                currentValue ^= (1L << bitPosition);
+
+                Display = ConvertFromDecimalToSelectedBase(currentValue, NumberSystem.BIN);
+            }
+            catch
+            {
+                Display = "BŁĄD";
+            }
+
+        }
+
+        [RelayCommand]
         private void StandardInputCalculatorVisibilityTrue()
         {
             StandardInputCalculatorIsVisible = true;
             QwordInputCalculatorIsVisible = false;
+            CurrentNumberSystem = _previousNumberSystem;
         }
 
         [RelayCommand]
@@ -104,6 +123,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             StandardInputCalculatorIsVisible = false;
             QwordInputCalculatorIsVisible = true;
+            CurrentNumberSystem = NumberSystem.BIN;
         }
 
         [RelayCommand]
