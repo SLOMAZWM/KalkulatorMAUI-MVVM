@@ -101,7 +101,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 long currentValue = ConvertToDecimalFromSelectedBase(Display, NumberSystem.BIN);
                 currentValue ^= (1L << bitPosition);
 
-                Display = ConvertFromDecimalToSelectedBase(currentValue, NumberSystem.BIN);
+                Display = ConvertFromDecimalToSelectedBase(currentValue, NumberSystem.DEC);
             }
             catch
             {
