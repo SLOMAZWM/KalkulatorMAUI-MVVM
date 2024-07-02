@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
@@ -98,16 +99,19 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             int bitPosition = Convert.ToInt32(bitPositionButton);
             try
             {
-                long currentValue = ConvertToDecimalFromSelectedBase(Display, NumberSystem.BIN);
+                long currentValue = ConvertToDecimalFromSelectedBase(Display.Replace(" ", ""), CurrentNumberSystem);
                 currentValue ^= (1L << bitPosition);
 
-                Display = ConvertFromDecimalToSelectedBase(currentValue, NumberSystem.DEC);
+                string binaryString = Convert.ToString(currentValue, 2).PadLeft(64, '0');
+
+                string reversedBinaryString = NumberFormatter.ReverseString(binaryString);
+
+                Display = NumberFormatter.FormatBinaryString(reversedBinaryString);
             }
             catch
             {
                 Display = "BŁĄD";
             }
-
         }
 
         [RelayCommand]

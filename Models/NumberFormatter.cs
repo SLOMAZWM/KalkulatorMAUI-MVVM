@@ -57,5 +57,28 @@ namespace KalkulatorMAUI_MVVM.Models
                     throw new InvalidOperationException("Nieznany system liczbowy!");
             }
         }
+
+        public static string ReverseString(string input)
+        {
+            char[] array = input.ToCharArray();
+            Array.Reverse(array);
+            return new string(array);
+        }
+
+        public static string FormatBinaryString(string binaryString)
+        {
+            var spacedBinaryString = new StringBuilder();
+
+            for(int i = 0; i < binaryString.Length; i +=4)
+            {
+                if(i > 0)
+                {
+                    spacedBinaryString.Append(" ");
+                }
+                spacedBinaryString.Append(binaryString.Substring(i, Math.Min(4, binaryString.Length - i)));
+            }
+
+            return spacedBinaryString.ToString();
+        }
     }
 }
