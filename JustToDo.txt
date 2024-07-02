@@ -3,8 +3,31 @@
 1. Naukowy
 2. Programisty
 3. Walutowy (api)
-4. Wykresowy
+
+Do zrobienia w programmerView (Qword Keyboard):
+
+1. Zmiana systemu liczbowego (konwersja)
+2. Dokonanie zmian w widoku (tak by Qword Keyboard, mial podobne opcje do tych z Standard Keyboard)
+3. Umożliwienie działań (przesunięcia bitowe, operacje na bitach)
+4. Dzialania w Standard Keyboard (wraz z liczbami), będą miały odzwierciedlenie w Qword Keyboard i na odwrót (wraz z zmianami w Standard Keyboard)
+5. Zrobienie wyboru liczby bitów w Qword Keyboard (qword, dword, word, byte) - wyłączenie poprzez isEnabled = false
+6. Zrobienie logiki dla "()"
+7. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
+8. System liczbowy, operatory bitowe, przesuniecia bitowe - zrobic bez label, zamienic to buttonem, ktory bedzie wyswietlal podview (np. liste)
+
+Do zrobienia w ScientificView:
+
+1. Zrobienie logiki dla "()"
+2. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
+
+//
+
+Kolejność prac i wykonywania zadań losowa, w zależności od wolnego czasu i chęci.
+
+//
+
+//Problemy aktualne z programmerView:
 
 Problem z ponawianiem operacji po zmianie systemu liczbowego - naprawic
 Problem z ostatnia operacja - naprawic
-Problem z dodawaniem wpisu do historii w przypadku trybu programistycznego - naprawic + dodac z jakiego trybu byl on wywolywany
+Problem z dodawaniem wpisu do historii - naprawic + dodac z jakiego trybu byl on wywolywany

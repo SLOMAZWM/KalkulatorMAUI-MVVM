@@ -75,6 +75,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         private NumberSystem _previousNumberSystem;
 
+        [ObservableProperty]
+        private bool[] _bitButtonState = new bool[64];
+
         public ProgrammerViewModel()
         {
             AvailableNumberSystems = Enum.GetValues(typeof(NumberSystem)).Cast<NumberSystem>().ToList();
@@ -93,20 +96,41 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
         }
 
+        private bool CompareButtonStateWithPositionButton(int bit)
+        {
+            bool BitButtonActivated = BitButtonState[bit];
+            BitButtonState[bit] = !BitButtonState[bit];
+
+            return BitButtonActivated;
+        }
+
         [RelayCommand]
         private void ToggleBit(string bitPositionButton)
         {
             int bitPosition = Convert.ToInt32(bitPositionButton);
+            if (bitPosition < 0 || bitPosition > 63)
+            {
+                Display = "BŁĄD";
+                return;
+            }
+
+            bool bitActivated = CompareButtonStateWithPositionButton(bitPosition);
+
             try
             {
                 long currentValue = ConvertToDecimalFromSelectedBase(Display.Replace(" ", ""), CurrentNumberSystem);
-                currentValue ^= (1L << bitPosition);
 
-                string binaryString = Convert.ToString(currentValue, 2).PadLeft(64, '0');
+                if (bitActivated)
+                {
+                    currentValue &= ~(1L << bitPosition);
+                }
+                else
+                {
+                    currentValue |= (1L << bitPosition);
+                }
 
-                string reversedBinaryString = NumberFormatter.ReverseString(binaryString);
-
-                Display = NumberFormatter.FormatBinaryString(reversedBinaryString);
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
+                OnPropertyChanged(nameof(BitButtonState));
             }
             catch
             {
@@ -127,7 +151,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             StandardInputCalculatorIsVisible = false;
             QwordInputCalculatorIsVisible = true;
-            CurrentNumberSystem = NumberSystem.BIN;
+            CurrentNumberSystem = NumberSystem.DEC;
         }
 
         [RelayCommand]
