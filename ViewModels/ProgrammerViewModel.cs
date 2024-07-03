@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
@@ -58,7 +58,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private string _operation = "";
 
         [ObservableProperty]
-        private string ? _selectedBitOperation;
+        private string? _selectedBitOperation;
 
         private bool _isOperationSet = false;
 
@@ -86,6 +86,31 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             CurrentButtonState = new ButtonState();
             CurrentNumberSystem = NumberSystem.DEC;
             _previousNumberSystem = CurrentNumberSystem;
+
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(Display))
+                {
+                    UpdateBitButtonState(Display);
+                }
+            };
+        }
+
+        private void UpdateBitButtonState(string displayValue)
+        {
+            try
+            {
+                long currentValue = ConvertToDecimalFromSelectedBase(displayValue.Replace(" ", ""), CurrentNumberSystem);
+                for (int i = 0; i < 64; i++)
+                {
+                    BitButtonState[i] = (currentValue & (1L << i)) != 0;
+                }
+                OnPropertyChanged(nameof(BitButtonState));
+            }
+            catch
+            {
+                Display = "BŁĄD";
+            }
         }
 
         partial void OnSelectedBitOperationChanged(string? value)
@@ -239,7 +264,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Display = Display.Remove(Display.Length - 1);
             }
 
-            if(Display.Length == 0)
+            if (Display.Length == 0)
             {
                 Display = "0";
             }
@@ -442,7 +467,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Display = "BŁĄD";
             }
         }
-
 
         private void PerformLeftShiftOperation()
         {

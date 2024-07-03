@@ -84,7 +84,7 @@ HorizontalOptions="Center"/>
 
             <Grid Margin="0,2,0,0">
 
-                <Grid.RowDefinitions> 
+                <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
