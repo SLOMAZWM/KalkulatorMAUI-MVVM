@@ -6,8 +6,6 @@
 
 Do zrobienia w programmerView (Qword Keyboard):
 
-
-4. Dzialania w Standard Keyboard (wraz z liczbami), będą miały odzwierciedlenie w Qword Keyboard i na odwrót (wraz z zmianami w Standard Keyboard)
 5. Zrobienie wyboru liczby bitów w Qword Keyboard (qword, dword, word, byte) - wyłączenie poprzez isEnabled = false
 6. Zrobienie logiki dla "()"
 7. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
