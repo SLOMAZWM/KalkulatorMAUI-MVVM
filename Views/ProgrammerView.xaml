@@ -2,7 +2,6 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:KalkulatorMAUI_MVVM.ViewModels"
-             xmlns:behaviors="clr-namespace:KalkulatorMAUI_MVVM.Behaviors"
              x:Class="KalkulatorMAUI_MVVM.Views.ProgrammerView">
 
     <ContentView.BindingContext>
@@ -324,7 +323,7 @@ HorizontalOptions="Center"/>
 
                     </VerticalStackLayout>
 
-                </HorizontalStackLayout> amou
+                </HorizontalStackLayout>
 
 
             </Grid>
