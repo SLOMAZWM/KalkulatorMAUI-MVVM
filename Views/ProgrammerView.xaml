@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:KalkulatorMAUI_MVVM.ViewModels"
+             xmlns:behaviors="clr-namespace:KalkulatorMAUI_MVVM.Behaviors"
              x:Class="KalkulatorMAUI_MVVM.Views.ProgrammerView">
 
     <ContentView.BindingContext>
@@ -23,7 +24,7 @@
         <Label Text="{Binding LastOperation}" FontSize="16" FontAttributes="Bold" TextColor="Gray" Grid.Row="1"
                HorizontalOptions="Center" VerticalOptions="Center"/>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="0,-15,0,-6">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
@@ -85,21 +86,31 @@ HorizontalOptions="Center"/>
             <Grid Margin="0,2,0,0">
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <HorizontalStackLayout Grid.Row="0" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start">
+                <HorizontalStackLayout Grid.Row="0" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,-5,0,-15">
+
+                    <RadioButton GroupName="AmountOfBits" Content="Qword" Style="{StaticResource SelectAmountOfBits}" IsChecked="{Binding IsQwordChecked, Mode=TwoWay}"/>
+                    <RadioButton GroupName="AmountOfBits" Content="Dword" Style="{StaticResource SelectAmountOfBits}" IsChecked="{Binding IsDwordChecked, Mode=TwoWay}"/>
+                    <RadioButton GroupName="AmountOfBits" Content="Word" Style="{StaticResource SelectAmountOfBits}" IsChecked="{Binding IsWordChecked, Mode=TwoWay}"/>
+                    <RadioButton GroupName="AmountOfBits" Content="Byte" Style="{StaticResource SelectAmountOfBits}" IsChecked="{Binding IsByteChecked, Mode=TwoWay}"/>
+
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Row="1" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start">
 
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[63], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="63"/>
-                            <Button Text="{Binding BitButtonState[62], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="62"/>
-                            <Button Text="{Binding BitButtonState[61], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="61"/>
-                            <Button Text="{Binding BitButtonState[60], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="60"/>
+                            <Button Text="{Binding BitButtonState[63], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[63]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="63"/>
+                            <Button Text="{Binding BitButtonState[62], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[62]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="62"/>
+                            <Button Text="{Binding BitButtonState[61], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[61]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="61"/>
+                            <Button Text="{Binding BitButtonState[60], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[60]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="60"/>
                         </HorizontalStackLayout>
 
                         <Label Style="{StaticResource BitInformation}" Text="60" Margin="85,-10,0,0"/>
@@ -109,10 +120,10 @@ HorizontalOptions="Center"/>
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[59], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="59"/>
-                            <Button Text="{Binding BitButtonState[58], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="58"/>
-                            <Button Text="{Binding BitButtonState[57], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="57"/>
-                            <Button Text="{Binding BitButtonState[56], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="56"/>
+                            <Button Text="{Binding BitButtonState[59], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[59]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="59"/>
+                            <Button Text="{Binding BitButtonState[58], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[58]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="58"/>
+                            <Button Text="{Binding BitButtonState[57], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[57]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="57"/>
+                            <Button Text="{Binding BitButtonState[56], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[56]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="56"/>
                         </HorizontalStackLayout>
 
                         <Label Style="{StaticResource BitInformation}" Text="56" Margin="85,-10,0,0"/>
@@ -122,10 +133,10 @@ HorizontalOptions="Center"/>
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[55], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="55"/>
-                            <Button Text="{Binding BitButtonState[54], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="54"/>
-                            <Button Text="{Binding BitButtonState[53], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="53"/>
-                            <Button Text="{Binding BitButtonState[52], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="52"/>
+                            <Button Text="{Binding BitButtonState[55], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[55]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="55"/>
+                            <Button Text="{Binding BitButtonState[54], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[54]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="54"/>
+                            <Button Text="{Binding BitButtonState[53], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[53]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="53"/>
+                            <Button Text="{Binding BitButtonState[52], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[52]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="52"/>
                         </HorizontalStackLayout>
 
                         <Label Style="{StaticResource BitInformation}" Text="52" Margin="85,-10,0,0"/>
@@ -135,69 +146,13 @@ HorizontalOptions="Center"/>
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[51], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="51"/>
-                            <Button Text="{Binding BitButtonState[50], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="50"/>
-                            <Button Text="{Binding BitButtonState[49], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="49"/>
-                            <Button Text="{Binding BitButtonState[48], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="48"/>
+                            <Button Text="{Binding BitButtonState[51], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[51]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="51"/>
+                            <Button Text="{Binding BitButtonState[50], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[50]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="50"/>
+                            <Button Text="{Binding BitButtonState[49], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[49]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="49"/>
+                            <Button Text="{Binding BitButtonState[48], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[48]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="48"/>
                         </HorizontalStackLayout>
 
                         <Label Style="{StaticResource BitInformation}" Text="48" Margin="85,-10,0,0"/>
-
-                    </VerticalStackLayout>
-
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Grid.Row="1" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start">
-
-                    <VerticalStackLayout>
-
-                        <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[47], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="47"/>
-                            <Button Text="{Binding BitButtonState[46], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="46"/>
-                            <Button Text="{Binding BitButtonState[45], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="45"/>
-                            <Button Text="{Binding BitButtonState[44], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="44"/>
-                        </HorizontalStackLayout>
-
-                        <Label Style="{StaticResource BitInformation}" Text="44" Margin="85,-10,0,0"/>
-
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout>
-
-                        <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[43], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="43"/>
-                            <Button Text="{Binding BitButtonState[42], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="42"/>
-                            <Button Text="{Binding BitButtonState[41], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="41"/>
-                            <Button Text="{Binding BitButtonState[40], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="40"/>
-                        </HorizontalStackLayout>
-
-                        <Label Style="{StaticResource BitInformation}" Text="40" Margin="85,-10,0,0"/>
-
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout>
-
-                        <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[39], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="39"/>
-                            <Button Text="{Binding BitButtonState[38], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="38"/>
-                            <Button Text="{Binding BitButtonState[37], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="37"/>
-                            <Button Text="{Binding BitButtonState[36], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="36"/>
-                        </HorizontalStackLayout>
-
-                        <Label Style="{StaticResource BitInformation}" Text="36" Margin="85,-10,0,0"/>
-
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout>
-
-                        <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[35], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="35"/>
-                            <Button Text="{Binding BitButtonState[34], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="34"/>
-                            <Button Text="{Binding BitButtonState[33], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="33"/>
-                            <Button Text="{Binding BitButtonState[32], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="32"/>
-                        </HorizontalStackLayout>
-
-                        <Label Style="{StaticResource BitInformation}" Text="32" Margin="85,-10,0,0"/>
 
                     </VerticalStackLayout>
 
@@ -208,52 +163,52 @@ HorizontalOptions="Center"/>
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[31], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="31"/>
-                            <Button Text="{Binding BitButtonState[30], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="30"/>
-                            <Button Text="{Binding BitButtonState[29], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="29"/>
-                            <Button Text="{Binding BitButtonState[28], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="28"/>
+                            <Button Text="{Binding BitButtonState[47], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[47]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="47"/>
+                            <Button Text="{Binding BitButtonState[46], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[46]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="46"/>
+                            <Button Text="{Binding BitButtonState[45], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[45]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="45"/>
+                            <Button Text="{Binding BitButtonState[44], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[44]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="44"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="28" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="44" Margin="85,-10,0,0"/>
 
                     </VerticalStackLayout>
 
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[27], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="27"/>
-                            <Button Text="{Binding BitButtonState[26], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="26"/>
-                            <Button Text="{Binding BitButtonState[25], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="25"/>
-                            <Button Text="{Binding BitButtonState[24], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="24"/>
+                            <Button Text="{Binding BitButtonState[43], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[43]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="43"/>
+                            <Button Text="{Binding BitButtonState[42], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[42]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="42"/>
+                            <Button Text="{Binding BitButtonState[41], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[41]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="41"/>
+                            <Button Text="{Binding BitButtonState[40], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[40]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="40"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="24" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="40" Margin="85,-10,0,0"/>
 
                     </VerticalStackLayout>
 
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[23], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="23"/>
-                            <Button Text="{Binding BitButtonState[22], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="22"/>
-                            <Button Text="{Binding BitButtonState[21], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="21"/>
-                            <Button Text="{Binding BitButtonState[20], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="20"/>
+                            <Button Text="{Binding BitButtonState[39], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[39]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="39"/>
+                            <Button Text="{Binding BitButtonState[38], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[38]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="38"/>
+                            <Button Text="{Binding BitButtonState[37], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[37]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="37"/>
+                            <Button Text="{Binding BitButtonState[36], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[36]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="36"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="20" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="36" Margin="85,-10,0,0"/>
 
                     </VerticalStackLayout>
 
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[19], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="19"/>
-                            <Button Text="{Binding BitButtonState[18], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="18"/>
-                            <Button Text="{Binding BitButtonState[17], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="17"/>
-                            <Button Text="{Binding BitButtonState[16], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="16"/>
+                            <Button Text="{Binding BitButtonState[35], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[35]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="35"/>
+                            <Button Text="{Binding BitButtonState[34], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[34]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="34"/>
+                            <Button Text="{Binding BitButtonState[33], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[33]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="33"/>
+                            <Button Text="{Binding BitButtonState[32], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[32]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="32"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="16" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="32" Margin="85,-10,0,0"/>
 
                     </VerticalStackLayout>
 
@@ -264,10 +219,66 @@ HorizontalOptions="Center"/>
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[15], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="15"/>
-                            <Button Text="{Binding BitButtonState[14], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="14"/>
-                            <Button Text="{Binding BitButtonState[13], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="13"/>
-                            <Button Text="{Binding BitButtonState[12], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="12"/>
+                            <Button Text="{Binding BitButtonState[31], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[31]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="31"/>
+                            <Button Text="{Binding BitButtonState[30], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[30]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="30"/>
+                            <Button Text="{Binding BitButtonState[29], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[29]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="29"/>
+                            <Button Text="{Binding BitButtonState[28], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[28]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="28"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="28" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="{Binding BitButtonState[27], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[27]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="27"/>
+                            <Button Text="{Binding BitButtonState[26], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[26]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="26"/>
+                            <Button Text="{Binding BitButtonState[25], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[25]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="25"/>
+                            <Button Text="{Binding BitButtonState[24], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[24]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="24"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="24" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="{Binding BitButtonState[23], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[23]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="23"/>
+                            <Button Text="{Binding BitButtonState[22], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[22]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="22"/>
+                            <Button Text="{Binding BitButtonState[21], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[21]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="21"/>
+                            <Button Text="{Binding BitButtonState[20], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[20]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="20"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="20" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="{Binding BitButtonState[19], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[19]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="19"/>
+                            <Button Text="{Binding BitButtonState[18], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[18]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="18"/>
+                            <Button Text="{Binding BitButtonState[17], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[17]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="17"/>
+                            <Button Text="{Binding BitButtonState[16], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[16]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="16"/>
+                        </HorizontalStackLayout>
+
+                        <Label Style="{StaticResource BitInformation}" Text="16" Margin="85,-10,0,0"/>
+
+                    </VerticalStackLayout>
+
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Row="4" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start">
+
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="-20">
+                            <Button Text="{Binding BitButtonState[15], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[15]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="15"/>
+                            <Button Text="{Binding BitButtonState[14], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[14]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="14"/>
+                            <Button Text="{Binding BitButtonState[13], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[13]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="13"/>
+                            <Button Text="{Binding BitButtonState[12], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[12]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="12"/>
                         </HorizontalStackLayout>
 
                         <Label Style="{StaticResource BitInformation}" Text="12" Margin="85,-10,0,0"/>
@@ -277,10 +288,10 @@ HorizontalOptions="Center"/>
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[11], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="11"/>
-                            <Button Text="{Binding BitButtonState[10], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="10"/>
-                            <Button Text="{Binding BitButtonState[9], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="9"/>
-                            <Button Text="{Binding BitButtonState[8], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="8"/>
+                            <Button Text="{Binding BitButtonState[11], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[11]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="11"/>
+                            <Button Text="{Binding BitButtonState[10], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[10]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="10"/>
+                            <Button Text="{Binding BitButtonState[9], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[9]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="9"/>
+                            <Button Text="{Binding BitButtonState[8], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[8]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="8"/>
                         </HorizontalStackLayout>
 
                         <Label Style="{StaticResource BitInformation}" Text="8" Margin="90,-10,0,0"/>
@@ -290,10 +301,10 @@ HorizontalOptions="Center"/>
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[7], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="7"/>
-                            <Button Text="{Binding BitButtonState[6], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="6"/>
-                            <Button Text="{Binding BitButtonState[5], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="5"/>
-                            <Button Text="{Binding BitButtonState[4], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="4"/>
+                            <Button Text="{Binding BitButtonState[7], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[7]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="7"/>
+                            <Button Text="{Binding BitButtonState[6], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[6]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="6"/>
+                            <Button Text="{Binding BitButtonState[5], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[5]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="5"/>
+                            <Button Text="{Binding BitButtonState[4], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[4]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="4"/>
                         </HorizontalStackLayout>
 
                         <Label Style="{StaticResource BitInformation}" Text="4" Margin="90,-10,0,0"/>
@@ -303,17 +314,17 @@ HorizontalOptions="Center"/>
                     <VerticalStackLayout>
 
                         <HorizontalStackLayout Spacing="-20">
-                            <Button Text="{Binding BitButtonState[3], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="3"/>
-                            <Button Text="{Binding BitButtonState[2], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="2"/>
-                            <Button Text="{Binding BitButtonState[1], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="1"/>
-                            <Button Text="{Binding BitButtonState[0], Converter={StaticResource BoolToBitConverter}}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="0"/>
+                            <Button Text="{Binding BitButtonState[3], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[3]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="3"/>
+                            <Button Text="{Binding BitButtonState[2], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[2]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="2"/>
+                            <Button Text="{Binding BitButtonState[1], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[1]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="1"/>
+                            <Button Text="{Binding BitButtonState[0], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[0]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="0"/>
                         </HorizontalStackLayout>
 
                         <Label Style="{StaticResource BitInformation}" Text="0" Margin="90,-10,0,0"/>
 
                     </VerticalStackLayout>
 
-                </HorizontalStackLayout>
+                </HorizontalStackLayout> amou
 
 
             </Grid>

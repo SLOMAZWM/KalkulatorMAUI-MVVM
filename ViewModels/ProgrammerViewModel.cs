@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Windows.Input;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
@@ -20,6 +21,14 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         Arytmetyczne,
         Logiczne,
         Cykliczne,
+    }
+
+    public enum AmountOfBits
+    {
+        Qword,
+        Dword,
+        Word,
+        Byte,
     }
 
     public partial class ProgrammerViewModel : ObservableObject
@@ -75,8 +84,25 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         private NumberSystem _previousNumberSystem;
 
+        private AmountOfBits _selectedAmountOfBits;
+
+        [ObservableProperty]
+        private bool isQwordChecked = true;
+
+        [ObservableProperty]
+        private bool isDwordChecked = false;
+
+        [ObservableProperty]
+        private bool isWordChecked = false;
+
+        [ObservableProperty]
+        private bool isByteChecked = false;
+
         [ObservableProperty]
         private bool[] _bitButtonState = new bool[64];
+
+        [ObservableProperty]
+        private bool[] _bitButtonIsEnabled = new bool[64];
 
         public ProgrammerViewModel()
         {
@@ -87,6 +113,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             CurrentNumberSystem = NumberSystem.DEC;
             _previousNumberSystem = CurrentNumberSystem;
 
+            InitializeProgrammerCalculator();
+        }
+
+        public void InitializeProgrammerCalculator()
+        {
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(Display))
@@ -94,6 +125,34 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     UpdateBitButtonState(Display);
                 }
             };
+
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(IsQwordChecked) && IsQwordChecked)
+                {
+                    UpdateAmountOfBits(AmountOfBits.Qword);
+                }
+                else if (e.PropertyName == nameof(IsDwordChecked) && IsDwordChecked)
+                {
+                    UpdateAmountOfBits(AmountOfBits.Dword);
+                }
+                else if (e.PropertyName == nameof(IsWordChecked) && IsWordChecked)
+                {
+                    UpdateAmountOfBits(AmountOfBits.Word);
+                }
+                else if (e.PropertyName == nameof(IsByteChecked) && IsByteChecked)
+                {
+                    UpdateAmountOfBits(AmountOfBits.Byte);
+                }
+            };
+
+            UpdateAmountOfBits(AmountOfBits.Qword);
+        }
+
+        private void UpdateAmountOfBits(AmountOfBits amountOfBits)
+        {
+            _selectedAmountOfBits = amountOfBits;
+            ChangeButtonsStateFromAmountOfBitsSelected(_selectedAmountOfBits);
         }
 
         private void UpdateBitButtonState(string displayValue)
@@ -162,6 +221,75 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Display = "BŁĄD";
             }
         }
+
+        [RelayCommand]
+        private void ChangeSelectButtonOfAmountBits(string newSelectAmountOfBits)
+        {
+            switch (newSelectAmountOfBits)
+            {
+                case "Qword":
+                    _selectedAmountOfBits = AmountOfBits.Qword;
+                    break;
+                case "Dword":
+                    _selectedAmountOfBits = AmountOfBits.Dword;
+                    break;
+                case "Word":
+                    _selectedAmountOfBits = AmountOfBits.Word;
+                    break;
+                case "Byte":
+                    _selectedAmountOfBits = AmountOfBits.Byte;
+                    break;
+            }
+
+            ChangeButtonsStateFromAmountOfBitsSelected(_selectedAmountOfBits);
+        }
+
+        private void ChangeButtonsStateFromAmountOfBitsSelected(AmountOfBits selectedAmountOfBits)
+        {
+            switch (selectedAmountOfBits)
+            {
+                case AmountOfBits.Qword:
+                    EnableAllButtons();
+                    break;
+                case AmountOfBits.Dword:
+                    EnableButtonsUpTo(32);
+                    break;
+                case AmountOfBits.Word:
+                    EnableButtonsUpTo(16);
+                    break;
+                case AmountOfBits.Byte:
+                    EnableButtonsUpTo(8);
+                    break;
+            }
+        }
+
+        private void EnableAllButtons()
+        {
+            for (int i = 0; i < 64; i++)
+            {
+                BitButtonIsEnabled[i] = true;
+            }
+            UpdateButtonsState();
+        }
+
+        private void EnableButtonsUpTo(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                BitButtonIsEnabled[i] = true;
+            }
+            for (int i = count; i < 64; i++)
+            {
+                BitButtonIsEnabled[i] = false;
+            }
+            UpdateButtonsState();
+        }
+
+        private void UpdateButtonsState()
+        {
+            OnPropertyChanged(nameof(BitButtonIsEnabled));
+        }
+
 
         [RelayCommand]
         private void StandardInputCalculatorVisibilityTrue()
