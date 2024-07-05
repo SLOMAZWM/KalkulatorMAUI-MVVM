@@ -6,10 +6,9 @@
 
 Do zrobienia w programmerView (Qword Keyboard):
 
-5. Zrobienie wyboru liczby bitów w Qword Keyboard (qword, dword, word, byte) - wyłączenie poprzez isEnabled = false
-6. Zrobienie logiki dla "()"
-7. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
-8. System liczbowy, operatory bitowe, przesuniecia bitowe - zrobic bez label, zamienic to buttonem, ktory bedzie wyswietlal podview (np. liste)
+1. System liczbowy, operatory bitowe, przesuniecia bitowe - zrobic bez label, zamienic to buttonem, ktory bedzie wyswietlal podview (np. liste)
+2. Zrobienie logiki dla "()"
+3. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
 
 Do zrobienia w ScientificView:
 
