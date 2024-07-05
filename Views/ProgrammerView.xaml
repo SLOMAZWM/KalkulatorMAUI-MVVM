@@ -79,7 +79,7 @@ HorizontalOptions="Center"/>
 
         <BoxView Grid.Row="3" HeightRequest="1" BackgroundColor="White"/>
 
-        <ContentView Grid.Row="4" Margin="0,0,0,10" 
+        <ContentView Grid.Row="4" Margin="0,0,0,21" 
              IsVisible="{Binding QwordInputCalculatorIsVisible}">
 
             <Grid Margin="0,2,0,0">
@@ -92,7 +92,7 @@ HorizontalOptions="Center"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <HorizontalStackLayout Grid.Row="0" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,-5,0,-15">
+                <HorizontalStackLayout Grid.Row="0" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,-5,0,-20">
 
                     <RadioButton GroupName="AmountOfBits" Content="Qword" Style="{StaticResource SelectAmountOfBits}" IsChecked="{Binding IsQwordChecked, Mode=TwoWay}"/>
                     <RadioButton GroupName="AmountOfBits" Content="Dword" Style="{StaticResource SelectAmountOfBits}" IsChecked="{Binding IsDwordChecked, Mode=TwoWay}"/>
@@ -112,7 +112,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[60], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[60]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="60"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="60" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="60" Margin="85,-10,0,0" IsVisible="{Binding QWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -125,7 +125,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[56], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[56]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="56"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="56" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="56" Margin="85,-10,0,0" IsVisible="{Binding QWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -138,7 +138,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[52], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[52]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="52"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="52" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="52" Margin="85,-10,0,0" IsVisible="{Binding QWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -151,7 +151,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[48], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[48]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="48"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="48" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="48" Margin="85,-10,0,0" IsVisible="{Binding QWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -168,7 +168,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[44], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[44]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="44"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="44" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="44" Margin="85,-10,0,0" IsVisible="{Binding QWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -181,7 +181,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[40], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[40]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="40"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="40" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="40" Margin="85,-10,0,0" IsVisible="{Binding QWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -194,7 +194,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[36], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[36]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="36"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="36" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="36" Margin="85,-10,0,0" IsVisible="{Binding QWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -207,7 +207,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[32], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[32]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="32"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="32" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="32" Margin="85,-10,0,0" IsVisible="{Binding QWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -224,7 +224,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[28], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[28]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="28"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="28" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="28" Margin="85,-10,0,0" IsVisible="{Binding DWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -237,7 +237,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[24], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[24]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="24"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="24" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="24" Margin="85,-10,0,0" IsVisible="{Binding DWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -250,7 +250,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[20], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[20]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="20"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="20" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="20" Margin="85,-10,0,0" IsVisible="{Binding DWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -263,7 +263,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[16], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[16]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="16"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="16" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="16" Margin="85,-10,0,0" IsVisible="{Binding DWordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -280,7 +280,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[12], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[12]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="12"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="12" Margin="85,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="12" Margin="85,-10,0,0" IsVisible="{Binding WordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 
@@ -293,7 +293,7 @@ HorizontalOptions="Center"/>
                             <Button Text="{Binding BitButtonState[8], Converter={StaticResource BoolToBitConverter}}" IsEnabled="{Binding BitButtonIsEnabled[8]}" Style="{StaticResource QWordInputButton}" Command="{Binding ToggleBitCommand}" CommandParameter="8"/>
                         </HorizontalStackLayout>
 
-                        <Label Style="{StaticResource BitInformation}" Text="8" Margin="90,-10,0,0"/>
+                        <Label Style="{StaticResource BitInformation}" Text="8" Margin="90,-10,0,0" IsVisible="{Binding WordAdditionalInformationIsVisible}"/>
 
                     </VerticalStackLayout>
 

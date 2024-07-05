@@ -36,6 +36,14 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private const long MaxValue = long.MaxValue;
         private const long MinValue = long.MinValue;
 
+        private bool _isOperationSet = false;
+
+        private bool _isAfterCalculation = false;
+
+        private NumberSystem _previousNumberSystem;
+
+        private AmountOfBits _selectedAmountOfBits;
+
         [ObservableProperty]
         private bool _standardInputCalculatorIsVisible = true;
 
@@ -69,10 +77,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private string? _selectedBitOperation;
 
-        private bool _isOperationSet = false;
-
-        private bool _isAfterCalculation = false;
-
         [ObservableProperty]
         private ButtonState _currentButtonState;
 
@@ -81,10 +85,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         [ObservableProperty]
         private List<string> _bitOperations;
-
-        private NumberSystem _previousNumberSystem;
-
-        private AmountOfBits _selectedAmountOfBits;
 
         [ObservableProperty]
         private bool isQwordChecked = true;
@@ -103,6 +103,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         [ObservableProperty]
         private bool[] _bitButtonIsEnabled = new bool[64];
+
+        [ObservableProperty]
+        private bool _wordAdditionalInformationIsVisible = true;
+
+        [ObservableProperty]
+        private bool _dWordAdditionalInformationIsVisible = true;
+
+        [ObservableProperty]
+        private bool _qWordAdditionalInformationIsVisible = true;
 
         public ProgrammerViewModel()
         {
@@ -223,42 +232,45 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         }
 
         [RelayCommand]
-        private void ChangeSelectButtonOfAmountBits(string newSelectAmountOfBits)
-        {
-            switch (newSelectAmountOfBits)
-            {
-                case "Qword":
-                    _selectedAmountOfBits = AmountOfBits.Qword;
-                    break;
-                case "Dword":
-                    _selectedAmountOfBits = AmountOfBits.Dword;
-                    break;
-                case "Word":
-                    _selectedAmountOfBits = AmountOfBits.Word;
-                    break;
-                case "Byte":
-                    _selectedAmountOfBits = AmountOfBits.Byte;
-                    break;
-            }
-
-            ChangeButtonsStateFromAmountOfBitsSelected(_selectedAmountOfBits);
-        }
-
         private void ChangeButtonsStateFromAmountOfBitsSelected(AmountOfBits selectedAmountOfBits)
         {
             switch (selectedAmountOfBits)
             {
                 case AmountOfBits.Qword:
                     EnableAllButtons();
+
+                    QWordAdditionalInformationIsVisible = true;
+                    DWordAdditionalInformationIsVisible = true;
+                    WordAdditionalInformationIsVisible = true;
+
+                    Display = "0";
                     break;
                 case AmountOfBits.Dword:
                     EnableButtonsUpTo(32);
+
+                    QWordAdditionalInformationIsVisible = false;
+                    DWordAdditionalInformationIsVisible = true;
+                    WordAdditionalInformationIsVisible = true;
+
+                    Display = "0";
                     break;
                 case AmountOfBits.Word:
                     EnableButtonsUpTo(16);
+
+                    QWordAdditionalInformationIsVisible = false;
+                    DWordAdditionalInformationIsVisible = false;
+                    WordAdditionalInformationIsVisible = true;
+
+                    Display = "0";
                     break;
                 case AmountOfBits.Byte:
                     EnableButtonsUpTo(8);
+
+                    QWordAdditionalInformationIsVisible = false;
+                    DWordAdditionalInformationIsVisible = false;
+                    WordAdditionalInformationIsVisible = false;
+
+                    Display = "0";
                     break;
             }
         }
