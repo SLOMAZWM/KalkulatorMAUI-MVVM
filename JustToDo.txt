@@ -6,9 +6,8 @@
 
 Do zrobienia w programmerView (Qword Keyboard):
 
-1. System liczbowy, operatory bitowe, przesuniecia bitowe - zrobic bez label, zamienic to buttonem, ktory bedzie wyswietlal podview (np. liste)
-2. Zrobienie logiki dla "()"
-3. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
+1. Zrobienie logiki dla "()"
+2. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
 
 Do zrobienia w ScientificView:
 
@@ -26,3 +25,9 @@ Kolejność prac i wykonywania zadań losowa, w zależności od wolnego czasu i 
 Problem z ponawianiem operacji po zmianie systemu liczbowego - naprawic
 Problem z ostatnia operacja - naprawic
 Problem z dodawaniem wpisu do historii - naprawic + dodac z jakiego trybu byl on wywolywany
+
+//Dodatkowe
+
+ProgrammerView:
+
+-Zamień label + picker na sam picker, lub button z podobnym działaniem do pickera (dokumentacja)

@@ -29,8 +29,7 @@
                 <HorizontalStackLayout Spacing="10" Grid.Row="1" HorizontalOptions="Center">
                     <Button Text="Naukowy" Command="{Binding ChangeModeCommand}" CommandParameter="Scientific"/>
                     <Button Text="Programisty" Command="{Binding ChangeModeCommand}" CommandParameter="Programmer"/>
-                    <Button Text="Walutowy"/>
-                    <Button Text="Wykresowy"/>
+                    <Button Text="Walutowy" Command="{Binding ChangeModeCommand}" CommandParameter="Currency"/>
                 </HorizontalStackLayout>
 
                 <Label Text="Historia" TextColor="White" Grid.Row="2" HorizontalOptions="Center" 

@@ -11,8 +11,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
     {
         Scientific,
         Programmer,
-        Currency,
-        Graph
+        Currency
     }
 
     public partial class PageViewModel : ObservableObject
@@ -48,6 +47,10 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     break;
                 case "Programmer":
                     CurrentMode = CalculatorMode.Programmer;
+                    IsDisplayVisible = false;
+                    break;
+                case "Currency":
+                    CurrentMode = CalculatorMode.Currency;
                     IsDisplayVisible = false;
                     break;
             }
@@ -110,6 +113,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 CurrentView = new ProgrammerView
                 {
                     BindingContext = new ProgrammerViewModel()
+                };
+            }
+            else if(CalculatorMode.Currency.Equals(CurrentMode))
+            {
+                CurrentView = new CurrencyView
+                {
+                    BindingContext = new CurrencyViewModel()
                 };
             }
         }

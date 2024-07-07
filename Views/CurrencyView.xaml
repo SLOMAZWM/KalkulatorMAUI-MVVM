@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:KalkulatorMAUI_MVVM.ViewModels"
+             x:Class="KalkulatorMAUI_MVVM.Views.CurrencyView">
+
+    <Grid HorizontalOptions="StartAndExpand">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <VerticalStackLayout Grid.Row="0" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
+            <HorizontalStackLayout Spacing="10">
+                <Label Text="Display Selected From Currency" TextColor="White"/>
+                <Label Text="Information about Selected Currency" TextColor="White"/>
+            </HorizontalStackLayout>
+            <Label Text="Picker to change From Currency" TextColor="White"/>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
+            <HorizontalStackLayout Spacing="10">
+                <Label Text="Display Selected To Currency" TextColor="White"/>
+                <Label Text="Information about Selected Currency" TextColor="White"/>
+            </HorizontalStackLayout>
+            <Label Text="Picker to change To Currency" TextColor="White"/>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="2" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
+            <Label Text="Current exchange rate" TextColor="Gray"/>
+            <Label Text="Last Update: " TextColor="Gray"/>
+        </VerticalStackLayout>
+
+        <Grid Grid.Row="3" HorizontalOptions="Center" VerticalOptions="Center">
+
+            <VerticalStackLayout Spacing="5">
+
+                <HorizontalStackLayout Spacing="10">
+                    <Button Text="1" Style="{StaticResource NumberSmallButton}"/>
+                    <Button Text="2" Style="{StaticResource NumberSmallButton}"/>
+                    <Button Text="3" Style="{StaticResource NumberSmallButton}"/>
+                    <Button Text="4" Style="{StaticResource NumberSmallButton}"/>
+                    <Button Text="5" Style="{StaticResource NumberSmallButton}"/>
+                    <Button Text="6" Style="{StaticResource NumberSmallButton}"/>
+                    <Button Text="7" Style="{StaticResource NumberSmallButton}"/>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Spacing="10">
+                    <Button Text="8" Style="{StaticResource NumberSmallButton}"/>
+                    <Button Text="9" Style="{StaticResource NumberSmallButton}"/>
+                    <Button Text="0" Style="{StaticResource NumberSmallButton}"/>
+                    <Button Text="," Style="{StaticResource LightFunctionSmallButton}"/>
+                    <Button Text="DEL" Style="{StaticResource FunctionSmallButton}"/>
+                    <Button Text="CE" Style="{StaticResource FunctionSmallButton}"/>
+                    <Button Text="UP" Style="{StaticResource FunctionSmallButton}" BackgroundColor="MediumPurple"/>
+                </HorizontalStackLayout>
+                
+            </VerticalStackLayout>
+
+        </Grid>
+        
+    </Grid>
+    
+</ContentView>
