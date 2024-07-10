@@ -4,6 +4,10 @@
              xmlns:vm="clr-namespace:KalkulatorMAUI_MVVM.ViewModels"
              x:Class="KalkulatorMAUI_MVVM.Views.CurrencyView">
 
+    <ContentView.BindingContext>
+        <vm:CurrencyViewModel />
+    </ContentView.BindingContext>
+
     <Grid HorizontalOptions="StartAndExpand">
 
         <Grid.RowDefinitions>
@@ -15,29 +19,27 @@
 
         <VerticalStackLayout Grid.Row="0" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
             <HorizontalStackLayout Spacing="10">
-                <Label Text="Display Selected From Currency" TextColor="White"/>
-                <Label Text="Information about Selected Currency" TextColor="White"/>
+                <Label Text="{Binding DisplayCurrencyFrom}" TextColor="White"/>
+                <Label Text="Ikona waluty" TextColor="White"/>
             </HorizontalStackLayout>
-            <Label Text="Picker to change From Currency" TextColor="White"/>
+            <Picker ItemsSource="{Binding AvailableCurrencies}" SelectedItem="{Binding SelectedCurrencyFrom}" Title="Select From Currency"/>
         </VerticalStackLayout>
 
         <VerticalStackLayout Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
             <HorizontalStackLayout Spacing="10">
-                <Label Text="Display Selected To Currency" TextColor="White"/>
-                <Label Text="Information about Selected Currency" TextColor="White"/>
+                <Label Text="{Binding DisplayCurrencyTo}" TextColor="White"/>
+                <Label Text="Ikona Waluty" TextColor="White"/>
             </HorizontalStackLayout>
-            <Label Text="Picker to change To Currency" TextColor="White"/>
+            <Picker ItemsSource="{Binding AvailableCurrencies}" SelectedItem="{Binding SelectedCurrencyTo}" Title="Select To Currency"/>
         </VerticalStackLayout>
 
         <VerticalStackLayout Grid.Row="2" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
-            <Label Text="Current exchange rate" TextColor="Gray"/>
-            <Label Text="Last Update: " TextColor="Gray"/>
+            <Label Text="{Binding DisplayCurrentExchangeRate}" TextColor="Gray"/>
+            <Label Text="{Binding DisplayLastUpdate}" TextColor="Gray"/>
         </VerticalStackLayout>
 
         <Grid Grid.Row="3" HorizontalOptions="Center" VerticalOptions="Center">
-
             <VerticalStackLayout Spacing="5">
-
                 <HorizontalStackLayout Spacing="10">
                     <Button Text="1" Style="{StaticResource NumberSmallButton}"/>
                     <Button Text="2" Style="{StaticResource NumberSmallButton}"/>
@@ -55,13 +57,9 @@
                     <Button Text="," Style="{StaticResource LightFunctionSmallButton}"/>
                     <Button Text="DEL" Style="{StaticResource FunctionSmallButton}"/>
                     <Button Text="CE" Style="{StaticResource FunctionSmallButton}"/>
-                    <Button Text="UP" Style="{StaticResource FunctionSmallButton}" BackgroundColor="MediumPurple"/>
+                    <Button Text="UP" Style="{StaticResource FunctionSmallButton}" BackgroundColor="MediumPurple" Command="{Binding UpdateExchangeRateAsyncCommand}"/>
                 </HorizontalStackLayout>
-                
             </VerticalStackLayout>
-
         </Grid>
-        
     </Grid>
-    
 </ContentView>
