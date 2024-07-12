@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
-
     public partial class CalculatorViewModel : ObservableObject
     {
         [ObservableProperty]

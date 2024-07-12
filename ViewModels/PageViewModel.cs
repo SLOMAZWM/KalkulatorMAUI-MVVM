@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KalkulatorMAUI_MVVM.Enums;
 using KalkulatorMAUI_MVVM.Models;
 using KalkulatorMAUI_MVVM.Pages;
 using KalkulatorMAUI_MVVM.Views;
@@ -7,17 +8,8 @@ using System.Collections.ObjectModel;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
-    public enum CalculatorMode
-    {
-        Scientific,
-        Programmer,
-        Currency
-    }
-
     public partial class PageViewModel : ObservableObject
     {
-        public CalculatorViewModel CalculatorViewModel { get; set; }
-
         [ObservableProperty]
         private ContentView _currentView;
 
@@ -58,13 +50,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             UpdateMode();
         }
 
-        public PageViewModel()
-        {
-            CalculatorViewModel = new CalculatorViewModel();
-            CurrentView = new ScientificView();
-            UpdateView();
-        }
-
         public void UpdateOrientation(bool isPortrait)
         {
             IsPortrait = isPortrait;
@@ -90,7 +75,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 CurrentView = new StandardView
                 {
-                    BindingContext = CalculatorViewModel
+                    BindingContext = new CalculatorViewModel()
                 };
             }
             else
@@ -105,7 +90,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 CurrentView = new ScientificView
                 {
-                    BindingContext = CalculatorViewModel
+                    BindingContext = new CalculatorViewModel()
                 };
             }
             else if (CalculatorMode.Programmer.Equals(CurrentMode))

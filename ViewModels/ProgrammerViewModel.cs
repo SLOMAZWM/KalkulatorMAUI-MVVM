@@ -5,32 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Windows.Input;
+using KalkulatorMAUI_MVVM.Enums;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
-    public enum NumberSystem
-    {
-        HEX,
-        DEC,
-        OCT,
-        BIN,
-    }
-
-    public enum BitShiftOperation
-    {
-        Arytmetyczne,
-        Logiczne,
-        Cykliczne,
-    }
-
-    public enum AmountOfBits
-    {
-        Qword,
-        Dword,
-        Word,
-        Byte,
-    }
-
     public partial class ProgrammerViewModel : ObservableObject
     {
         private const long MaxValue = long.MaxValue;
