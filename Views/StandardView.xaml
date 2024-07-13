@@ -33,7 +33,7 @@
 
                 <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="White"/>
 
-                <CollectionView Grid.Row="2" ItemsSource="{Binding HistoryOperations}">
+                <CollectionView Grid.Row="2" ItemsSource="{Binding PageViewModel.HistoryOperations}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Padding="10">
