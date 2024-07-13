@@ -35,7 +35,7 @@
                 <Label Text="Historia" TextColor="White" Grid.Row="2" HorizontalOptions="Center" 
                VerticalOptions="Start" FontSize="22" FontAttributes="Bold"/>
 
-                <CollectionView Grid.Row="3" ItemsSource="{Binding CalculatorViewModel.HistoryOperations}">
+                <CollectionView Grid.Row="3" ItemsSource="{Binding HistoryOperations}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Padding="10">

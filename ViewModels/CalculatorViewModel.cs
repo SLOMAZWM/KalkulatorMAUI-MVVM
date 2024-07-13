@@ -11,7 +11,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
     public partial class CalculatorViewModel : ObservableObject
     {
         [ObservableProperty]
-        private ObservableCollection<HistoryOperation> _historyOperations = new ObservableCollection<HistoryOperation> ();
+        private PageViewModel _pageViewModel;
 
         [ObservableProperty]
         private string _lastOperation = string.Empty;
@@ -55,6 +55,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         [ObservableProperty]
         private bool _isButtonsVisible = true;
+
+        public CalculatorViewModel(PageViewModel pageViewModel)
+        {
+            PageViewModel = pageViewModel;
+        }
 
         [RelayCommand]
         private void SetOperation(string operation)
@@ -225,7 +230,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             Display = answer.ToString();
             _isAfterCalculation = true;
 
-            HistoryOperations.Insert(0, new HistoryOperation
+            PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
             {
                 Operation = $"{FirstNumber} {Operation} {SecondNumber}",
                 Result = answer.ToString()

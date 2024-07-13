@@ -4,10 +4,6 @@
              xmlns:vm="clr-namespace:KalkulatorMAUI_MVVM.ViewModels"
              x:Class="KalkulatorMAUI_MVVM.Views.ProgrammerView">
 
-    <ContentView.BindingContext>
-        <vm:ProgrammerViewModel />
-    </ContentView.BindingContext>
-
     <Grid>
 
         <Grid.RowDefinitions>

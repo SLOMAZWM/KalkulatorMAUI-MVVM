@@ -91,7 +91,10 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private bool _qWordAdditionalInformationIsVisible = true;
 
-        public ProgrammerViewModel()
+        [ObservableProperty]
+        private PageViewModel _pageViewModel;
+
+        public ProgrammerViewModel(PageViewModel pageViewModel)
         {
             AvailableNumberSystems = Enum.GetValues(typeof(NumberSystem)).Cast<NumberSystem>().ToList();
             BitShiftOperations = Enum.GetValues(typeof(BitShiftOperation)).Cast<BitShiftOperation>().ToList();
@@ -99,6 +102,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             CurrentButtonState = new ButtonState();
             CurrentNumberSystem = NumberSystem.DEC;
             _previousNumberSystem = CurrentNumberSystem;
+            PageViewModel = pageViewModel;
 
             InitializeProgrammerCalculator();
         }
@@ -542,6 +546,12 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
                 _isAfterCalculation = true;
+
+                PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
+                {
+                    Operation = $"{FirstNumber} {Operation} {SecondNumber}",
+                    Result = answer.ToString()
+                });
 
                 FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
                 _isOperationSet = false;

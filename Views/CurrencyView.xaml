@@ -4,10 +4,6 @@
              xmlns:vm="clr-namespace:KalkulatorMAUI_MVVM.ViewModels"
              x:Class="KalkulatorMAUI_MVVM.Views.CurrencyView">
 
-    <ContentView.BindingContext>
-        <vm:CurrencyViewModel />
-    </ContentView.BindingContext>
-
     <Grid HorizontalOptions="StartAndExpand">
 
         <Grid.RowDefinitions>

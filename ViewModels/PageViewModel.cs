@@ -14,6 +14,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private ContentView _currentView;
 
         [ObservableProperty]
+        private ObservableCollection<HistoryOperation> _historyOperations = new ObservableCollection<HistoryOperation>();
+
+        [ObservableProperty]
         private bool _isDisplayVisible = true;
 
         [ObservableProperty]
@@ -75,7 +78,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 CurrentView = new StandardView
                 {
-                    BindingContext = new CalculatorViewModel()
+                    BindingContext = new CalculatorViewModel(this)
                 };
             }
             else
@@ -90,21 +93,21 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 CurrentView = new ScientificView
                 {
-                    BindingContext = new CalculatorViewModel()
+                    BindingContext = new CalculatorViewModel(this)
                 };
             }
             else if (CalculatorMode.Programmer.Equals(CurrentMode))
             {
                 CurrentView = new ProgrammerView
                 {
-                    BindingContext = new ProgrammerViewModel()
+                    BindingContext = new ProgrammerViewModel(this)
                 };
             }
             else if(CalculatorMode.Currency.Equals(CurrentMode))
             {
                 CurrentView = new CurrencyView
                 {
-                    BindingContext = new CurrencyViewModel()
+                    BindingContext = new CurrencyViewModel(this)
                 };
             }
         }

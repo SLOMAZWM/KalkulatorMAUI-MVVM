@@ -36,12 +36,16 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private List<string> _availableCurrencies;
 
-        public CurrencyViewModel()
+        [ObservableProperty]
+        private PageViewModel _pageViewModel;
+
+        public CurrencyViewModel(PageViewModel pageViewModel)
         {
             AvailableCurrencies = new List<string>();
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Add("apikey", "bbe7a4b635a24a4f0667dcfd83c12016");
             Task.Run(async () => await LoadCurrenciesAsync());
+            PageViewModel = pageViewModel;
         }
 
         [RelayCommand]
