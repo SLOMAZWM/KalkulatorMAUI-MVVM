@@ -23,7 +23,8 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-	</PropertyGroup>
+	  <UserSecretsId>69bea11a-a721-47c1-8759-b8285f00cfaa</UserSecretsId>
+  </PropertyGroup>
 
 	<ItemGroup>
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -41,6 +42,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />

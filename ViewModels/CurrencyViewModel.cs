@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using KalkulatorMAUI_MVVM.Helpers;
+using Microsoft.Extensions.Configuration;
 using KalkulatorMAUI_MVVM.Models;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
@@ -46,8 +46,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             PageViewModel = pageViewModel;
             _httpClient = new HttpClient();
 
-            var config = ConfigLoader.LoadConfig();
-            _apiKey = config["ApiKey"];
+            var builder = new ConfigurationBuilder()
+                .AddUserSecrets<CurrencyViewModel>();
+
+            var configuration = builder.Build();
+            _apiKey = configuration["ApiKey"];
 
             InitializeCurrencies();
         }
