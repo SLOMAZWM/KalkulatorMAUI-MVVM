@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -50,58 +49,51 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             try
             {
                 var builder = new ConfigurationBuilder()
-                    .AddUserSecrets<CurrencyViewModel>();
+                    .AddUserSecrets<CurrencyViewModel>()
+                    .AddJsonFile("Properties/launchSettings.json", optional: false, reloadOnChange: true);
 
                 var configuration = builder.Build();
                 _apiKey = configuration["ApiKey"];
                 Console.WriteLine($"API Key Loaded: {_apiKey}");
 
                 _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                LoadCurrenciesFromConfig(configuration);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading API key: {ex.Message}");
-                DisplayCurrentExchangeRate = "Error loading API key. Please check your configuration.";
+                Console.WriteLine($"Error loading API key or currencies: {ex.Message}");
+                DisplayCurrentExchangeRate = "Error loading configuration. Please check your settings.";
                 return;
             }
-
-            LoadCurrenciesFromFile();
         }
 
-        private void LoadCurrenciesFromFile()
+        private void LoadCurrenciesFromConfig(IConfiguration configuration)
         {
             try
             {
-                var filePath = "currencies.json";
-                if (File.Exists(filePath))
+                var currencyCodes = configuration.GetSection("Currencies:codes").Get<List<string>>();
+                if (currencyCodes != null)
                 {
-                    var json = File.ReadAllText(filePath);
-                    var currencies = JsonSerializer.Deserialize<ExchangeRateApiResponse>(json);
-                    if (currencies != null && currencies.ConversionRates != null)
-                    {
-                        AvailableCurrencies = new List<string>(currencies.ConversionRates.Keys);
-                        Console.WriteLine("Available currencies loaded from file successfully.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error parsing currencies file.");
-                    }
+                    AvailableCurrencies = currencyCodes;
+                    Console.WriteLine("Available currencies loaded from configuration successfully.");
+                    Console.WriteLine($"Currencies: {string.Join(", ", AvailableCurrencies)}");
                 }
                 else
                 {
-                    Console.WriteLine("Currencies file not found.");
+                    Console.WriteLine("Error loading currencies from configuration.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading currencies from file: {ex.Message}");
-                Console.WriteLine(ex.ToString()); 
+                Console.WriteLine($"Error loading currencies from configuration: {ex.Message}");
+                Console.WriteLine(ex.ToString());
                 DisplayCurrentExchangeRate = "An unexpected error occurred. Please try again.";
             }
         }
 
         [RelayCommand]
-        private async Task UpdateExchangeAsync()
+        public async Task UpdateExchangeAsync()
         {
             try
             {
@@ -134,15 +126,17 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             catch (HttpRequestException httpEx)
             {
                 Console.WriteLine($"HTTP Error: {httpEx.Message}");
-                Console.WriteLine(httpEx.ToString());  
+                Console.WriteLine(httpEx.ToString());
                 DisplayCurrentExchangeRate = "Error updating exchange rate. Please check your internet connection.";
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-                Console.WriteLine(ex.ToString());  
+                Console.WriteLine(ex.ToString());
                 DisplayCurrentExchangeRate = "An unexpected error occurred. Please try again.";
             }
         }
+
+        public IRelayCommand UpdateExchangeAsyncCommand => new RelayCommand(async () => await UpdateExchangeAsync());
     }
 }
