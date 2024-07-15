@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -13,7 +14,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
     public partial class CurrencyViewModel : ObservableObject
     {
         private readonly HttpClient _httpClient;
-        private const string ApiUrl = "https://api.exchangeratesapi.io/latest?base=USD&access_key=bbe7a4b635a24a4f0667dcfd83c12016";
+        private readonly string _apiKey;
 
         [ObservableProperty]
         private string _selectedCurrencyFrom = "";
@@ -42,63 +43,48 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         public CurrencyViewModel(PageViewModel pageViewModel)
         {
             AvailableCurrencies = new List<string>();
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.Add("apikey", "bbe7a4b635a24a4f0667dcfd83c12016");
-            Task.Run(async () => await LoadCurrenciesAsync());
             PageViewModel = pageViewModel;
+            _httpClient = new HttpClient();
+
+            var config = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText("config.json"));
+            _apiKey = config["ApiKey"];
+            InitializeCurrencies();
         }
 
-        [RelayCommand]
-        private async Task LoadCurrenciesAsync()
+        private async Task InitializeCurrencies()
         {
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync(ApiUrl);
-                response.EnsureSuccessStatusCode();
-
-                CurrencyRatesResponse currencyResponse = await response.Content.ReadFromJsonAsync<CurrencyRatesResponse>();
-                if (currencyResponse != null)
-                {
-                    AvailableCurrencies = currencyResponse.Rates.Keys.ToList();
-                    DisplayLastUpdate = currencyResponse.Date.ToString("yyyy-MM-dd HH:mm:ss");
-                    Console.WriteLine("Available Currencies Loaded: " + string.Join(", ", AvailableCurrencies)); // Debug
-                }
+                var response = await _httpClient.GetFromJsonAsync<ExchangeRateApiResponse>("https://api.exchangeratesapi.io/latest?apikey=YOUR_API_KEY");
+                AvailableCurrencies = response.Rates.Keys.ToList();
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine("Błąd: " + ex.Message);
+                Console.WriteLine("Błąd przy pobieraniu walut!");
             }
         }
 
         [RelayCommand]
-        private async Task UpdateExchangeRateAsync()
-        {
-            if (string.IsNullOrEmpty(SelectedCurrencyFrom) || string.IsNullOrEmpty(SelectedCurrencyTo)) return;
-
-            decimal rate = await GetExchangeRateAsync(SelectedCurrencyFrom, SelectedCurrencyTo);
-            DisplayCurrencyFrom = SelectedCurrencyFrom;
-            DisplayCurrencyTo = SelectedCurrencyTo;
-            DisplayCurrentExchangeRate = $"{rate} {SelectedCurrencyTo}";
-        }
-
-        private async Task<decimal> GetExchangeRateAsync(string fromCurrency, string toCurrency)
+        private async Task UpdateExchangeAsync()
         {
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync(ApiUrl);
-                response.EnsureSuccessStatusCode();
-
-                CurrencyRatesResponse currencyResponse = await response.Content.ReadFromJsonAsync<CurrencyRatesResponse>();
-                if (currencyResponse != null && currencyResponse.Rates.TryGetValue(toCurrency, out decimal rate))
+                if (string.IsNullOrEmpty(SelectedCurrencyFrom) || string.IsNullOrEmpty(SelectedCurrencyTo))
                 {
-                    return rate;
+                    DisplayCurrentExchangeRate = "Please select both currencies.";
+                    return;
                 }
+
+                var response = await _httpClient.GetFromJsonAsync<ExchangeRateApiResponse>($"https://api.exchangeratesapi.io/latest?base={SelectedCurrencyFrom}&symbols={SelectedCurrencyTo}&apikey=YOUR_API_KEY");
+                var rate = response.Rates[SelectedCurrencyTo];
+
+                DisplayCurrentExchangeRate = $"1 {SelectedCurrencyFrom} = {rate} {SelectedCurrencyTo}";
+                DisplayLastUpdate = $"Last update: {response.Date}";
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Błąd: " + ex.Message);
+                Console.WriteLine($"Error updating exchange rate: {ex.Message}");
             }
-            return 1.0M; 
         }
 
     }

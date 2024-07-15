@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace KalkulatorMAUI_MVVM.Models
 {
-    public class CurrencyRatesResponse
+    public class ExchangeRateApiResponse
     {
-        public bool Success { get; set; }
-        public string Base { get; set; }
         public DateTime Date { get; set; }
         public Dictionary<string, decimal> Rates { get; set; }
     }
-
 }
