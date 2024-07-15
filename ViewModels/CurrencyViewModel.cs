@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KalkulatorMAUI_MVVM.Helpers;
 using KalkulatorMAUI_MVVM.Models;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
@@ -46,8 +46,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             PageViewModel = pageViewModel;
             _httpClient = new HttpClient();
 
-            var config = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText("config.json"));
+            var config = ConfigLoader.LoadConfig();
             _apiKey = config["ApiKey"];
+
             InitializeCurrencies();
         }
 
@@ -55,12 +56,18 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<ExchangeRateApiResponse>("https://api.exchangeratesapi.io/latest?apikey=YOUR_API_KEY");
+                var response = await _httpClient.GetFromJsonAsync<ExchangeRateApiResponse>($"https://api.exchangeratesapi.io/latest?apikey={_apiKey}");
                 AvailableCurrencies = response.Rates.Keys.ToList();
             }
-            catch
+            catch (HttpRequestException httpEx)
             {
-                Console.WriteLine("Błąd przy pobieraniu walut!");
+                Console.WriteLine($"HTTP Error: {httpEx.Message}");
+                DisplayCurrentExchangeRate = "Error fetching currencies. Please check your internet connection.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                DisplayCurrentExchangeRate = "An unexpected error occurred. Please try again.";
             }
         }
 
@@ -75,7 +82,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     return;
                 }
 
-                var response = await _httpClient.GetFromJsonAsync<ExchangeRateApiResponse>($"https://api.exchangeratesapi.io/latest?base={SelectedCurrencyFrom}&symbols={SelectedCurrencyTo}&apikey=YOUR_API_KEY");
+                var response = await _httpClient.GetFromJsonAsync<ExchangeRateApiResponse>($"https://api.exchangeratesapi.io/latest?base={SelectedCurrencyFrom}&symbols={SelectedCurrencyTo}&apikey={_apiKey}");
                 var rate = response.Rates[SelectedCurrencyTo];
 
                 DisplayCurrentExchangeRate = $"1 {SelectedCurrencyFrom} = {rate} {SelectedCurrencyTo}";
@@ -86,6 +93,5 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Console.WriteLine($"Error updating exchange rate: {ex.Message}");
             }
         }
-
     }
 }
