@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using KalkulatorMAUI_MVVM.Models;
-using System.Text.Json;
-using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
     public partial class CurrencyViewModel : ObservableObject
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiKey;
 
         [ObservableProperty]
         private string _selectedCurrencyFrom = "";
@@ -40,83 +37,134 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private PageViewModel _pageViewModel;
 
-        private bool _isFirstSign = true;
+        [ObservableProperty]
+        private bool _isLoading;
 
+        private bool _isFirstSign = true;
         private bool _isDotSet = false;
 
         public CurrencyViewModel(PageViewModel pageViewModel)
         {
-            AvailableCurrencies = new List<string>
-            {
-                "USD", "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG",
-                "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB",
-                "BRL", "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHF", "CLP",
-                "CNY", "COP", "CRC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD",
-                "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "FOK", "GBP", "GEL", "GGP",
-                "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG",
-                "HUF", "IDR", "ILS", "IMP", "INR", "IQD", "IRR", "ISK", "JEP", "JMD",
-                "JOD", "JPY", "KES", "KGS", "KHR", "KID", "KMF", "KRW", "KWD", "KYD",
-                "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LYD", "MAD", "MDL", "MGA",
-                "MKD", "MMK", "MNT", "MOP", "MRU", "MUR", "MVR", "MWK", "MXN", "MYR",
-                "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN",
-                "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF",
-                "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLE", "SLL", "SOS",
-                "SRD", "SSP", "STN", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP",
-                "TRY", "TTD", "TVD", "TWD", "TZS", "UAH", "UGX", "UYU", "UZS", "VES",
-                "VND", "VUV", "WST", "XAF", "XCD", "XDR", "XOF", "XPF", "YER", "ZAR",
-                "ZMW", "ZWL"
-            };
             PageViewModel = pageViewModel;
             _httpClient = new HttpClient();
+            LoadAvailableCurrenciesCommand = new AsyncRelayCommand(LoadAvailableCurrenciesAsync);
+            UpdateExchangeAsyncCommand = new AsyncRelayCommand(UpdateExchangeAsync);
 
+            LoadAvailableCurrenciesCommand.Execute(null);
+        }
+
+        public IAsyncRelayCommand LoadAvailableCurrenciesCommand { get; }
+        public IAsyncRelayCommand UpdateExchangeAsyncCommand { get; }
+
+        private async Task LoadAvailableCurrenciesAsync()
+        {
+            string url = "https://open.er-api.com/v6/latest/USD";
             try
             {
-                var builder = new ConfigurationBuilder()
-                    .AddUserSecrets<CurrencyViewModel>();
+                var response = await _httpClient.GetStringAsync(url);
+                var data = JObject.Parse(response);
 
-                var configuration = builder.Build();
-                _apiKey = configuration["ApiKey"];
-                Console.WriteLine($"API Key Loaded: {_apiKey}");
-
-                _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+                if (data["rates"] is JObject rates)
+                {
+                    AvailableCurrencies = new List<string>(rates.Properties().Select(p => p.Name));
+                }
+                else
+                {
+                    Console.WriteLine("Rates not found in API response.");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading API key: {ex.Message}");
-                DisplayCurrentExchangeRate = "Error loading API key. Please check your configuration.";
-                return;
+                Console.WriteLine($"Error fetching currencies: {ex.Message}");
             }
         }
 
-        [RelayCommand]
-        public async Task UpdateExchangeAsync()
+        private async Task<double> GetExchangeRateFromApiAsync(string fromCurrency, string toCurrency)
         {
+            string url = $"https://open.er-api.com/v6/latest/{fromCurrency}";
             try
             {
-                if (string.IsNullOrEmpty(SelectedCurrencyFrom) || string.IsNullOrEmpty(SelectedCurrencyTo))
+                var response = await GetStringWithRetriesAsync(url);
+
+                if (response == null)
                 {
-                    DisplayCurrentExchangeRate = "Please select both currencies.";
+                    Console.WriteLine("Failed to get response after retries.");
+                    return 0;
+                }
+
+                var data = JObject.Parse(response);
+                if (data["rates"]?[toCurrency] is JToken rateToken && double.TryParse(rateToken.ToString(), out double rate))
+                {
+                    return rate;
+                }
+                else
+                {
+                    Console.WriteLine("Rate not found or unable to parse rate.");
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                Console.WriteLine($"HTTP Request Exception: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"General Exception: {ex.Message}");
+            }
+
+            return 0;
+        }
+
+        private async Task<string> GetStringWithRetriesAsync(string url, int maxRetries = 3)
+        {
+            int retryCount = 0;
+            while (retryCount < maxRetries)
+            {
+                try
+                {
+                    return await _httpClient.GetStringAsync(url);
+                }
+                catch (HttpRequestException httpEx)
+                {
+                    Console.WriteLine($"HTTP Request Exception on attempt {retryCount + 1}: {httpEx.Message}");
+                    if (retryCount == maxRetries - 1) throw;
+                }
+                retryCount++;
+                await Task.Delay(2000);
+            }
+            return null;
+        }
+
+        [RelayCommand]
+        private async Task UpdateExchangeAsync()
+        {
+            IsLoading = true;
+            try
+            {
+                if (string.IsNullOrEmpty(SelectedCurrencyFrom) || string.IsNullOrEmpty(SelectedCurrencyTo) || string.IsNullOrEmpty(DisplayCurrencyFrom))
+                {
+                    DisplayCurrentExchangeRate = "Please select both currencies and enter an amount.";
+                    return;
+                }
+
+                if (!double.TryParse(DisplayCurrencyFrom, out double amount))
+                {
+                    DisplayCurrentExchangeRate = "Please enter a valid amount.";
                     return;
                 }
 
                 Console.WriteLine($"Attempting to fetch exchange rate for {SelectedCurrencyFrom} to {SelectedCurrencyTo}...");
-                var response = await _httpClient.GetFromJsonAsync<ExchangeRatePairResponse>($"https://v6.exchangerate-api.com/v6/{_apiKey}/pair/{SelectedCurrencyFrom}/{SelectedCurrencyTo}");
-                if (response == null)
+                var rate = await GetExchangeRateFromApiAsync(SelectedCurrencyFrom, SelectedCurrencyTo);
+                if (rate == 0)
                 {
-                    Console.WriteLine("Response is null");
                     DisplayCurrentExchangeRate = "Error updating exchange rate. Please check your internet connection.";
                     return;
                 }
-                if (response.Result != "success")
-                {
-                    Console.WriteLine($"API response error: {response.Result}");
-                    DisplayCurrentExchangeRate = $"Error updating exchange rate: {response.Result}";
-                    return;
-                }
-                var rate = response.ConversionRate;
+
+                var convertedAmount = amount * rate;
 
                 DisplayCurrentExchangeRate = $"1 {SelectedCurrencyFrom} = {rate} {SelectedCurrencyTo}";
-                DisplayLastUpdate = $"Last update: {response.TimeLastUpdateUtc}";
+                DisplayCurrencyTo = convertedAmount.ToString();
+                DisplayLastUpdate = $"Last update: {DateTime.UtcNow}";
                 Console.WriteLine($"Exchange rate fetched successfully: 1 {SelectedCurrencyFrom} = {rate} {SelectedCurrencyTo}");
             }
             catch (HttpRequestException httpEx)
@@ -131,21 +179,23 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Console.WriteLine(ex.ToString());
                 DisplayCurrentExchangeRate = "An unexpected error occurred. Please try again.";
             }
+            finally
+            {
+                IsLoading = false;
+            }
         }
 
-        public IRelayCommand UpdateExchangeAsyncCommand => new RelayCommand(async () => await UpdateExchangeAsync());
-
         [RelayCommand]
-        private void EnterSign(string Sign)
+        private void EnterSign(string sign)
         {
             if (_isFirstSign)
             {
-                DisplayCurrencyFrom = Sign;
+                DisplayCurrencyFrom = sign;
                 _isFirstSign = false;
             }
             else
             {
-                DisplayCurrencyFrom += Sign;
+                DisplayCurrencyFrom += sign;
             }
         }
 
@@ -155,6 +205,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             DisplayCurrencyFrom = "";
             DisplayCurrencyTo = "";
             _isFirstSign = true;
+            _isDotSet = false;
         }
 
         [RelayCommand]
@@ -169,16 +220,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void DotSet()
         {
-            if(!_isDotSet)
+            if (!_isDotSet)
             {
                 DisplayCurrencyFrom += ".";
                 _isDotSet = true;
             }
-            else
-            {
-                return;
-            }
         }
     }
 }
-

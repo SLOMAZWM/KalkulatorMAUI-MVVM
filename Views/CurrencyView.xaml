@@ -19,7 +19,7 @@
                 <Label Text="{Binding DisplayCurrencyFrom}" TextColor="White"/>
                 <Label Text="Ikona waluty" TextColor="White"/>
             </HorizontalStackLayout>
-            <Picker ItemsSource="{Binding AvailableCurrencies}" SelectedItem="{Binding SelectedCurrencyFrom}" Title="Select From Currency"/>
+            <Picker ItemsSource="{Binding AvailableCurrencies}" SelectedItem="{Binding SelectedCurrencyFrom}" Title="Wybierz walutę"/>
         </VerticalStackLayout>
 
         <VerticalStackLayout Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
@@ -27,12 +27,16 @@
                 <Label Text="{Binding DisplayCurrencyTo}" TextColor="White"/>
                 <Label Text="Ikona Waluty" TextColor="White"/>
             </HorizontalStackLayout>
-            <Picker ItemsSource="{Binding AvailableCurrencies}" SelectedItem="{Binding SelectedCurrencyTo}" Title="Select To Currency"/>
+            <Picker ItemsSource="{Binding AvailableCurrencies}" SelectedItem="{Binding SelectedCurrencyTo}" Title="Wybierz walutę"/>
         </VerticalStackLayout>
 
         <VerticalStackLayout Grid.Row="2" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
             <Label Text="{Binding DisplayCurrentExchangeRate}" TextColor="Gray"/>
             <Label Text="{Binding DisplayLastUpdate}" TextColor="Gray"/>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding IsLoading}">
+            <ActivityIndicator IsRunning="{Binding IsLoading}" Color="Purple"/>
         </VerticalStackLayout>
 
         <Grid Grid.Row="3" HorizontalOptions="Center" VerticalOptions="Center">
