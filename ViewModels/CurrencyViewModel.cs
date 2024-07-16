@@ -5,9 +5,9 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.Configuration;
 using KalkulatorMAUI_MVVM.Models;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
@@ -40,55 +40,51 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private PageViewModel _pageViewModel;
 
+        private bool _isFirstSign = true;
+
+        private bool _isDotSet = false;
+
         public CurrencyViewModel(PageViewModel pageViewModel)
         {
-            AvailableCurrencies = new List<string>();
+            AvailableCurrencies = new List<string>
+            {
+                "USD", "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG",
+                "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB",
+                "BRL", "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHF", "CLP",
+                "CNY", "COP", "CRC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD",
+                "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "FOK", "GBP", "GEL", "GGP",
+                "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG",
+                "HUF", "IDR", "ILS", "IMP", "INR", "IQD", "IRR", "ISK", "JEP", "JMD",
+                "JOD", "JPY", "KES", "KGS", "KHR", "KID", "KMF", "KRW", "KWD", "KYD",
+                "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LYD", "MAD", "MDL", "MGA",
+                "MKD", "MMK", "MNT", "MOP", "MRU", "MUR", "MVR", "MWK", "MXN", "MYR",
+                "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN",
+                "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF",
+                "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLE", "SLL", "SOS",
+                "SRD", "SSP", "STN", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP",
+                "TRY", "TTD", "TVD", "TWD", "TZS", "UAH", "UGX", "UYU", "UZS", "VES",
+                "VND", "VUV", "WST", "XAF", "XCD", "XDR", "XOF", "XPF", "YER", "ZAR",
+                "ZMW", "ZWL"
+            };
             PageViewModel = pageViewModel;
             _httpClient = new HttpClient();
 
             try
             {
                 var builder = new ConfigurationBuilder()
-                    .AddUserSecrets<CurrencyViewModel>()
-                    .AddJsonFile("Properties/launchSettings.json", optional: false, reloadOnChange: true);
+                    .AddUserSecrets<CurrencyViewModel>();
 
                 var configuration = builder.Build();
                 _apiKey = configuration["ApiKey"];
                 Console.WriteLine($"API Key Loaded: {_apiKey}");
 
                 _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-
-                LoadCurrenciesFromConfig(configuration);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading API key or currencies: {ex.Message}");
-                DisplayCurrentExchangeRate = "Error loading configuration. Please check your settings.";
+                Console.WriteLine($"Error loading API key: {ex.Message}");
+                DisplayCurrentExchangeRate = "Error loading API key. Please check your configuration.";
                 return;
-            }
-        }
-
-        private void LoadCurrenciesFromConfig(IConfiguration configuration)
-        {
-            try
-            {
-                var currencyCodes = configuration.GetSection("Currencies:codes").Get<List<string>>();
-                if (currencyCodes != null)
-                {
-                    AvailableCurrencies = currencyCodes;
-                    Console.WriteLine("Available currencies loaded from configuration successfully.");
-                    Console.WriteLine($"Currencies: {string.Join(", ", AvailableCurrencies)}");
-                }
-                else
-                {
-                    Console.WriteLine("Error loading currencies from configuration.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error loading currencies from configuration: {ex.Message}");
-                Console.WriteLine(ex.ToString());
-                DisplayCurrentExchangeRate = "An unexpected error occurred. Please try again.";
             }
         }
 
@@ -138,5 +134,51 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         }
 
         public IRelayCommand UpdateExchangeAsyncCommand => new RelayCommand(async () => await UpdateExchangeAsync());
+
+        [RelayCommand]
+        private void EnterSign(string Sign)
+        {
+            if (_isFirstSign)
+            {
+                DisplayCurrencyFrom = Sign;
+                _isFirstSign = false;
+            }
+            else
+            {
+                DisplayCurrencyFrom += Sign;
+            }
+        }
+
+        [RelayCommand]
+        private void ClearDisplay()
+        {
+            DisplayCurrencyFrom = "";
+            DisplayCurrencyTo = "";
+            _isFirstSign = true;
+        }
+
+        [RelayCommand]
+        private void DeleteSign()
+        {
+            if (DisplayCurrencyFrom.Length > 0)
+            {
+                DisplayCurrencyFrom = DisplayCurrencyFrom.Remove(DisplayCurrencyFrom.Length - 1);
+            }
+        }
+
+        [RelayCommand]
+        private void DotSet()
+        {
+            if(!_isDotSet)
+            {
+                DisplayCurrencyFrom += ".";
+                _isDotSet = true;
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 }
+

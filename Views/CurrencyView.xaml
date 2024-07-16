@@ -38,22 +38,22 @@
         <Grid Grid.Row="3" HorizontalOptions="Center" VerticalOptions="Center">
             <VerticalStackLayout Spacing="5">
                 <HorizontalStackLayout Spacing="10">
-                    <Button Text="1" Style="{StaticResource NumberSmallButton}"/>
-                    <Button Text="2" Style="{StaticResource NumberSmallButton}"/>
-                    <Button Text="3" Style="{StaticResource NumberSmallButton}"/>
-                    <Button Text="4" Style="{StaticResource NumberSmallButton}"/>
-                    <Button Text="5" Style="{StaticResource NumberSmallButton}"/>
-                    <Button Text="6" Style="{StaticResource NumberSmallButton}"/>
-                    <Button Text="7" Style="{StaticResource NumberSmallButton}"/>
+                    <Button Text="1" Style="{StaticResource NumberSmallButton}" Command="{Binding EnterSignCommand}" CommandParameter="1"/>
+                    <Button Text="2" Style="{StaticResource NumberSmallButton}" Command="{Binding EnterSignCommand}" CommandParameter="2"/>
+                    <Button Text="3" Style="{StaticResource NumberSmallButton}" Command="{Binding EnterSignCommand}" CommandParameter="3"/>
+                    <Button Text="4" Style="{StaticResource NumberSmallButton}" Command="{Binding EnterSignCommand}" CommandParameter="4"/>
+                    <Button Text="5" Style="{StaticResource NumberSmallButton}" Command="{Binding EnterSignCommand}" CommandParameter="5"/>
+                    <Button Text="6" Style="{StaticResource NumberSmallButton}" Command="{Binding EnterSignCommand}" CommandParameter="6"/>
+                    <Button Text="7" Style="{StaticResource NumberSmallButton}" Command="{Binding EnterSignCommand}" CommandParameter="7"/>
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Spacing="10">
-                    <Button Text="8" Style="{StaticResource NumberSmallButton}"/>
-                    <Button Text="9" Style="{StaticResource NumberSmallButton}"/>
-                    <Button Text="0" Style="{StaticResource NumberSmallButton}"/>
-                    <Button Text="," Style="{StaticResource LightFunctionSmallButton}"/>
-                    <Button Text="DEL" Style="{StaticResource FunctionSmallButton}"/>
-                    <Button Text="CE" Style="{StaticResource FunctionSmallButton}"/>
+                    <Button Text="8" Style="{StaticResource NumberSmallButton}" Command="{Binding EnterSignCommand}" CommandParameter="8"/>
+                    <Button Text="9" Style="{StaticResource NumberSmallButton}" Command="{Binding EnterSignCommand}" CommandParameter="9"/>
+                    <Button Text="0" Style="{StaticResource NumberSmallButton}" Command="{Binding EnterSignCommand}" CommandParameter="0"/>
+                    <Button Text="." Style="{StaticResource LightFunctionSmallButton}" Command="{Binding DotSetCommand}"/>
+                    <Button Text="DEL" Style="{StaticResource FunctionSmallButton}" Command="{Binding DeleteSignCommand}"/>
+                    <Button Text="CE" Style="{StaticResource FunctionSmallButton}" Command="{Binding ClearDisplayCommand}"/>
                     <Button Text="UP" Style="{StaticResource FunctionSmallButton}" BackgroundColor="MediumPurple" Command="{Binding UpdateExchangeAsyncCommand}"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
