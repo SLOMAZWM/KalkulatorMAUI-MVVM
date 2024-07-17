@@ -5,7 +5,7 @@
              x:Class="KalkulatorMAUI_MVVM.Views.CurrencyView"
              x:DataType="vm:CurrencyViewModel">
 
-    <Grid HorizontalOptions="StartAndExpand">
+    <Grid>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -14,21 +14,21 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <VerticalStackLayout Grid.Row="0" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
-            <HorizontalStackLayout Spacing="10">
-                <Label Text="{Binding DisplayCurrencyFrom}" TextColor="White"/>
-                <Label Text="Ikona waluty" TextColor="White"/>
-            </HorizontalStackLayout>
-            <Picker ItemsSource="{Binding AvailableCurrencies}" SelectedItem="{Binding SelectedCurrencyFrom}" Title="Wybierz walutę"/>
-        </VerticalStackLayout>
+        <HorizontalStackLayout Spacing="10" Grid.Row="0" HorizontalOptions="Start" VerticalOptions="Start" Margin="10,10,0,0">
+                <Label Text="Z:" TextColor="White"/>
+            <Picker ItemsSource="{Binding AvailableCurrencies}" SelectedItem="{Binding SelectedCurrencyFrom}"
+        Margin="0,-12,0,0" Title="Wybierz walutę" WidthRequest="320"
+        TextColor="DarkGoldenrod" HorizontalTextAlignment="Center"/>
+            <Label Text="{Binding DisplayCurrencyFrom}" TextColor="White"/>
+        </HorizontalStackLayout>
 
-        <VerticalStackLayout Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
-            <HorizontalStackLayout Spacing="10">
-                <Label Text="{Binding DisplayCurrencyTo}" TextColor="White"/>
-                <Label Text="Ikona Waluty" TextColor="White"/>
-            </HorizontalStackLayout>
-            <Picker ItemsSource="{Binding AvailableCurrencies}" SelectedItem="{Binding SelectedCurrencyTo}" Title="Wybierz walutę"/>
-        </VerticalStackLayout>
+        <HorizontalStackLayout Spacing="10" Grid.Row="1" HorizontalOptions="Start" VerticalOptions="Start" Margin="10,10,0,0">
+                <Label Text="Do:" TextColor="White"/>
+            <Picker ItemsSource="{Binding AvailableCurrencies}" SelectedItem="{Binding SelectedCurrencyTo}" 
+        Margin="0,-12,0,0" Title="Wybierz walutę" WidthRequest="320" 
+        TextColor="DarkGoldenrod" HorizontalTextAlignment="Center" HorizontalOptions="End"/>
+            <Label Text="{Binding DisplayCurrencyTo}" TextColor="White"/>
+        </HorizontalStackLayout>
 
         <VerticalStackLayout Grid.Row="2" HorizontalOptions="Start" VerticalOptions="Start" Spacing="10" Margin="10,10,0,0">
             <Label Text="{Binding DisplayCurrentExchangeRate}" TextColor="Gray"/>

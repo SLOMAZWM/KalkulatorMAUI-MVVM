@@ -6,6 +6,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.IO;
+using System.Reflection;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
@@ -41,7 +43,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private bool _isLoading;
 
         private bool _isFirstSign = true;
-        private bool _isDotSet = false;
+        private Dictionary<string, string> CurrencyDescriptions;
 
         public CurrencyViewModel(PageViewModel pageViewModel)
         {
@@ -67,6 +69,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 if (data["rates"] is JObject rates)
                 {
                     AvailableCurrencies = new List<string>(rates.Properties().Select(p => p.Name));
+                    await LoadCurrencyDescriptionsAsync();
+                    AvailableCurrencies = AvailableCurrencies.Select(c => CurrencyDescriptions.ContainsKey(c) ? $"{c} - {CurrencyDescriptions[c]}" : c).ToList();
                 }
                 else
                 {
@@ -79,8 +83,24 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
         }
 
+        private async Task LoadCurrencyDescriptionsAsync()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "KalkulatorMAUI_MVVM.Resources.CurrencyDescriptions.json";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                var json = await reader.ReadToEndAsync();
+                CurrencyDescriptions = JObject.Parse(json).ToObject<Dictionary<string, string>>();
+            }
+        }
+
         private async Task<double> GetExchangeRateFromApiAsync(string fromCurrency, string toCurrency)
         {
+            fromCurrency = fromCurrency.Split(' ')[0];
+            toCurrency = toCurrency.Split(' ')[0];
+
             string url = $"https://open.er-api.com/v6/latest/{fromCurrency}";
             try
             {
@@ -162,10 +182,10 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
                 var convertedAmount = amount * rate;
 
-                DisplayCurrentExchangeRate = $"1 {SelectedCurrencyFrom} = {rate} {SelectedCurrencyTo}";
+                DisplayCurrentExchangeRate = $"1 {SelectedCurrencyFrom.Split(' ')[0]} = {rate} {SelectedCurrencyTo.Split(' ')[0]}";
                 DisplayCurrencyTo = convertedAmount.ToString();
                 DisplayLastUpdate = $"Last update: {DateTime.UtcNow}";
-                Console.WriteLine($"Exchange rate fetched successfully: 1 {SelectedCurrencyFrom} = {rate} {SelectedCurrencyTo}");
+                Console.WriteLine($"Exchange rate fetched successfully: 1 {SelectedCurrencyFrom.Split(' ')[0]} = {rate} {SelectedCurrencyTo.Split(' ')[0]}");
             }
             catch (HttpRequestException httpEx)
             {
@@ -205,7 +225,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             DisplayCurrencyFrom = "";
             DisplayCurrencyTo = "";
             _isFirstSign = true;
-            _isDotSet = false;
         }
 
         [RelayCommand]
@@ -220,10 +239,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void DotSet()
         {
-            if (!_isDotSet)
+            if (DisplayCurrencyFrom.Contains("."))
+            {
+                return;
+            }
+            else
             {
                 DisplayCurrencyFrom += ".";
-                _isDotSet = true;
             }
         }
     }

@@ -38,7 +38,12 @@
 	<ItemGroup>
 		<None Remove="config.json" />
 		<None Remove="currencies.json" />
+		<None Remove="Resources\CurrencyDescriptions.json" />
 		<None Remove="Resources\Images\menu.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\CurrencyDescriptions.json" />
 	</ItemGroup>
 
 	<ItemGroup>
