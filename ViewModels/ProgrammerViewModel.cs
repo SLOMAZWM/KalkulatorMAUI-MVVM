@@ -18,6 +18,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         private bool _isAfterCalculation = false;
 
+        private bool _isDisplayValueUserModified = false;
+
         private NumberSystem _previousNumberSystem;
 
         private AmountOfBits _selectedAmountOfBits;
@@ -93,6 +95,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         [ObservableProperty]
         private PageViewModel _pageViewModel;
+
+        [ObservableProperty]
+        private int _openParenthesisCount = 0;
 
         public ProgrammerViewModel(PageViewModel pageViewModel)
         {
@@ -226,6 +231,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     WordAdditionalInformationIsVisible = true;
 
                     Display = "0";
+                    _isDisplayValueUserModified = false;
                     break;
                 case AmountOfBits.Dword:
                     EnableButtonsUpTo(32);
@@ -235,6 +241,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     WordAdditionalInformationIsVisible = true;
 
                     Display = "0";
+                    _isDisplayValueUserModified = false;
                     break;
                 case AmountOfBits.Word:
                     EnableButtonsUpTo(16);
@@ -244,6 +251,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     WordAdditionalInformationIsVisible = true;
 
                     Display = "0";
+                    _isDisplayValueUserModified = false;
                     break;
                 case AmountOfBits.Byte:
                     EnableButtonsUpTo(8);
@@ -253,6 +261,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     WordAdditionalInformationIsVisible = false;
 
                     Display = "0";
+                    _isDisplayValueUserModified = false;
                     break;
             }
         }
@@ -283,7 +292,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             OnPropertyChanged(nameof(BitButtonIsEnabled));
         }
-
 
         [RelayCommand]
         private void StandardInputCalculatorVisibilityTrue()
@@ -389,6 +397,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             if (Display.Length == 0)
             {
                 Display = "0";
+                _isDisplayValueUserModified = false;
             }
         }
 
@@ -397,11 +406,25 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             if (!_isOperationSet)
             {
-                FirstNumber = Display;
+                if (!string.IsNullOrEmpty(LastOperation) && LastOperation.Last() == ')')
+                {
+                    LastOperation += operation;
+                }
+                else
+                {
+                    if (Display != "0" || _isDisplayValueUserModified)
+                    {
+                        FirstNumber = Display;
+                        LastOperation += Display + operation;
+                    }
+                    else
+                    {
+                        LastOperation += operation;
+                    }
+                }
                 Operation = operation;
                 Display = "0";
                 _isOperationSet = true;
-                LastOperation = FirstNumber + Operation;
 
                 if (Operation == "leftArrow" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
                 {
@@ -417,9 +440,10 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             else
             {
                 SecondNumber = Display;
-                LastOperation = FirstNumber + Operation + SecondNumber;
+                LastOperation += Display + operation;
                 PerformCalculation();
                 Operation = operation;
+                Display = "0";
             }
 
             SelectedBitOperation = null;
@@ -459,6 +483,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
 
             Display = NumberFormatter.FormatDisplay(Display, CurrentNumberSystem);
+            _isDisplayValueUserModified = true;
         }
 
         private int GetBaseFromNumberSystem(NumberSystem system)
@@ -483,9 +508,14 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
             try
             {
-                long firstNumberInDecimal = ConvertToDecimalFromSelectedBase(FirstNumber.Replace(" ", ""), CurrentNumberSystem);
+                if (FirstNumber == "0" && SecondNumber == "0" && Operation == "" && !_isDisplayValueUserModified)
+                {
+                    Display = "0";
+                    return;
+                }
 
-                long secondNumberInDecimal = ConvertToDecimalFromSelectedBase(SecondNumber.Replace(" ", ""), CurrentNumberSystem);
+                long firstNumberInDecimal = ConvertToDecimalFromSelectedBase(FirstNumber.Replace(" ", ""), CurrentNumberSystem);
+                long secondNumberInDecimal = (Display != "0" || _isDisplayValueUserModified) ? ConvertToDecimalFromSelectedBase(SecondNumber.Replace(" ", ""), CurrentNumberSystem) : 0;
 
                 long answer = 0;
                 switch (Operation)
@@ -555,7 +585,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
                 FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
                 _isOperationSet = false;
-                LastOperation = FirstNumber + Operation + SecondNumber + "=" + answer.ToString();
+                LastOperation += SecondNumber + "=" + answer.ToString();
             }
             catch (OverflowException)
             {
@@ -629,11 +659,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private void ClearDisplay()
         {
             Display = NumberFormatter.FormatDisplay("0", CurrentNumberSystem);
+            LastOperation = string.Empty;
             Operation = string.Empty;
             _isOperationSet = false;
             _isAfterCalculation = false;
             FirstNumber = "0";
             SecondNumber = "0";
+            _isDisplayValueUserModified = false;
         }
 
         private void ConvertAndDisplay()
@@ -677,6 +709,53 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 NumberSystem.BIN => Convert.ToString(value, 2),
                 _ => throw new InvalidOperationException("Nieznany system numeryczny!"),
             };
+        }
+
+        [RelayCommand]
+        private void AddOpenParenthesis()
+        {
+            if (Display == "0" && string.IsNullOrEmpty(LastOperation))
+            {
+                LastOperation += "(";
+            }
+            else
+            {
+                if (LastOperation.EndsWith(")") || (!string.IsNullOrEmpty(LastOperation) && char.IsDigit(LastOperation.Last())))
+                {
+                    LastOperation += "*(";
+                }
+                else if (Display != "0" || _isDisplayValueUserModified)
+                {
+                    LastOperation += Display + "*(";
+                    Display = "0";
+                    _isDisplayValueUserModified = false;
+                }
+                else
+                {
+                    LastOperation += "(";
+                }
+            }
+            Display = "0";
+            OpenParenthesisCount++;
+        }
+
+        [RelayCommand]
+        private void AddCloseParenthesis()
+        {
+            if (OpenParenthesisCount > 0)
+            {
+                if (Display == "0" && !_isDisplayValueUserModified)
+                {
+                    LastOperation += ")";
+                }
+                else
+                {
+                    LastOperation += Display + ")";
+                    Display = "0";
+                    _isDisplayValueUserModified = false;
+                }
+                OpenParenthesisCount--;
+            }
         }
 
         private void EnableHexadecimalButtons()

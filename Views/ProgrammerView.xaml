@@ -346,8 +346,8 @@ HorizontalOptions="Center"/>
                     <Button Style="{StaticResource AdvancedButton}" Text="+/-" Command="{Binding ToggleSignCommand}"/>
                     <Button Style="{StaticResource AdvancedButton}" Text="&#x00AB;" Command="{Binding SetOperationCommand}" CommandParameter="leftArrow"/>
                     <Button Style="{StaticResource AdvancedButton}" Text="&#x00BB;" Command="{Binding SetOperationCommand}" CommandParameter="rightArrow"/>
-                    <Button Style="{StaticResource AdvancedButton}" Text="("/>
-                    <Button Style="{StaticResource AdvancedButton}" Text=")"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="(" Command="{Binding AddOpenParenthesisCommand}"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text=")" Command="{Binding AddCloseParenthesisCommand}"/>
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Grid.Row="1" Spacing="5" Margin="0,5,0,0">
