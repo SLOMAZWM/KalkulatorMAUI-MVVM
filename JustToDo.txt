@@ -1,18 +1,13 @@
-﻿Tryby w naukowym widoku:
+﻿Do zrobienia w programmerView:
 
-1. Naukowy
-2. Programisty
-3. Walutowy (api)
-
-Do zrobienia w programmerView (Qword Keyboard):
-
-1. Zrobienie logiki dla "()"
+1. Naprawic bugi wystepujace po nawiasach (sprawdzic czy w ogole sa)
 2. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
 
 Do zrobienia w ScientificView:
 
-1. Zrobienie logiki dla "()"
+1. Naprawic "()"
 2. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
+3. Poprawic Bugi wystepujace po nawiasach
 
 //
 
@@ -24,6 +19,7 @@ Kolejność prac i wykonywania zadań losowa, w zależności od wolnego czasu i 
 
 Ogolnie:
 
+-Poprawic wyglad kalkulatora (zmienic)
 -Dodac Historie w PageViewModel jako statyczny ObservableCollection, stworzyc odpowiednia metode AddHistoryNote, tak by sie nie powtarzać w viewModelach
 
 ProgrammerView:

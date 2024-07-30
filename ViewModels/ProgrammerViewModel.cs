@@ -15,87 +15,59 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private const long MinValue = long.MinValue;
 
         private bool _isOperationSet = false;
-
         private bool _isAfterCalculation = false;
-
         private bool _isDisplayValueUserModified = false;
-
         private NumberSystem _previousNumberSystem;
-
         private AmountOfBits _selectedAmountOfBits;
 
         [ObservableProperty]
         private bool _standardInputCalculatorIsVisible = true;
-
         [ObservableProperty]
         private bool _qwordInputCalculatorIsVisible = false;
-
         [ObservableProperty]
         private BitShiftOperation _selectedBitShiftOperation;
-
         [ObservableProperty]
         private List<BitShiftOperation> _bitShiftOperations;
-
         [ObservableProperty]
         private NumberSystem _currentNumberSystem;
-
         [ObservableProperty]
         private string _lastOperation = string.Empty;
-
         [ObservableProperty]
         private string _display = "0";
-
         [ObservableProperty]
         private string _firstNumber = "0";
-
         [ObservableProperty]
         private string _secondNumber = "0";
-
         [ObservableProperty]
         private string _operation = "";
-
         [ObservableProperty]
         private string? _selectedBitOperation;
-
         [ObservableProperty]
         private ButtonState _currentButtonState;
-
         [ObservableProperty]
         private List<NumberSystem> _availableNumberSystems;
-
         [ObservableProperty]
         private List<string> _bitOperations;
-
         [ObservableProperty]
         private bool isQwordChecked = true;
-
         [ObservableProperty]
         private bool isDwordChecked = false;
-
         [ObservableProperty]
         private bool isWordChecked = false;
-
         [ObservableProperty]
         private bool isByteChecked = false;
-
         [ObservableProperty]
         private bool[] _bitButtonState = new bool[64];
-
         [ObservableProperty]
         private bool[] _bitButtonIsEnabled = new bool[64];
-
         [ObservableProperty]
         private bool _wordAdditionalInformationIsVisible = true;
-
         [ObservableProperty]
         private bool _dWordAdditionalInformationIsVisible = true;
-
         [ObservableProperty]
         private bool _qWordAdditionalInformationIsVisible = true;
-
         [ObservableProperty]
         private PageViewModel _pageViewModel;
-
         [ObservableProperty]
         private int _openParenthesisCount = 0;
 
@@ -343,9 +315,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 currentValue = ~currentValue;
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
             }
-            catch
+            catch (Exception ex)
             {
-                Display = "BŁĄD";
+                Display = $"BŁĄD: {ex.Message}";
             }
         }
 
@@ -380,9 +352,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
             }
-            catch
+            catch (Exception ex)
             {
-                Display = "Błąd";
+                Display = $"Błąd: {ex.Message}";
             }
         }
 
@@ -417,6 +389,10 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                         FirstNumber = Display;
                         LastOperation += Display + operation;
                     }
+                    else if (_isDisplayValueUserModified)
+                    {
+                        LastOperation += Display + operation;
+                    }
                     else
                     {
                         LastOperation += operation;
@@ -425,27 +401,24 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Operation = operation;
                 Display = "0";
                 _isOperationSet = true;
-
-                if (Operation == "leftArrow" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
-                {
-                    PerformLeftShiftOperation();
-                    _isOperationSet = false;
-                }
-                else if (Operation == "rightArrow" && SelectedBitShiftOperation == BitShiftOperation.Cykliczne)
-                {
-                    PerformRightShiftOperation();
-                    _isOperationSet = false;
-                }
             }
             else
             {
-                SecondNumber = Display;
-                LastOperation += Display + operation;
-                PerformCalculation();
-                Operation = operation;
-                Display = "0";
+                if (!string.IsNullOrEmpty(Display) && (Display != "0" || _isDisplayValueUserModified))
+                {
+                    SecondNumber = Display;
+                    LastOperation += Display + operation;
+                    PerformCalculation();
+                    Operation = operation;
+                    Display = "0";
+                }
+                else
+                {
+                    Operation = operation;
+                    LastOperation = LastOperation.TrimEnd("+-*/".ToCharArray()) + operation;
+                }
             }
-
+        
             SelectedBitOperation = null;
         }
 
@@ -454,9 +427,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             if (!_isAfterCalculation)
             {
-                if (Display == "0")
+                if (Display == "0" && sign != "0")
                 {
                     Display = sign;
+                }
+                else if (Display == "0" && sign == "0" && _isDisplayValueUserModified)
+                {
+                    Display = "0";
                 }
                 else
                 {
@@ -468,7 +445,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                         {
                             return;
                         }
-                        Display += sign;
+                        Display = displayWithoutSpaces;
                     }
                     catch
                     {
@@ -501,91 +478,64 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void PerformCalculation()
         {
-            if (_isOperationSet)
-            {
-                SecondNumber = Display;
-            }
-
             try
             {
-                if (FirstNumber == "0" && SecondNumber == "0" && Operation == "" && !_isDisplayValueUserModified)
+                if (_isOperationSet)
+                {
+                    if (!(Display == "0" && !_isDisplayValueUserModified))
+                    {
+                        SecondNumber = Display;
+                        LastOperation += SecondNumber;
+                    }
+                }
+        
+                if (string.IsNullOrEmpty(LastOperation))
                 {
                     Display = "0";
                     return;
                 }
-
-                long firstNumberInDecimal = ConvertToDecimalFromSelectedBase(FirstNumber.Replace(" ", ""), CurrentNumberSystem);
-                long secondNumberInDecimal = (Display != "0" || _isDisplayValueUserModified) ? ConvertToDecimalFromSelectedBase(SecondNumber.Replace(" ", ""), CurrentNumberSystem) : 0;
-
-                long answer = 0;
-                switch (Operation)
+        
+                string expression = LastOperation.Replace(",", ".");
+                Console.WriteLine($"Obliczanie wyrażenia: {expression}");
+        
+                try
                 {
-                    case "+":
-                        answer = firstNumberInDecimal + secondNumberInDecimal;
-                        break;
-                    case "-":
-                        answer = firstNumberInDecimal - secondNumberInDecimal;
-                        break;
-                    case "*":
-                        answer = firstNumberInDecimal * secondNumberInDecimal;
-                        break;
-                    case "/":
-                        if (secondNumberInDecimal != 0)
+                    System.Data.DataTable table = new System.Data.DataTable();
+                    object result = table.Compute(expression, string.Empty);
+        
+                    Console.WriteLine($"Wynik: {result}");
+        
+                    if (result is double || result is float || result is decimal || result is int || result is long)
+                    {
+                        long answer = Convert.ToInt64(result);
+                        if (answer > MaxValue || answer < MinValue)
                         {
-                            answer = firstNumberInDecimal / secondNumberInDecimal;
-                        }
-                        else
-                        {
-                            Display = "NIE DZIEL PRZEZ ZERO!";
+                            Display = "Przekroczono maksymalną wartość";
                             return;
                         }
-                        break;
-                    case "%":
-                        answer = firstNumberInDecimal % secondNumberInDecimal;
-                        break;
-                    case "leftArrow":
-                        PerformLeftShiftOperation();
-                        return;
-                    case "rightArrow":
-                        PerformRightShiftOperation();
-                        return;
-                    case "AND":
-                        answer = firstNumberInDecimal & secondNumberInDecimal;
-                        break;
-                    case "OR":
-                        answer = firstNumberInDecimal | secondNumberInDecimal;
-                        break;
-                    case "XOR":
-                        answer = firstNumberInDecimal ^ secondNumberInDecimal;
-                        break;
-                    case "NAND":
-                        answer = ~(firstNumberInDecimal & secondNumberInDecimal);
-                        break;
-                    case "NOR":
-                        answer = ~(firstNumberInDecimal | secondNumberInDecimal);
-                        break;
-                    default:
-                        throw new InvalidOperationException("Nieznana operacja");
+        
+                        Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
+                        _isAfterCalculation = true;
+        
+                        PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
+                        {
+                            Operation = expression,
+                            Result = answer.ToString()
+                        });
+        
+                        FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
+                        _isOperationSet = false;
+                        LastOperation += "=" + answer.ToString();
+                    }
+                    else
+                    {
+                        Display = "BŁĄD";
+                    }
                 }
-
-                if (answer > MaxValue || answer < MinValue)
+                catch (Exception ex)
                 {
-                    Display = "Przekroczono maksymalną wartość";
-                    return;
+                    Display = $"BŁĄD: {ex.Message}";
                 }
-
-                Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
-                _isAfterCalculation = true;
-
-                PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
-                {
-                    Operation = $"{FirstNumber} {Operation} {SecondNumber}",
-                    Result = answer.ToString()
-                });
-
-                FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
-                _isOperationSet = false;
-                LastOperation += SecondNumber + "=" + answer.ToString();
             }
             catch (OverflowException)
             {
@@ -620,9 +570,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
             }
-            catch
+            catch (Exception ex)
             {
-                Display = "BŁĄD";
+                Display = $"BŁĄD: {ex.Message}";
             }
         }
 
@@ -649,9 +599,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
             }
-            catch
+            catch (Exception ex)
             {
-                Display = "BŁĄD";
+                Display = $"BŁĄD: {ex.Message}";
             }
         }
 
@@ -673,6 +623,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             try
             {
                 long decimalValue = ConvertToDecimalFromSelectedBase(Display.Replace(" ", ""), _previousNumberSystem);
+                Console.WriteLine($"Konwertowanie wartości: {decimalValue} z {_previousNumberSystem} na {CurrentNumberSystem}");
                 if (Math.Abs(decimalValue) > MaxValue)
                 {
                     Display = "Przekroczono maksymalną wartość";
@@ -680,11 +631,12 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 }
                 Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(decimalValue, CurrentNumberSystem), CurrentNumberSystem);
             }
-            catch
+            catch (Exception ex)
             {
-                Display = "Błąd";
+                Display = $"Błąd: {ex.Message}";
             }
         }
+
 
         private long ConvertToDecimalFromSelectedBase(string value, NumberSystem system)
         {
@@ -724,7 +676,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 {
                     LastOperation += "*(";
                 }
-                else if (Display != "0" || _isDisplayValueUserModified)
+                else if (Display != "0" && _isDisplayValueUserModified)
                 {
                     LastOperation += Display + "*(";
                     Display = "0";
@@ -735,7 +687,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     LastOperation += "(";
                 }
             }
-            Display = "0";
+            _isDisplayValueUserModified = false;
             OpenParenthesisCount++;
         }
 
@@ -839,3 +791,4 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         }
     }
 }
+
