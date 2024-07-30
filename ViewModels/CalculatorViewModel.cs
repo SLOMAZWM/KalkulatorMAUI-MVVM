@@ -42,10 +42,6 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private string _currentOperation = string.Empty;
         private double _firstOperand;
         private double _secondOperand;
-        
-        private string _lastSetOperation = string.Empty;
-        private double _lastOperand;
-
 
         public CalculatorViewModel(PageViewModel pageViewModel)
         {

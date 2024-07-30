@@ -1,6 +1,6 @@
 ﻿Do zrobienia w programmerView:
 
-1. Naprawic bugi wystepujace po nawiasach (sprawdzic czy w ogole sa)
+1. Dodac nietypowe operacje typu przesuniecia bitowych do specjalnych metod innych niz setOperation (zrobic oddzielna logike)
 2. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
 
 Do zrobienia w ScientificView:

@@ -49,13 +49,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private List<string> _bitOperations;
         [ObservableProperty]
-        private bool isQwordChecked = true;
+        private bool _isQwordChecked = true;
         [ObservableProperty]
-        private bool isDwordChecked = false;
+        private bool _isDwordChecked = false;
         [ObservableProperty]
-        private bool isWordChecked = false;
+        private bool _isWordChecked = false;
         [ObservableProperty]
-        private bool isByteChecked = false;
+        private bool _isByteChecked = false;
         [ObservableProperty]
         private bool[] _bitButtonState = new bool[64];
         [ObservableProperty]
