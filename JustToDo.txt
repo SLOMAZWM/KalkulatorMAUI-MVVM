@@ -5,9 +5,9 @@
 
 Do zrobienia w ScientificView:
 
-1. Naprawic "()"
+1. Naprawic historie
 2. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
-3. Poprawic Bugi wystepujace po nawiasach
+3. Poprawic Bugi wystepujace po nawiasach - nie dziala x^y sqrt y x EE
 
 //
 

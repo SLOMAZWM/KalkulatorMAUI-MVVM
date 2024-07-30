@@ -35,6 +35,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [ObservableProperty]
         private bool _isRadSelected = false;
 
+        private bool _isDisplayValueUserModified = false;
+
         [ObservableProperty]
         private string _nameOfRadDegButton = "Rad";
 
@@ -57,7 +59,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void SetOperation(string operation)
         {
-            if (Display != "0" || operation == "(" || operation == ")")
+            if (!string.IsNullOrEmpty(LastOperation) && LastOperation.Last() == ')')
+            {
+                LastOperation += operation;
+            }
+            else if (Display != "0" || operation == "(" || operation == ")")
             {
                 LastOperation += Display + operation;
                 Display = "0";
@@ -97,6 +103,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     Display += number;
                 }
             }
+            _isDisplayValueUserModified = true;
         }
 
         [RelayCommand]
@@ -119,6 +126,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             LastOperation = string.Empty;
             _isAfterCalculation = false;
             OpenParenthesisCount = 0;
+            _isDisplayValueUserModified = false;
         }
 
         [RelayCommand]
@@ -559,10 +567,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 {
                     LastOperation += "*(";
                 }
-                else if (Display != "0")
+                else if (Display != "0" || _isDisplayValueUserModified)
                 {
                     LastOperation += Display + "*(";
                     Display = "0";
+                    _isDisplayValueUserModified = false;
                 }
                 else
                 {
@@ -577,7 +586,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             if (OpenParenthesisCount > 0)
             {
-                if (Display == "0")
+                if (Display == "0" && !_isDisplayValueUserModified)
                 {
                     LastOperation += ")";
                 }
@@ -585,6 +594,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 {
                     LastOperation += Display + ")";
                     Display = "0";
+                    _isDisplayValueUserModified = false;
                 }
                 OpenParenthesisCount--;
             }
