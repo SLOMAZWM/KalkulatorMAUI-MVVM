@@ -11,45 +11,41 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 {
     public partial class CalculatorViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private PageViewModel _pageViewModel;
+        [ObservableProperty] private PageViewModel _pageViewModel;
 
-        [ObservableProperty]
-        private string _lastOperation = string.Empty;
+        [ObservableProperty] private string _lastOperation = string.Empty;
 
-        [ObservableProperty]
-        private string _display = "0";
+        [ObservableProperty] private string _display = "0";
 
-        [ObservableProperty]
-        private bool _isFnSelected = false;
+        [ObservableProperty] private bool _isFnSelected = false;
 
-        [ObservableProperty]
-        private bool _isFnUnSelected = true;
+        [ObservableProperty] private bool _isFnUnSelected = true;
 
-        [ObservableProperty]
-        private string _fnBackgroundColor = "#222222";
+        [ObservableProperty] private string _fnBackgroundColor = "#222222";
 
-        [ObservableProperty]
-        private string _fnTextColor = "White";
+        [ObservableProperty] private string _fnTextColor = "White";
 
-        [ObservableProperty]
-        private bool _isRadSelected = false;
+        [ObservableProperty] private bool _isRadSelected = false;
 
         private bool _isDisplayValueUserModified = false;
 
-        [ObservableProperty]
-        private string _nameOfRadDegButton = "Rad";
+        [ObservableProperty] private string _nameOfRadDegButton = "Rad";
 
         private bool _isAfterCalculation = false;
 
-        [ObservableProperty]
-        private bool _isMenuVisible = false;
+        [ObservableProperty] private bool _isMenuVisible = false;
 
-        [ObservableProperty]
-        private bool _isButtonsVisible = true;
+        [ObservableProperty] private bool _isButtonsVisible = true;
 
-        [ObservableProperty]
-        private int _openParenthesisCount = 0;
+        [ObservableProperty] private int _openParenthesisCount = 0;
+
+        private string _currentOperation = string.Empty;
+        private double _firstOperand;
+        private double _secondOperand;
+        
+        private string _lastSetOperation = string.Empty;
+        private double _lastOperand;
+
 
         public CalculatorViewModel(PageViewModel pageViewModel)
         {
@@ -59,16 +55,44 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void SetOperation(string operation)
         {
-            if (!string.IsNullOrEmpty(LastOperation) && LastOperation.Last() == ')')
+            if (operation == "pow" || operation == "LogBaseY" || operation == "EE" || operation == "root")
             {
-                LastOperation += operation;
-            }
-            else if (Display != "0" || operation == "(" || operation == ")")
-            {
-                LastOperation += Display + operation;
+                _currentOperation = operation;
+                _firstOperand = Convert.ToDouble(Display);
+
+                if (operation == "pow")
+                {
+                    LastOperation += Display + "^";
+                }
+                else if (operation == "LogBaseY")
+                {
+                    LastOperation += "log" + Display + "(";
+                }
+                else if (operation == "EE")
+                {
+                    LastOperation += Display + "E";
+                }
+                else if (operation == "root")
+                {
+                    LastOperation += Display + "root";
+                }
+
                 Display = "0";
             }
+            else
+            {
+                if (!string.IsNullOrEmpty(LastOperation) && LastOperation.Last() == ')')
+                {
+                    LastOperation += operation;
+                }
+                else if (Display != "0" || operation == "(" || operation == ")")
+                {
+                    LastOperation += Display + operation;
+                    Display = "0";
+                }
+            }
         }
+
 
         [RelayCommand]
         private void SetPercent()
@@ -103,6 +127,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     Display += number;
                 }
             }
+
             _isDisplayValueUserModified = true;
         }
 
@@ -127,6 +152,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             _isAfterCalculation = false;
             OpenParenthesisCount = 0;
             _isDisplayValueUserModified = false;
+            _currentOperation = string.Empty;
         }
 
         [RelayCommand]
@@ -147,17 +173,57 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 {
                     LastOperation += Display;
                 }
-                DataTable table = new DataTable();
-                var result = table.Compute(LastOperation, string.Empty);
-                Display = Convert.ToString(result);
+
+                if (_currentOperation == "pow")
+                {
+                    _secondOperand = Convert.ToDouble(Display);
+                    Display = Math.Pow(_firstOperand, _secondOperand).ToString();
+                    LastOperation = LastOperation.Replace("^" + Display, "^" + _secondOperand.ToString());
+                }
+                else if (_currentOperation == "LogBaseY")
+                {
+                    _secondOperand = Convert.ToDouble(Display);
+                    Display = Math.Log(_firstOperand, _secondOperand).ToString();
+                    LastOperation = LastOperation.Replace("log" + _firstOperand + "(" + Display,
+                        "log" + _firstOperand + "(" + _secondOperand.ToString());
+                }
+                else if (_currentOperation == "EE")
+                {
+                    _secondOperand = Convert.ToDouble(Display);
+                    Display = (_firstOperand * Math.Pow(10, _secondOperand)).ToString();
+                    LastOperation = LastOperation.Replace("E" + Display, "E" + _secondOperand.ToString());
+                }
+                else if (_currentOperation == "root")
+                {
+                    _secondOperand = Convert.ToDouble(Display);
+                    Display = Math.Pow(_firstOperand, 1.0 / _secondOperand).ToString();
+                    LastOperation = LastOperation.Replace("root" + Display, "root" + _secondOperand.ToString());
+                }
+                else
+                {
+                    string expression = LastOperation.Replace("pow", "Math.Pow");
+
+                    DataTable table = new DataTable();
+
+                    table.Columns.Add("expression", typeof(string), expression);
+                    DataRow row = table.NewRow();
+                    table.Rows.Add(row);
+
+                    var result = row["expression"];
+
+                    Display = Convert.ToString(result);
+                }
+
                 LastOperation += " = " + Display;
                 _isAfterCalculation = true;
+                _currentOperation = string.Empty;
             }
             catch (Exception)
             {
                 Display = "Error";
             }
         }
+
 
         [RelayCommand]
         private void GetSqrt()
@@ -299,6 +365,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 {
                     factorial *= i;
                 }
+
                 Display = factorial.ToString();
             }
             catch (FormatException)
@@ -468,6 +535,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 {
                     result = RadiansToDegrees(result);
                 }
+
                 Display = result.ToString();
             }
             catch (FormatException)
@@ -486,6 +554,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 {
                     result = RadiansToDegrees(result);
                 }
+
                 Display = result.ToString();
             }
             catch (FormatException)
@@ -504,6 +573,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 {
                     result = RadiansToDegrees(result);
                 }
+
                 Display = result.ToString();
             }
             catch (FormatException)
@@ -563,7 +633,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
             else
             {
-                if (LastOperation.EndsWith(")") || (!string.IsNullOrEmpty(LastOperation) && char.IsDigit(LastOperation.Last())))
+                if (LastOperation.EndsWith(")") ||
+                    (!string.IsNullOrEmpty(LastOperation) && char.IsDigit(LastOperation.Last())))
                 {
                     LastOperation += "*(";
                 }
@@ -578,6 +649,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     LastOperation += "(";
                 }
             }
+
             OpenParenthesisCount++;
         }
 
@@ -596,6 +668,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     Display = "0";
                     _isDisplayValueUserModified = false;
                 }
+
                 OpenParenthesisCount--;
             }
         }
