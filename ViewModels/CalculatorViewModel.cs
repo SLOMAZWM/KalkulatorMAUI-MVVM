@@ -164,6 +164,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
         }
 
+        private void AddHistoryToPageViewModel(string Operation, string Answer)
+        {
+            PageViewModel.HistoryOperations.Insert(0, new HistoryOperation()
+            {
+                Operation = Operation,
+                Result = Answer
+            });
+        }
+        
         [RelayCommand]
         private void Equals()
         {
@@ -179,6 +188,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     _secondOperand = Convert.ToDouble(Display);
                     Display = Math.Pow(_firstOperand, _secondOperand).ToString();
                     LastOperation = LastOperation.Replace("^" + Display, "^" + _secondOperand.ToString());
+                    
+                    AddHistoryToPageViewModel(LastOperation, Display);
+
                 }
                 else if (_currentOperation == "LogBaseY")
                 {
@@ -186,18 +198,25 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     Display = Math.Log(_firstOperand, _secondOperand).ToString();
                     LastOperation = LastOperation.Replace("log" + _firstOperand + "(" + Display,
                         "log" + _firstOperand + "(" + _secondOperand.ToString());
+                    
+                    AddHistoryToPageViewModel(LastOperation, Display);
+
                 }
                 else if (_currentOperation == "EE")
                 {
                     _secondOperand = Convert.ToDouble(Display);
                     Display = (_firstOperand * Math.Pow(10, _secondOperand)).ToString();
                     LastOperation = LastOperation.Replace("E" + Display, "E" + _secondOperand.ToString());
+                    
+                    AddHistoryToPageViewModel(LastOperation, Display);
                 }
                 else if (_currentOperation == "root")
                 {
                     _secondOperand = Convert.ToDouble(Display);
                     Display = Math.Pow(_firstOperand, 1.0 / _secondOperand).ToString();
                     LastOperation = LastOperation.Replace("root" + Display, "root" + _secondOperand.ToString());
+
+                    AddHistoryToPageViewModel(LastOperation, Display);
                 }
                 else
                 {
@@ -212,8 +231,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     var result = row["expression"];
 
                     Display = Convert.ToString(result);
+                    
+                    AddHistoryToPageViewModel(expression, result.ToString()!);
                 }
-
+                
+                
                 LastOperation += " = " + Display;
                 _isAfterCalculation = true;
                 _currentOperation = string.Empty;
