@@ -1,8 +1,10 @@
 ﻿Do zrobienia w programmerView:
 
 1. Dodac nietypowe operacje typu przesuniecia bitowych do specjalnych metod innych niz setOperation (zrobic oddzielna logike)
-2. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
-3. Naprawic ponawianie operacji tak jak w ScientificView
+2. Naprawic ponawianie operacji tak jak w ScientificView
+3. Naprawienie podstawowych operacji w HEX systemie
+4. Naprawienie przeliczania z LastOperation w innych systemach niz DEC
+5. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
 
 Do zrobienia w ScientificView:
 
