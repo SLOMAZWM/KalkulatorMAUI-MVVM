@@ -2,11 +2,11 @@
 
 1. Dodac nietypowe operacje typu przesuniecia bitowych do specjalnych metod innych niz setOperation (zrobic oddzielna logike)
 2. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
+3. Naprawic ponawianie operacji tak jak w ScientificView
 
 Do zrobienia w ScientificView:
 
 1. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
-2. Poprawic Bugi wystepujace po nawiasach - nie dziala x^y sqrt y x EE
 
 //
 
@@ -20,6 +20,7 @@ Ogolnie:
 
 -Poprawic wyglad kalkulatora (zmienic)
 -Dodac Historie w PageViewModel jako statyczny ObservableCollection, stworzyc odpowiednia metode AddHistoryNote, tak by sie nie powtarzać w viewModelach
+-Optymalizacja kodu (przemyslana)
 
 ProgrammerView:
 

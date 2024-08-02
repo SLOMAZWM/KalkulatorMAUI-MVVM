@@ -51,42 +51,85 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void SetOperation(string operation)
         {
-            if (operation == "pow" || operation == "LogBaseY" || operation == "EE" || operation == "root")
+            if (!_isAfterCalculation)
             {
-                _currentOperation = operation;
-                _firstOperand = Convert.ToDouble(Display);
+                if (operation == "pow" || operation == "LogBaseY" || operation == "EE" || operation == "root")
+                {
+                    _currentOperation = operation;
+                    _firstOperand = Convert.ToDouble(Display);
 
-                if (operation == "pow")
-                {
-                    LastOperation += Display + "^";
-                }
-                else if (operation == "LogBaseY")
-                {
-                    LastOperation += "log" + Display + "(";
-                }
-                else if (operation == "EE")
-                {
-                    LastOperation += Display + "E";
-                }
-                else if (operation == "root")
-                {
-                    LastOperation += Display + "root";
-                }
+                    if (operation == "pow")
+                    {
+                        LastOperation += Display + "^";
+                    }
+                    else if (operation == "LogBaseY")
+                    {
+                        LastOperation += "log" + Display + "(";
+                    }
+                    else if (operation == "EE")
+                    {
+                        LastOperation += Display + "E";
+                    }
+                    else if (operation == "root")
+                    {
+                        LastOperation += Display + "root";
+                    }
 
-                Display = "0";
+                    Display = "0";
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(LastOperation) && LastOperation.Last() == ')')
+                    {
+                        LastOperation += operation;
+                    }
+                    else if (Display != "0" || operation == "(" || operation == ")")
+                    {
+                        LastOperation += Display + operation;
+                        Display = "0";
+                    }
+                }
             }
             else
             {
-                if (!string.IsNullOrEmpty(LastOperation) && LastOperation.Last() == ')')
+                if (operation == "pow" || operation == "LogBaseY" || operation == "EE" || operation == "root")
                 {
-                    LastOperation += operation;
-                }
-                else if (Display != "0" || operation == "(" || operation == ")")
-                {
-                    LastOperation += Display + operation;
+                    if (operation == "pow")
+                    {
+                        LastOperation = Display + "^";
+                    }
+                    else if (operation == "LogBaseY")
+                    {
+                        LastOperation = "log" + Display + "(";
+                    }
+                    else if (operation == "EE")
+                    {
+                        LastOperation = Display + "E";
+                    }
+                    else if (operation == "root")
+                    {
+                        LastOperation = Display + "root";
+                    }
+
                     Display = "0";
                 }
+                else
+                {
+                    if (!string.IsNullOrEmpty(LastOperation) && LastOperation.Last() == ')')
+                    {
+                        LastOperation = operation;
+                    }
+                    else if (Display != "0" || operation == "(" || operation == ")")
+                    {
+                        LastOperation = Display + operation;
+                        Display = "0";
+                    }
+                }
+                
+                _currentOperation = operation;
+                _firstOperand = Convert.ToDouble(Display);
             }
+            
         }
 
 
@@ -216,7 +259,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 }
                 else
                 {
-                    string expression = LastOperation.Replace("pow", "Math.Pow");
+                    string expression = LastOperation;
 
                     DataTable table = new DataTable();
 
