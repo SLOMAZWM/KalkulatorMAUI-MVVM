@@ -376,7 +376,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void SetOperation(string operation)
         {
-            if (!_isOperationSet)
+            if (!_isAfterCalculation)
             {
                 if (!string.IsNullOrEmpty(LastOperation) && LastOperation.Last() == ')')
                 {
@@ -404,23 +404,14 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
             else
             {
-                if (!string.IsNullOrEmpty(Display) && (Display != "0" || _isDisplayValueUserModified))
-                {
-                    SecondNumber = Display;
-                    LastOperation += Display + operation;
-                    PerformCalculation();
-                    Operation = operation;
-                    Display = "0";
-                }
-                else
-                {
-                    Operation = operation;
-                    LastOperation = LastOperation.TrimEnd("+-*/".ToCharArray()) + operation;
-                }
+                LastOperation = Display + operation;
+                _isAfterCalculation = false; 
+                Operation = operation;
             }
-        
+
             SelectedBitOperation = null;
         }
+
 
         [RelayCommand]
         private void EnterDigitOrCharacter(string sign)
@@ -456,6 +447,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             else
             {
                 Display = sign;
+                LastOperation = string.Empty;
                 _isAfterCalculation = false;
             }
 
@@ -488,23 +480,23 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                         LastOperation += SecondNumber;
                     }
                 }
-        
+
                 if (string.IsNullOrEmpty(LastOperation))
                 {
                     Display = "0";
                     return;
                 }
-        
+
                 string expression = LastOperation.Replace(",", ".");
                 Console.WriteLine($"Obliczanie wyrażenia: {expression}");
-        
+
                 try
                 {
                     System.Data.DataTable table = new System.Data.DataTable();
                     object result = table.Compute(expression, string.Empty);
-        
+
                     Console.WriteLine($"Wynik: {result}");
-        
+
                     if (result is double || result is float || result is decimal || result is int || result is long)
                     {
                         long answer = Convert.ToInt64(result);
@@ -513,19 +505,19 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                             Display = "Przekroczono maksymalną wartość";
                             return;
                         }
-        
+
                         Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
-                        _isAfterCalculation = true;
-        
+
                         PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
                         {
                             Operation = expression,
                             Result = answer.ToString()
                         });
-        
+
                         FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
                         _isOperationSet = false;
                         LastOperation += "=" + answer.ToString();
+                        _isAfterCalculation = true;
                     }
                     else
                     {
@@ -545,6 +537,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             {
                 Display = $"BŁĄD: {ex.Message}";
             }
+
+            _isAfterCalculation = true;
         }
 
         private void PerformRightShiftOperation()
