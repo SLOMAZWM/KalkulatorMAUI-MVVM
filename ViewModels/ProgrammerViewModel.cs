@@ -407,6 +407,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 LastOperation = Display + operation;
                 _isAfterCalculation = false; 
                 Operation = operation;
+                Display = "0";
             }
 
             SelectedBitOperation = null;
@@ -472,14 +473,9 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             try
             {
-                if (_isOperationSet)
-                {
-                    if (!(Display == "0" && !_isDisplayValueUserModified))
-                    {
                         SecondNumber = Display;
                         LastOperation += SecondNumber;
-                    }
-                }
+
 
                 if (string.IsNullOrEmpty(LastOperation))
                 {
@@ -521,7 +517,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     }
                     else
                     {
-                        Display = "BŁĄD";
+                        Display = "BŁĄD pozycyjny";
                     }
                 }
                 catch (Exception ex)
