@@ -405,7 +405,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             else
             {
                 LastOperation = Display + operation;
-                _isAfterCalculation = false; 
+                _isAfterCalculation = false;
                 Operation = operation;
                 Display = "0";
             }
@@ -473,8 +473,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             try
             {
-                        SecondNumber = Display;
-                        LastOperation += SecondNumber;
+                SecondNumber = Display;
+                LastOperation += SecondNumber;
 
 
                 if (string.IsNullOrEmpty(LastOperation))
