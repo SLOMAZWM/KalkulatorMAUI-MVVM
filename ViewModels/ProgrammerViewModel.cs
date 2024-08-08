@@ -476,14 +476,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 SecondNumber = Display;
                 LastOperation += SecondNumber;
 
-
                 if (string.IsNullOrEmpty(LastOperation))
                 {
                     Display = "0";
                     return;
                 }
 
-                string expression = LastOperation.Replace(",", ".");
+                string expression = ConvertExpressionToDecimal(LastOperation);
                 Console.WriteLine($"Obliczanie wyrażenia: {expression}");
 
                 try
@@ -502,17 +501,18 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                             return;
                         }
 
-                        Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
+                        string formattedResult = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
+                        Display = formattedResult;
 
                         PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
                         {
-                            Operation = expression,
-                            Result = answer.ToString()
+                            Operation = LastOperation,
+                            Result = Display
                         });
 
                         FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
                         _isOperationSet = false;
-                        LastOperation += "=" + answer.ToString();
+                        LastOperation += "=" + formattedResult;
                         _isAfterCalculation = true;
                     }
                     else
@@ -535,6 +535,24 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
 
             _isAfterCalculation = true;
+        }
+
+        private string ConvertExpressionToDecimal(string expression)
+        {
+            var regex = new System.Text.RegularExpressions.Regex(@"([0-9A-Fa-f]+)|[\+\-\*/\(\)]");
+
+            var convertedExpression = regex.Replace(expression, match =>
+            {
+                if ("+-*/()".Contains(match.Value))
+                {
+                    return match.Value;
+                }
+
+                long decimalValue = ConvertToDecimalFromSelectedBase(match.Value, CurrentNumberSystem);
+                return decimalValue.ToString();
+            });
+
+            return convertedExpression;
         }
 
         private void PerformRightShiftOperation()
