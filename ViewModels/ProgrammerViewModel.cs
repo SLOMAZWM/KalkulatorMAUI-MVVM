@@ -613,6 +613,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
             }
         }
 
+
         [RelayCommand]
         private void ClearDisplay()
         {
