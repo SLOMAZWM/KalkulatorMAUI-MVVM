@@ -284,42 +284,57 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void SetBitOperation(string operation)
         {
-            switch (operation)
+            if (operation == "NOT")
             {
-                case "NOT":
-                    PerformNotOperation();
-                    break;
-                case "AND":
-                    SetOperation("AND");
-                    break;
-                case "OR":
-                    SetOperation("OR");
-                    break;
-                case "XOR":
-                    SetOperation("XOR");
-                    break;
-                case "NAND":
-                    SetOperation("NAND");
-                    break;
-                case "NOR":
-                    SetOperation("NOR");
-                    break;
+                PerformNotOperation();
+                return;
             }
+            else
+            {
+                Operation = operation;
+                FirstNumber = Display;
+                _isOperationSet = true;
+                Display = "0";
+            }
+            
+        }
+
+        private long PerformBitwiseOperation(long firstNumber, long secondNumber, string operation)
+        {
+            return operation switch
+            {
+                "AND" => firstNumber & secondNumber,
+                "OR" => firstNumber | secondNumber,
+                "XOR" => firstNumber ^ secondNumber,
+                "NAND" => ~(firstNumber & secondNumber),
+                "NOR" => ~(firstNumber | secondNumber),
+                _ => throw new InvalidOperationException("Nieznane działanie bitowe!"),
+            };
         }
 
         private void PerformNotOperation()
         {
             try
             {
-                long currentValue = ConvertToDecimalFromSelectedBase(Display, CurrentNumberSystem);
-                currentValue = ~currentValue;
-                Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(currentValue, CurrentNumberSystem), CurrentNumberSystem);
+                long currentValue = ConvertToDecimalFromSelectedBase(Display.Replace(" ", ""), CurrentNumberSystem);
+                long result = ~currentValue;
+                Display = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(result, CurrentNumberSystem), CurrentNumberSystem);
+                OnPropertyChanged(nameof(Display));
+
+                PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
+                {
+                    Operation = $"NOT {Display}",
+                    Result = Display
+                });
+
+                _isAfterCalculation = true;
             }
             catch (Exception ex)
             {
                 Display = $"BŁĄD: {ex.Message}";
             }
         }
+
 
         partial void OnCurrentNumberSystemChanged(NumberSystem value)
         {
@@ -473,65 +488,72 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             try
             {
-                SecondNumber = Display;
-                LastOperation += SecondNumber;
+                if (_isOperationSet)
+                {
+                    SecondNumber = Display;
+                    LastOperation = $"{FirstNumber} {Operation} {SecondNumber}";
 
-                if (string.IsNullOrEmpty(LastOperation))
-                {
-                    Display = "0";
-                    return;
-                }
-                if (LastOperation.Contains("leftArrow"))
-                {
-                    PerformLeftShiftOperation();
-                }
-                else if (LastOperation.Contains("rightArrow"))
-                {
-                    PerformRightShiftOperation();
-                }
-                else
-                {
-                    string expression = ConvertExpressionToDecimal(LastOperation);
-                    Console.WriteLine($"Obliczanie wyrażenia: {expression}");
-
-                    try
+                    if (Operation == "AND" || Operation == "OR" || Operation == "XOR" || Operation == "NAND" || Operation == "NOR")
                     {
-                        System.Data.DataTable table = new System.Data.DataTable();
-                        object result = table.Compute(expression, string.Empty);
+                        long firstNumber = ConvertToDecimalFromSelectedBase(FirstNumber, CurrentNumberSystem);
+                        long secondNumber = ConvertToDecimalFromSelectedBase(SecondNumber, CurrentNumberSystem);
+                        long result = PerformBitwiseOperation(firstNumber, secondNumber, Operation);
 
-                        Console.WriteLine($"Wynik: {result}");
+                        string formattedResult = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(result, CurrentNumberSystem), CurrentNumberSystem);
+                        Display = formattedResult;
 
-                        if (result is double || result is float || result is decimal || result is int || result is long)
+                        PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
                         {
-                            long answer = Convert.ToInt64(result);
-                            if (answer > MaxValue || answer < MinValue)
-                            {
-                                Display = "Przekroczono maksymalną wartość";
-                                return;
-                            }
+                            Operation = LastOperation,
+                            Result = Display
+                        });
 
-                            string formattedResult = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
-                            Display = formattedResult;
-
-                            PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
-                            {
-                                Operation = LastOperation,
-                                Result = Display
-                            });
-
-                            FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
-                            _isOperationSet = false;
-                            LastOperation += "=" + formattedResult;
-                            _isAfterCalculation = true;
-                        }
-                        else
-                        {
-                            Display = "BŁĄD pozycyjny";
-                        }
+                        FirstNumber = ConvertFromDecimalToSelectedBase(result, CurrentNumberSystem);
+                        LastOperation += $" = {Display}";
+                        _isAfterCalculation = true;
+                        _isOperationSet = false; // Reset operation set flag
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Display = $"BŁĄD: {ex.Message}";
+                        // Handle other operations (like +, -, *, /, etc.)
+                        string expression = ConvertExpressionToDecimal(LastOperation);
+
+                        try
+                        {
+                            System.Data.DataTable table = new System.Data.DataTable();
+                            object result = table.Compute(expression, string.Empty);
+
+                            if (result is double || result is float || result is decimal || result is int || result is long)
+                            {
+                                long answer = Convert.ToInt64(result);
+                                if (answer > MaxValue || answer < MinValue)
+                                {
+                                    Display = "Przekroczono maksymalną wartość";
+                                    return;
+                                }
+
+                                string formattedResult = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
+                                Display = formattedResult;
+
+                                PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
+                                {
+                                    Operation = LastOperation,
+                                    Result = Display
+                                });
+
+                                FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
+                                LastOperation += $" = {formattedResult}";
+                                _isAfterCalculation = true;
+                            }
+                            else
+                            {
+                                Display = "BŁĄD pozycyjny";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Display = $"BŁĄD: {ex.Message}";
+                        }
                     }
                 }
             }
@@ -546,6 +568,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
             _isAfterCalculation = true;
         }
+
+
 
 
         private string ConvertExpressionToDecimal(string expression)
