@@ -481,48 +481,58 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     Display = "0";
                     return;
                 }
-
-                string expression = ConvertExpressionToDecimal(LastOperation);
-                Console.WriteLine($"Obliczanie wyrażenia: {expression}");
-
-                try
+                if (LastOperation.Contains("leftArrow"))
                 {
-                    System.Data.DataTable table = new System.Data.DataTable();
-                    object result = table.Compute(expression, string.Empty);
-
-                    Console.WriteLine($"Wynik: {result}");
-
-                    if (result is double || result is float || result is decimal || result is int || result is long)
-                    {
-                        long answer = Convert.ToInt64(result);
-                        if (answer > MaxValue || answer < MinValue)
-                        {
-                            Display = "Przekroczono maksymalną wartość";
-                            return;
-                        }
-
-                        string formattedResult = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
-                        Display = formattedResult;
-
-                        PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
-                        {
-                            Operation = LastOperation,
-                            Result = Display
-                        });
-
-                        FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
-                        _isOperationSet = false;
-                        LastOperation += "=" + formattedResult;
-                        _isAfterCalculation = true;
-                    }
-                    else
-                    {
-                        Display = "BŁĄD pozycyjny";
-                    }
+                    PerformLeftShiftOperation();
                 }
-                catch (Exception ex)
+                else if (LastOperation.Contains("rightArrow"))
                 {
-                    Display = $"BŁĄD: {ex.Message}";
+                    PerformRightShiftOperation();
+                }
+                else
+                {
+                    string expression = ConvertExpressionToDecimal(LastOperation);
+                    Console.WriteLine($"Obliczanie wyrażenia: {expression}");
+
+                    try
+                    {
+                        System.Data.DataTable table = new System.Data.DataTable();
+                        object result = table.Compute(expression, string.Empty);
+
+                        Console.WriteLine($"Wynik: {result}");
+
+                        if (result is double || result is float || result is decimal || result is int || result is long)
+                        {
+                            long answer = Convert.ToInt64(result);
+                            if (answer > MaxValue || answer < MinValue)
+                            {
+                                Display = "Przekroczono maksymalną wartość";
+                                return;
+                            }
+
+                            string formattedResult = NumberFormatter.FormatDisplay(ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem), CurrentNumberSystem);
+                            Display = formattedResult;
+
+                            PageViewModel.HistoryOperations.Insert(0, new HistoryOperation
+                            {
+                                Operation = LastOperation,
+                                Result = Display
+                            });
+
+                            FirstNumber = ConvertFromDecimalToSelectedBase(answer, CurrentNumberSystem);
+                            _isOperationSet = false;
+                            LastOperation += "=" + formattedResult;
+                            _isAfterCalculation = true;
+                        }
+                        else
+                        {
+                            Display = "BŁĄD pozycyjny";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Display = $"BŁĄD: {ex.Message}";
+                    }
                 }
             }
             catch (OverflowException)
@@ -536,6 +546,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
             _isAfterCalculation = true;
         }
+
 
         private string ConvertExpressionToDecimal(string expression)
         {
