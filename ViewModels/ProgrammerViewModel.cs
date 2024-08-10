@@ -511,11 +511,10 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                         FirstNumber = ConvertFromDecimalToSelectedBase(result, CurrentNumberSystem);
                         LastOperation += $" = {Display}";
                         _isAfterCalculation = true;
-                        _isOperationSet = false; // Reset operation set flag
+                        _isOperationSet = false;
                     }
                     else
                     {
-                        // Handle other operations (like +, -, *, /, etc.)
                         string expression = ConvertExpressionToDecimal(LastOperation);
 
                         try

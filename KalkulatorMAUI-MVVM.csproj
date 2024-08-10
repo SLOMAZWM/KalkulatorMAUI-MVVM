@@ -71,6 +71,9 @@
 		<MauiXaml Update="Views\CurrencyView.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\MemoryContentView.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\ProgrammerView.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

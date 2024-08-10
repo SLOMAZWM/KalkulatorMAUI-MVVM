@@ -19,6 +19,7 @@ Ogolnie:
 -Poprawic wyglad kalkulatora (zmienic)
 -Dodac Historie w PageViewModel jako statyczny ObservableCollection, stworzyc odpowiednia metode AddHistoryNote, tak by sie nie powtarzać w viewModelach
 -Optymalizacja kodu (przemyslana)
+-Usunac Margin w StandardView - uzyc zamiast tego RowDefinition
 
 ProgrammerView:
 

@@ -39,6 +39,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         [ObservableProperty] private int _openParenthesisCount = 0;
 
+        [ObservableProperty] private bool _isMemoryVisible = false;
+
         private string _currentOperation = string.Empty;
         private double _firstOperand;
         private double _secondOperand;
@@ -738,6 +740,13 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private void MenuClicked()
         {
             IsMenuVisible = !IsMenuVisible;
+            IsButtonsVisible = !IsButtonsVisible;
+        }
+
+        [RelayCommand]
+        private void MemoryClicked()
+        {
+            IsMemoryVisible = !IsMemoryVisible;
             IsButtonsVisible = !IsButtonsVisible;
         }
     }
