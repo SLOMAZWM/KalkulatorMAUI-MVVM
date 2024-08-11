@@ -1,58 +1,62 @@
-﻿using KalkulatorMAUI_MVVM.ValueObjects;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using KalkulatorMAUI_MVVM.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
-public class MemoryStore : ObservableObject
+namespace KalkulatorMAUI_MVVM.Models
 {
-    private readonly List<MemoryValue> _memoryValues;
-
-    public MemoryStore()
+    public class MemoryStore : ObservableObject
     {
-        _memoryValues = new List<MemoryValue>();
-    }
+        private readonly List<MemoryEntity> _memoryEntities;
 
-    public IReadOnlyList<MemoryValue> MemoryValues => _memoryValues.AsReadOnly();
-
-    public void AddMemoryValue(MemoryValue memoryValue)
-    {
-        _memoryValues.Add(memoryValue);
-        OnPropertyChanged(nameof(MemoryValues));
-    }
-
-    public void ClearMemoryValues()
-    {
-        _memoryValues.Clear();
-        OnPropertyChanged(nameof(MemoryValues));
-    }
-
-    public long RecallLastMemoryValue()
-    {
-        return _memoryValues.Any() ? _memoryValues.Last().Value : 0;
-    }
-
-    public void AddToMemoryValue(MemoryValue memoryValue, long valueToAdd)
-    {
-        var index = _memoryValues.IndexOf(memoryValue);
-        if (index >= 0)
+        public MemoryStore()
         {
-            var updatedValue = new MemoryValue(memoryValue.Value + valueToAdd);
-            _memoryValues[index] = updatedValue;
-            OnPropertyChanged(nameof(MemoryValues));
+            _memoryEntities = new List<MemoryEntity>();
         }
-    }
 
-    public void SubtractFromMemoryValue(MemoryValue memoryValue, long valueToSubtract)
-    {
-        var index = _memoryValues.IndexOf(memoryValue);
-        if (index >= 0)
+        public IReadOnlyList<MemoryEntity> MemoryEntities => _memoryEntities.AsReadOnly();
+
+        public void AddMemoryEntity(MemoryEntity memoryEntity)
         {
-            var updatedValue = new MemoryValue(memoryValue.Value - valueToSubtract);
-            _memoryValues[index] = updatedValue;
-            OnPropertyChanged(nameof(MemoryValues));
+            _memoryEntities.Add(memoryEntity);
+            OnPropertyChanged(nameof(MemoryEntities));
         }
-    }
 
-    public void RemoveMemoryValue(MemoryValue memoryValue)
-    {
-        _memoryValues.Remove(memoryValue);
-        OnPropertyChanged(nameof(MemoryValues));
+        public void ClearMemoryEntities()
+        {
+            _memoryEntities.Clear();
+            OnPropertyChanged(nameof(MemoryEntities));
+        }
+
+        public long RecallLastMemoryEntityValue()
+        {
+            return _memoryEntities.Any() ? _memoryEntities.Last().Value : 0;
+        }
+
+        public void AddToMemoryEntity(MemoryEntity memoryEntity, long valueToAdd)
+        {
+            var entity = _memoryEntities.FirstOrDefault(me => me.Id == memoryEntity.Id);
+            if (entity != null)
+            {
+                entity.AddValue(valueToAdd);
+                OnPropertyChanged(nameof(MemoryEntities));
+            }
+        }
+
+        public void SubtractFromMemoryEntity(MemoryEntity memoryEntity, long valueToSubtract)
+        {
+            var entity = _memoryEntities.FirstOrDefault(me => me.Id == memoryEntity.Id);
+            if (entity != null)
+            {
+                entity.SubtractValue(valueToSubtract);
+                OnPropertyChanged(nameof(MemoryEntities));
+            }
+        }
+
+        public void RemoveMemoryEntity(MemoryEntity memoryEntity)
+        {
+            _memoryEntities.Remove(memoryEntity);
+            OnPropertyChanged(nameof(MemoryEntities));
+        }
     }
 }

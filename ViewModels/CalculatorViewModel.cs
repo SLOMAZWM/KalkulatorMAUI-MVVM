@@ -1,12 +1,6 @@
-﻿using KalkulatorMAUI_MVVM.Models;
-using KalkulatorMAUI_MVVM.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using KalkulatorMAUI_MVVM.Entities;
+using KalkulatorMAUI_MVVM.Models;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KalkulatorMAUI_MVVM.ViewModels
 {
@@ -757,37 +751,37 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void StoreMemory()
         {
-            MemoryStore.AddMemoryValue(new MemoryValue(long.Parse(Display)));
+            MemoryStore.AddMemoryEntity(new MemoryEntity(long.Parse(Display)));
         }
 
         [RelayCommand]
-        private void AddToMemory(MemoryValue memoryValue)
+        private void AddToMemory(MemoryEntity memoryEntity)
         {
-            MemoryStore.AddToMemoryValue(memoryValue, long.Parse(Display));
+            MemoryStore.AddToMemoryEntity(memoryEntity, long.Parse(Display));
         }
 
         [RelayCommand]
-        private void SubtractFromMemory(MemoryValue memoryValue)
+        private void SubtractFromMemory(MemoryEntity memoryEntity)
         {
-            MemoryStore.SubtractFromMemoryValue(memoryValue, long.Parse(Display));
+            MemoryStore.SubtractFromMemoryEntity(memoryEntity, long.Parse(Display));
         }
 
         [RelayCommand]
-        private void RemoveMemoryValue(MemoryValue memoryValue)
+        private void RemoveMemoryEntity(MemoryEntity memoryEntity)
         {
-            MemoryStore.RemoveMemoryValue(memoryValue);
+            MemoryStore.RemoveMemoryEntity(memoryEntity);
         }
 
         [RelayCommand]
         private void RecallMemory()
         {
-            Display = MemoryStore.RecallLastMemoryValue().ToString();
+            Display = MemoryStore.RecallLastMemoryEntityValue().ToString();
         }
 
         [RelayCommand]
         private void ClearMemory()
         {
-            MemoryStore.ClearMemoryValues();
+            MemoryStore.ClearMemoryEntities();
         }
     }
 }

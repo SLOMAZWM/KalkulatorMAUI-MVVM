@@ -19,7 +19,7 @@
 
         <BoxView Grid.Row="1" BackgroundColor="MediumPurple" HeightRequest="1" Margin="0,5,0,0"/>
 
-        <CollectionView Grid.Row="2" ItemsSource="{Binding MemoryStore.MemoryValues}">
+        <CollectionView Grid.Row="2" ItemsSource="{Binding MemoryStore.MemoryEntities}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Padding="10">
@@ -27,7 +27,7 @@
                         <HorizontalStackLayout Spacing="10">
                             <Button Text="+" FontSize="20" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=AddToMemoryCommand}" CommandParameter="{Binding .}"/>
                             <Button Text="-" FontSize="20" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=SubtractFromMemoryCommand}" CommandParameter="{Binding .}"/>
-                            <Button Text="Usuń" FontSize="20" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=RemoveMemoryValueCommand}" CommandParameter="{Binding .}"/>
+                            <Button Text="Usuń" FontSize="20" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=RemoveMemoryEntityCommand}" CommandParameter="{Binding .}"/>
                         </HorizontalStackLayout>
                     </StackLayout>
                 </DataTemplate>
