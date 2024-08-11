@@ -1,4 +1,5 @@
 ﻿using KalkulatorMAUI_MVVM.Models;
+using KalkulatorMAUI_MVVM.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,6 +42,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
 
         [ObservableProperty] private bool _isMemoryVisible = false;
 
+        [ObservableProperty] private MemoryStore _memoryStore;
+
         private string _currentOperation = string.Empty;
         private double _firstOperand;
         private double _secondOperand;
@@ -48,7 +51,8 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         public CalculatorViewModel(PageViewModel pageViewModel)
         {
             PageViewModel = pageViewModel;
-        }
+            MemoryStore = new MemoryStore();
+         }
 
         [RelayCommand]
         private void SetOperation(string operation)
@@ -748,6 +752,42 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             IsMemoryVisible = !IsMemoryVisible;
             IsButtonsVisible = !IsButtonsVisible;
+        }
+
+        [RelayCommand]
+        private void StoreMemory()
+        {
+            MemoryStore.AddMemoryValue(new MemoryValue(long.Parse(Display)));
+        }
+
+        [RelayCommand]
+        private void AddToMemory(MemoryValue memoryValue)
+        {
+            MemoryStore.AddToMemoryValue(memoryValue, long.Parse(Display));
+        }
+
+        [RelayCommand]
+        private void SubtractFromMemory(MemoryValue memoryValue)
+        {
+            MemoryStore.SubtractFromMemoryValue(memoryValue, long.Parse(Display));
+        }
+
+        [RelayCommand]
+        private void RemoveMemoryValue(MemoryValue memoryValue)
+        {
+            MemoryStore.RemoveMemoryValue(memoryValue);
+        }
+
+        [RelayCommand]
+        private void RecallMemory()
+        {
+            Display = MemoryStore.RecallLastMemoryValue().ToString();
+        }
+
+        [RelayCommand]
+        private void ClearMemory()
+        {
+            MemoryStore.ClearMemoryValues();
         }
     }
 }

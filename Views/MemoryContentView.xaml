@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="KalkulatorMAUI_MVVM.Views.MemoryContentView">
+             x:Class="KalkulatorMAUI_MVVM.Views.MemoryContentView"
+             xmlns:vm="clr-namespace:KalkulatorMAUI_MVVM.ViewModels">
     <Grid>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" Text="&#x2716;" BackgroundColor="Transparent" TextColor="MediumPurple" FontSize="24" 
@@ -16,6 +18,27 @@
         <Label Grid.Row="0" Text="Pamięć" TextColor="White" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,12,0,0"/>
 
         <BoxView Grid.Row="1" BackgroundColor="MediumPurple" HeightRequest="1" Margin="0,5,0,0"/>
+
+        <CollectionView Grid.Row="2" ItemsSource="{Binding MemoryStore.MemoryValues}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10">
+                        <Label Text="{Binding Value}" TextColor="White" FontSize="20" FontAttributes="Bold"/>
+                        <HorizontalStackLayout Spacing="10">
+                            <Button Text="+" FontSize="20" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=AddToMemoryCommand}" CommandParameter="{Binding .}"/>
+                            <Button Text="-" FontSize="20" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=SubtractFromMemoryCommand}" CommandParameter="{Binding .}"/>
+                            <Button Text="Usuń" FontSize="20" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=RemoveMemoryValueCommand}" CommandParameter="{Binding .}"/>
+                        </HorizontalStackLayout>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <HorizontalStackLayout Grid.Row="3" Spacing="10" Padding="10" HorizontalOptions="Center">
+            <Button Text="Add Display to Memory" FontSize="20" Command="{Binding StoreMemoryCommand}" />
+            <Button Text="Add to Last Memory" FontSize="20" Command="{Binding AddDisplayToMemoryCommand}" />
+            <Button Text="Subtract from Last Memory" FontSize="20" Command="{Binding SubtractDisplayFromMemoryCommand}" />
+        </HorizontalStackLayout>
 
     </Grid>
 </ContentView>
