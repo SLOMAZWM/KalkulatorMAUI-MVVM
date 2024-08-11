@@ -5,6 +5,7 @@
 Do zrobienia w ScientificView:
 
 1. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
+2. Zablokowanie mozliwosci odpalenia menu, kiedy mamy odpalona pamiec i vice versa.
 
 //
 
