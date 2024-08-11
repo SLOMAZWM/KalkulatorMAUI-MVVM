@@ -25,9 +25,10 @@
                     <StackLayout Padding="10">
                         <Label Text="{Binding Value}" TextColor="White" FontSize="20" FontAttributes="Bold"/>
                         <HorizontalStackLayout Spacing="10">
-                            <Button Text="+" FontSize="20" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=AddToMemoryCommand}" CommandParameter="{Binding .}"/>
-                            <Button Text="-" FontSize="20" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=SubtractFromMemoryCommand}" CommandParameter="{Binding .}"/>
-                            <Button Text="Usuń" FontSize="20" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=RemoveMemoryEntityCommand}" CommandParameter="{Binding .}"/>
+                            <Button Text="SEL" Style="{StaticResource MemorySmallButton}" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=RecallMemoryEntityValueCommand}" CommandParameter="{Binding Id}"/>
+                            <Button Text="+" Style="{StaticResource MemorySmallButton}" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=AddToMemoryCommand}" CommandParameter="{Binding .}"/>
+                            <Button Text="-" Style="{StaticResource MemorySmallButton}" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=SubtractFromMemoryCommand}" CommandParameter="{Binding .}"/>
+                            <Button Text="DEL" Style="{StaticResource MemorySmallButton}" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalculatorViewModel}}, Path=RemoveMemoryEntityCommand}" CommandParameter="{Binding .}"/>
                         </HorizontalStackLayout>
                     </StackLayout>
                 </DataTemplate>
@@ -35,9 +36,8 @@
         </CollectionView>
 
         <HorizontalStackLayout Grid.Row="3" Spacing="10" Padding="10" HorizontalOptions="Center">
-            <Button Text="Add Display to Memory" FontSize="20" Command="{Binding StoreMemoryCommand}" />
-            <Button Text="Add to Last Memory" FontSize="20" Command="{Binding AddDisplayToMemoryCommand}" />
-            <Button Text="Subtract from Last Memory" FontSize="20" Command="{Binding SubtractDisplayFromMemoryCommand}" />
+            <Button Text="Add To Memory" Style="{StaticResource MemorySmallFunctionButton}" Command="{Binding StoreMemoryCommand}" />
+            <Button Text="Clear Memory" Style="{StaticResource MemorySmallFunctionButton}" Command="{Binding ClearMemoryCommand}" />
         </HorizontalStackLayout>
 
     </Grid>

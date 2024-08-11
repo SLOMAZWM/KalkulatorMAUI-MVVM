@@ -783,5 +783,15 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             MemoryStore.ClearMemoryEntities();
         }
+
+        [RelayCommand]
+        private void RecallMemoryEntityValue(Guid memoryEntityId)
+        {
+            var memoryEntity = MemoryStore.MemoryEntities.FirstOrDefault(me => me.Id == memoryEntityId);
+            if( memoryEntity != null)
+            {
+                Display = memoryEntity.Value.ToString();
+            }
+        }
     }
 }
