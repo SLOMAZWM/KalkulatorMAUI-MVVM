@@ -1,11 +1,6 @@
-﻿Do zrobienia w programmerView:
+﻿Do zrobienia ogolnie:
 
-1. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
-
-Do zrobienia w ScientificView:
-
-1. Zrobienie logiki wraz z interfejsem dla "M" - pamięć
-2. Zablokowanie mozliwosci odpalenia menu, kiedy mamy odpalona pamiec i vice versa.
+-Naprawic Display (limit nalozyc, z racji iz naklada sie w StandardView widok gdy za duzo wpiszemy liczb)
 
 //
 
@@ -13,15 +8,8 @@ Kolejność prac i wykonywania zadań losowa, w zależności od wolnego czasu i 
 
 //
 
-//Dodatkowe
-
-Ogolnie:
+Dodatkowe:
 
 -Poprawic wyglad kalkulatora (zmienic)
--Dodac Historie w PageViewModel jako statyczny ObservableCollection, stworzyc odpowiednia metode AddHistoryNote, tak by sie nie powtarzać w viewModelach
--Optymalizacja kodu (przemyslana)
 -Usunac Margin w StandardView - uzyc zamiast tego RowDefinition
-
-ProgrammerView:
-
--Zamień label + picker na sam picker, lub button z podobnym działaniem do pickera (dokumentacja)
+-Zmienic z Picker na Button z aktywacja Pickera (w programmerView)*
