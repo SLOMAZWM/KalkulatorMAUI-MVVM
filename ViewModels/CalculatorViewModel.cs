@@ -793,5 +793,14 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Display = memoryEntity.Value.ToString();
             }
         }
+
+        [RelayCommand]
+        private void AddToLastMemoryEntity()
+        {
+            if(long.TryParse(Display, out long valueToAdd))
+            {
+                MemoryStore.AddValueToLastMemoryEntity(valueToAdd);
+            }
+        }
     }
 }

@@ -28,6 +28,16 @@ namespace KalkulatorMAUI_MVVM.Models
             OnPropertyChanged(nameof(MemoryEntities));
         }
 
+        public void AddValueToLastMemoryEntity(MemoryEntity newValue)
+        {
+            if(_memoryEntities.Any())
+            {
+                var LastValue = _memoryEntities.Last();
+                LastValue.AddValue(newValue.Value);
+                OnPropertyChanged(nameof(MemoryEntities));
+            }
+        }
+
         public long RecallMemoryEntityValue(MemoryEntity memoryEntity)
         {
             return _memoryEntities.FirstOrDefault(me => me.Id == memoryEntity.Id)?.Value ?? 0;
