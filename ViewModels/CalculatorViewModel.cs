@@ -46,7 +46,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         {
             PageViewModel = pageViewModel;
             MemoryStore = new MemoryStore();
-         }
+        }
 
         [RelayCommand]
         private void SetOperation(string operation)
@@ -125,11 +125,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                         Display = "0";
                     }
                 }
-                
+
                 _currentOperation = operation;
                 _firstOperand = Convert.ToDouble(Display);
             }
-            
+
         }
 
 
@@ -211,7 +211,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                 Result = Answer
             });
         }
-        
+
         [RelayCommand]
         private void Equals()
         {
@@ -227,7 +227,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     _secondOperand = Convert.ToDouble(Display);
                     Display = Math.Pow(_firstOperand, _secondOperand).ToString();
                     LastOperation = LastOperation.Replace("^" + Display, "^" + _secondOperand.ToString());
-                    
+
                     AddHistoryToPageViewModel(LastOperation, Display);
 
                 }
@@ -237,7 +237,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     Display = Math.Log(_firstOperand, _secondOperand).ToString();
                     LastOperation = LastOperation.Replace("log" + _firstOperand + "(" + Display,
                         "log" + _firstOperand + "(" + _secondOperand.ToString());
-                    
+
                     AddHistoryToPageViewModel(LastOperation, Display);
 
                 }
@@ -246,7 +246,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     _secondOperand = Convert.ToDouble(Display);
                     Display = (_firstOperand * Math.Pow(10, _secondOperand)).ToString();
                     LastOperation = LastOperation.Replace("E" + Display, "E" + _secondOperand.ToString());
-                    
+
                     AddHistoryToPageViewModel(LastOperation, Display);
                 }
                 else if (_currentOperation == "root")
@@ -270,11 +270,11 @@ namespace KalkulatorMAUI_MVVM.ViewModels
                     var result = row["expression"];
 
                     Display = Convert.ToString(result);
-                    
+
                     AddHistoryToPageViewModel(expression, result.ToString()!);
                 }
-                
-                
+
+
                 LastOperation += " = " + Display;
                 _isAfterCalculation = true;
                 _currentOperation = string.Empty;
@@ -788,7 +788,7 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         private void RecallMemoryEntityValue(Guid memoryEntityId)
         {
             var memoryEntity = MemoryStore.MemoryEntities.FirstOrDefault(me => me.Id == memoryEntityId);
-            if( memoryEntity != null)
+            if (memoryEntity != null)
             {
                 Display = memoryEntity.Value.ToString();
             }
@@ -797,9 +797,18 @@ namespace KalkulatorMAUI_MVVM.ViewModels
         [RelayCommand]
         private void AddToLastMemoryEntity()
         {
-            if(long.TryParse(Display, out long valueToAdd))
+            if (long.TryParse(Display, out long valueToAdd))
             {
                 MemoryStore.AddValueToLastMemoryEntity(valueToAdd);
+            }
+        }
+
+        [RelayCommand]
+        private void SubtractToLastMemoryEntity()
+        {
+            if (long.TryParse(Display, out long valueToSubtract))
+            {
+                MemoryStore.SubtractValueToLastMemoryEntity(valueToSubtract);
             }
         }
     }

@@ -44,8 +44,8 @@
                     <Button Style="{StaticResource AdvancedButton}" Text="(" Command="{Binding AddOpenParenthesisCommand}"/>
                     <Button Style="{StaticResource AdvancedButton}" Text=")" Command="{Binding AddCloseParenthesisCommand}"/>
                     <Button Style="{StaticResource AdvancedButton}" Text="m" Command="{Binding MemoryClickedCommand}"/>
-                    <Button Style="{StaticResource AdvancedButton}" Text="m+"/>
-                    <Button Style="{StaticResource AdvancedButton}" Text="m-" Command="{Binding }"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="m+" Command="{Binding AddToLastMemoryEntityCommand}"/>
+                    <Button Style="{StaticResource AdvancedButton}" Text="m-" Command="{Binding SubtractToLastMemoryEntityCommand}"/>
                     <Button Style="{StaticResource AdvancedButton}" Text="mr" Command="{Binding RecallMemoryCommand}"/>
                     <Button Style="{StaticResource LightFunctionSmallButton}" Text="AC" Command="{Binding ClearCommand}"/>
                     <Button Style="{StaticResource LightFunctionSmallButton}" Text="+/-" Command="{Binding ChangeSignCommand}"/>

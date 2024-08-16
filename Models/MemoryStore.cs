@@ -28,12 +28,22 @@ namespace KalkulatorMAUI_MVVM.Models
             OnPropertyChanged(nameof(MemoryEntities));
         }
 
-        public void AddValueToLastMemoryEntity(MemoryEntity newValue)
+        public void AddValueToLastMemoryEntity(long newValue)
         {
             if(_memoryEntities.Any())
             {
                 var LastValue = _memoryEntities.Last();
-                LastValue.AddValue(newValue.Value);
+                LastValue.AddValue(newValue);
+                OnPropertyChanged(nameof(MemoryEntities));
+            }
+        }
+
+        public void SubtractValueToLastMemoryEntity(long newValue)
+        {
+            if(_memoryEntities.Any())
+            {
+                var LastValue = _memoryEntities.Last();
+                LastValue.SubtractValue(newValue);
                 OnPropertyChanged(nameof(MemoryEntities));
             }
         }
