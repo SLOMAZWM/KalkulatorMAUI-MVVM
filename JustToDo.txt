@@ -10,6 +10,5 @@ Kolejność prac i wykonywania zadań losowa, w zależności od wolnego czasu i 
 
 Dodatkowe:
 
--Poprawic wyglad kalkulatora (zmienic)
 -Usunac Margin w StandardView - uzyc zamiast tego RowDefinition
 -Zmienic z Picker na Button z aktywacja Pickera (w programmerView)*

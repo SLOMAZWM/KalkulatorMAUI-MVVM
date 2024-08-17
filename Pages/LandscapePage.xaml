@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KalkulatorMAUI_MVVM.Pages.LandscapePage"
              xmlns:vm="clr-namespace:KalkulatorMAUI_MVVM.ViewModels"
-             BackgroundColor="Black">
+             BackgroundColor="#2E2E2E">
 
     <Grid>
 
